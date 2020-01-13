@@ -1,0 +1,26 @@
+{
+  "name": "illustra",
+  "version": "1.0.0",
+  "description": "A simple Discord bot for managing emotes",
+  "main": "index.js",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "discord.js": "^11.5.1",
+    "enmap": "^5.2.3",
+    "eslint": "^6.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DefaultSobriquet/Illustra.git"
+  },
+  "author": "Sobriquet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DefaultSobriquet/Illustra/issues"
+  },
+  "homepage": "https://github.com/DefaultSobriquet/Illustra#readme"
+}

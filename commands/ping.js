@@ -1,17 +1,19 @@
-exports.run = async (client, message) => { // eslint-disable-line no-unused-vars
-    const msg = await message.channel.send('Ping!')
-    msg.edit(`Pong! Latency is \`${msg.createdTimestamp - message.createdTimestamp}ms\`. API Latency is \`${Math.round(client.ping)}ms\`.`)
-}
+exports.run = async (client, message) => {
+	const msg = await message.channel.send("Pong!");
+	msg.edit(`Pong! Latency is \`${msg.createdTimestamp - message.createdTimestamp}ms\`. API Latency is \`${Math.round(client.ping)}ms\`.`);
+	// Quotes to be added later!
+};
  
 exports.conf = {
-    aliases: [],
-    permLevel: 0
-}
+	aliases: ["pong"],
+	permLevel: 0,
+	requires:["SEND_MESSAGES"]
+};
 
 exports.help = {
-    name: 'ping',
-    category: 'Miscellaneous',
-    description: "It like... Pings. Then Pongs. And it's not Ping Pong.",
-    usage: 'ping',
-    example: 'ping'
-}
+	name: "ping",
+	category: "Information",
+	description: "Check the bot and Discord's API latency.",
+	usage: "ping",
+	example: "ping"
+};
