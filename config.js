@@ -40,6 +40,21 @@ const config = {
 	},{
 		text:"a whisper.",
 		type:"LISTENING"
+	},{
+		text:"the sunset.",
+		type:"WATCHING"
+	},{
+		text:"the waves crash.",
+		type:"LISTENING"
+	},{
+		text:"an old record.",
+		type:"LISTENING"
+	},{
+		text:"the waves.",
+		type:"WATCHING"
+	},{
+		text:"the sunrise.",
+		type:"WATCHING"
 	}]
 };
   

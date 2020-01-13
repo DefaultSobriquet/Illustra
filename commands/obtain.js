@@ -39,7 +39,7 @@ exports.conf = {
 exports.help = {
 	name: "obtain",
 	category: "Emotes",
-	description: "Retrieve custom emotes from a message and add it to the server. If unspecified, the message is the most recent one in the channel.",
+	description: "Retrieve custom emotes from a message and add it to the server.",
 	usage: "obtain (message id)",
 	example: "obtain 29394959239030102"
 };
