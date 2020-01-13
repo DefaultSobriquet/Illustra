@@ -20,7 +20,7 @@ const config = {
 		text: "with emotes!",
 		type: "PLAYING"
 	},{
-		text: "to the raindrops.",
+		text: "the raindrops.",
 		type:"LISTENING"
 	},{
 		text:"the stars.",
@@ -38,7 +38,7 @@ const config = {
 		text:"cat videos.",
 		type:"WATCHING"
 	},{
-		text:"to a whisper.",
+		text:"a whisper.",
 		type:"LISTENING"
 	}]
 };
