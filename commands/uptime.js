@@ -6,7 +6,7 @@ exports.run = async (client, message) => {
 			timestamp:new Date().toISOString(),
 			description:`${client.utils.msFormat(client.uptime)}`,
 			footer:{
-				text:`${client.config.description}`
+				text:`Started on ${client.readyAt.toLocaleString()}`
 			}
 		}
 	});
@@ -15,6 +15,7 @@ exports.run = async (client, message) => {
 exports.conf = {
 	aliases: ["up"],
 	permLevel: 0,
+	userRequires:["SEND_MESSAGES"],
 	requires:["SEND_MESSAGES"]
 };
   

@@ -1,5 +1,5 @@
 exports.run = async (_client, message, args) => {
-	if(args.length == 0) return message.channel.send("Please enter an input."); 
+	if(!args[0]) return message.channel.send("Please enter an input."); 
 	try {
 		let output = "No output.";
 		require("child_process").exec(args.join(" "), (err, stdout, stderr) => {
@@ -22,6 +22,7 @@ exports.run = async (_client, message, args) => {
 exports.conf = {
 	aliases: ["ex", "exe", "exec"],
 	permLevel: 10,
+	userRequires:["SEND_MESSAGES"],
 	requires:["SEND_MESSAGES"]
 };
   

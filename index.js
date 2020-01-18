@@ -8,6 +8,7 @@ const client = new Discord.Client();
 client.config = require("./config.js");
 
 require("./modules/utils.js")(client);
+require("./modules/emotes.js")(client);
 
 client.commands = new Enmap();
 client.aliases = new Enmap();

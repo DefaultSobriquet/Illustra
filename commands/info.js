@@ -27,7 +27,12 @@ exports.run = async (client, message) => {
 				name:"Library",
 				value:"Discord.js",
 				inline:true
-			}]
+			}],
+			timestamp:new Date().toISOString(),
+			footer: {
+				text: `Requested by ${message.author.tag}`,
+				icon_url:message.author.avatarURL
+			}
 		}
 	});
 };
@@ -35,6 +40,7 @@ exports.run = async (client, message) => {
 exports.conf = {
 	aliases: ["about","information"],
 	permLevel: 0,
+	userRequires:["SEND_MESSAGES"],
 	requires:["SEND_MESSAGES"]
 };
 

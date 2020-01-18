@@ -16,17 +16,14 @@ module.exports = async (client, message) => {
 	// Retrieve command
 	const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   
-	if (!cmd) {
-		message.channel.send("That command doesn't exist!");
-		return;
-	}
+	if (!cmd) return;
   
 	if (level < client.levelCache[cmd.conf.permLevel]) {
 		message.channel.send("You don't have permissions to run this command.");
 		return;
 	}
 
-	const missingPerms = message.guild.me.permissions.missing(cmd.conf.requires);
+	const missingPerms = message.channel.memberPermissions(client.user).missing(cmd.conf.requires);
 
 	if (missingPerms.length > 0){
 		message.member.createDM().then(c => c.send({
@@ -39,7 +36,6 @@ module.exports = async (client, message) => {
 		})).catch((err) => console.log(err));
 		return;
 	}
-
 
 	message.author.permLevel = level;
 	console.log(`(${client.config.permLevels.find(l => l.level === level).level}) | ${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);

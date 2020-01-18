@@ -17,9 +17,10 @@ exports.run = async (client, message, args) => {
 				description:cmdList,
 				timestamp:new Date().toISOString(),
 				color:message.guild.me.displayColor,
-				footer:{
-					text:"This'll be updated later."
-				}
+				footer: {
+					text: `Requested by ${message.author.tag}`,
+					icon_url:message.author.avatarURL
+				}	
 			}
 		});
 	}else{
@@ -39,6 +40,7 @@ exports.run = async (client, message, args) => {
 exports.conf = {
 	aliases: [],
 	permLevel: 0,
+	userRequires:["SEND_MESSAGES"],
 	requires:["SEND_MESSAGES"]
 };
   

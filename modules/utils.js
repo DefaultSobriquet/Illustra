@@ -53,31 +53,6 @@ module.exports = (client) => {
 
 	// Various utilities
 	client.utils = {
-		emotes: {
-			search: (message, input) => {
-				return message.guild.emojis.filter(emote => (
-					input.includes(`${emote.name}:${emote.id}`) ||
-					input.includes(`${emote.id}`) || input.includes(`${emote.name}`) ||
-					(input.toLowerCase()).includes(`${emote.name.toLowerCase()}`)
-				));
-			},
-			props: (input) => {
-				let emoteArray = input.replace("<", "").replace(">", "").split(":");
-				return {
-					"animated": emoteArray[0].includes("a"),
-					"name": emoteArray[1],
-					"id": emoteArray[2],
-					"url": `https://cdn.discordapp.com/emojis/${emoteArray[2]}.${emoteArray[0].includes("a") ? "gif" : "png"}?v=1`
-				};
-			},
-			extract: (message) => {
-				let emotes = message.content.match(/<(a*):(.*?):[0-9]+>/g);
-				if(!emotes) return [];
-				emotes = emotes.filter((emote, index) => (emotes.indexOf(emote) >= index)); // Filter set duplicates
-				emotes = emotes.filter((emote) => !message.guild.emojis.has(emote.split(":")[2])); // Filter guild duplicates
-				return emotes;
-			}
-		},
 		msFormat: (s) => {
 			s = (s - (s % 1000)) / 1000;
 			let secs = s % 60;

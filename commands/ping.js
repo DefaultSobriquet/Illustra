@@ -5,8 +5,9 @@ exports.run = async (client, message) => {
 };
  
 exports.conf = {
-	aliases: ["pong"],
+	aliases: ["latency"],
 	permLevel: 0,
+	userRequires:["SEND_MESSAGES"],
 	requires:["SEND_MESSAGES"]
 };
 

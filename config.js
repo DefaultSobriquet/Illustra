@@ -16,7 +16,7 @@ const config = {
 			check: (message) => (message.member.id === "600826051014426625" ||  message.member.id === "248540313059196928")
 		}
 	],
-	status: [{ // Statuses for the bot.
+	status: [{
 		text: "with emotes!",
 		type: "PLAYING"
 	},{
@@ -54,6 +54,9 @@ const config = {
 		type:"WATCHING"
 	},{
 		text:"the sunrise.",
+		type:"WATCHING"
+	},{
+		text:"the hummingbirds.",
 		type:"WATCHING"
 	}]
 };
