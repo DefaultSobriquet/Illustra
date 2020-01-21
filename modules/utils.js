@@ -55,11 +55,11 @@ module.exports = (client) => {
 	client.utils = {
 		msFormat: (s) => {
 			s = (s - (s % 1000)) / 1000;
-			let secs = s % 60;
+			const secs = s % 60;
 			s = (s - secs) / 60;
-			let mins = s % 60;
-			let hrs = ((s - mins) / 60) % 24;
-			let days = (((s - mins) / 60) - hrs) / 24;
+			const mins = s % 60;
+			const hrs = ((s - mins) / 60) % 24;
+			const days = (((s - mins) / 60) - hrs) / 24;
 			return `${days} days, ${hrs} hours, ${mins} minutes, and ${secs} seconds`;
 		}
 	};

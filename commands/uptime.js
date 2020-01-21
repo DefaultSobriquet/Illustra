@@ -1,22 +1,19 @@
 exports.run = async (client, message) => {
-	message.channel.send({
-		embed:{
-			title:"Uptime",
-			color:message.guild.me.displayColor,
-			timestamp:new Date().toISOString(),
-			description:`${client.utils.msFormat(client.uptime)}`,
-			footer:{
-				text:`Started on ${client.readyAt.toLocaleString()}`
-			}
-		}
-	});
+	const { RichEmbed } = require("discord.js");
+	const embed = new RichEmbed()
+		.setTitle("Uptime")
+		.setColor(message.guild.me.displayColor)
+		.setTimestamp()
+		.setDescription(`${client.config.name} has been online for ${client.utils.msFormat(client.uptime)}.`)
+		.setFooter(`PID ${process.pid} | Started on ${client.readyAt.toLocaleString()}`);
+	message.channel.send(embed);
 };
   
 exports.conf = {
 	aliases: ["up"],
 	permLevel: 0,
-	userRequires:["SEND_MESSAGES"],
-	requires:["SEND_MESSAGES"]
+	userRequires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
   
 exports.help = {

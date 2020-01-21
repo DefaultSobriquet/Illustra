@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-undef
 module.exports = async (client, message) => {
+	const { RichEmbed } = require("discord.js");
+
 	// Prevent execution by bots and checks for messages without the prefix.
 	if (message.author.bot || !message.content.startsWith(client.config.sets.prefix)) return;
   
@@ -25,15 +27,15 @@ module.exports = async (client, message) => {
 
 	const missingPerms = message.channel.memberPermissions(client.user).missing(cmd.conf.requires);
 
+	const embed = new RichEmbed()
+		.setTitle("Missing Permissions")
+		.setTimestamp()
+		.setColor(message.guild.me.displayColor)
+		.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.\nPlease grant me: \`${missingPerms.join(", ")}\``)
+		.setFooter(`${message.guild.name} | Missing Permissions`,message.guild.iconURL);
+
 	if (missingPerms.length > 0){
-		message.member.createDM().then(c => c.send({
-			embed:{
-				title:"Missing Permissions",
-				timestamp:new Date().toISOString(),
-				color:message.guild.me.displayColor,
-				description:`I do not have adequate permissions to run the command \`${cmd.help.name}\`.\nPlease grant me: \`${missingPerms.join(", ")}\``
-			}
-		})).catch((err) => console.log(err));
+		message.author.send(embed).catch((err) => console.log(err));
 		return;
 	}
 

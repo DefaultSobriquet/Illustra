@@ -1,47 +1,27 @@
 exports.run = async (client, message) => {
-	message.channel.send({
-		embed:{
-			title:client.config.name,
-			description:client.config.description,
-			color:message.guild.me.displayColor,
-			thumbnail:{
-				url:client.user.avatarURL
-			},
-			fields:[{
-				name:"Users",
-				value:client.users.size,
-				inline:true
-			},{
-				name:"Servers",
-				value:client.guilds.size,
-				inline:true
-			},{
-				name:"Developer",
-				value:client.config.owner,
-				inline:true
-			},{
-				name:"Language",
-				value:"JavaScript",
-				inline:true
-			},{
-				name:"Library",
-				value:"Discord.js",
-				inline:true
-			}],
-			timestamp:new Date().toISOString(),
-			footer: {
-				text: `Requested by ${message.author.tag}`,
-				icon_url:message.author.avatarURL
-			}
-		}
-	});
+	const { RichEmbed } = require("discord.js");
+	const embed = new RichEmbed()
+		.setTitle(client.config.name)
+		.setTimestamp()
+		.setDescription(client.config.description)
+		.setColor(message.guild.me.displayColor)
+		.setThumbnail(client.user.avatarURL)
+		.addField("Users",client.users.size,true)
+		.addField("Servers",client.guilds.size,true)
+		.addField("Developer",client.config.owner,true)
+		.addField("Language","JavaScript",true)
+		.addField("Library","Discord.js",true)
+		.addField("Invite",`[Click Here!](${client.config.invite})`,true)
+		.addField("Support",`[Get help!](${client.config.support})`,true)
+		.setFooter(`Requested by ${message.author.tag}`,message.author.avatarURL);
+	message.channel.send(embed);
 };
  
 exports.conf = {
 	aliases: ["about","information"],
 	permLevel: 0,
-	userRequires:["SEND_MESSAGES"],
-	requires:["SEND_MESSAGES"]
+	userRequires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {

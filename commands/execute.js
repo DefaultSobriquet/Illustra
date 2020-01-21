@@ -12,18 +12,18 @@ exports.run = async (_client, message, args) => {
 			if (stderr && stderr.length !== 0) {
 				output = stderr;
 			}
-			message.channel.send(`\`\`\`console\n${output}\`\`\``);
+			message.channel.send(`\`\`\`${output}\`\`\``);
 		});
 	} catch (err) {
-		message.channel.send(`\`\`\`console\n${err}\`\`\``);
+		message.channel.send(`\`\`\`${err}\`\`\``);
 	}
 };
   
 exports.conf = {
 	aliases: ["ex", "exe", "exec"],
 	permLevel: 10,
-	userRequires:["SEND_MESSAGES"],
-	requires:["SEND_MESSAGES"]
+	userRequires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
   
 exports.help = {

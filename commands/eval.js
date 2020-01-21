@@ -19,8 +19,8 @@ exports.run = async (client, message, args) => {
 exports.conf = {
 	aliases: ["e", "evaluate"],
 	permLevel: 10,
-	userRequires:["SEND_MESSAGES"],
-	requires:["SEND_MESSAGES"]
+	userRequires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {

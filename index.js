@@ -8,7 +8,9 @@ const client = new Discord.Client();
 client.config = require("./config.js");
 
 require("./modules/utils.js")(client);
+require("./modules/users.js")(client);
 require("./modules/emotes.js")(client);
+require("./modules/roles.js")(client);
 
 client.commands = new Enmap();
 client.aliases = new Enmap();
@@ -25,7 +27,7 @@ const init = async () => {
 	});
 	// Searches for all events & loads them
 	const evtFiles = await readdir("./events/");
-	console.log(` Loading a total of ${evtFiles.length} events.`);
+	console.log(`Loading a total of ${evtFiles.length} events.`);
 	evtFiles.forEach(file => {
 		const eventName = file.split(".")[0];
 		console.log(`Loading Event: ${eventName}`);

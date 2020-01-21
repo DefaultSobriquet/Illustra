@@ -7,8 +7,8 @@ exports.run = async (client, message) => {
 exports.conf = {
 	aliases: ["latency"],
 	permLevel: 0,
-	userRequires:["SEND_MESSAGES"],
-	requires:["SEND_MESSAGES"]
+	userRequires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
