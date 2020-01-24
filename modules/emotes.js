@@ -19,15 +19,15 @@ module.exports = (client) => {
 			if(client.emojis.has(emote[3])) return client.emojis.get(emote[3]);
 			return {animated: Boolean(emote[1]), name: emote[2], id: emote[3], url: `https://cdn.discordapp.com/emojis/${emote[3]}.${emote[1] ? "gif" : "png"}`};
 		},
-		extract: (message) => {
+		extract: (message, allowGuild = false) => {
 			let emotes = message.content.match(/<(a*):(.*?)>/g);
 			if(!emotes) return [];
-			emotes = emotes.filter((emote, index) => emotes.indexOf(emote) === index); // Filter set duplicates
-			emotes = [...new Set(emotes)]; // Filter guild duplicates
+			emotes = [...new Set(emotes)]; // Filter emote duplicates
+			if(!allowGuild) emotes = emotes.filter((emote) => !message.guild.emojis.has(emote.split(":")[2].replace(">", "")));
 			return emotes;
 		},
 		obtain: (props, message) => {
-			return message.guild.createEmoji(props.url,props.name,[],`Obtained by ${message.author.tag}`);
+			return message.guild.createEmoji(props.url, props.name, [], `Obtained by ${message.author.tag}`);
 		},
 		embed: (props, message) => {
 			const embed = new RichEmbed()
@@ -36,12 +36,12 @@ module.exports = (client) => {
 				.setColor(message.guild.me.displayColor)
 				.setDescription(`**ID**: ${props.id}\n**Link**: [Click here](${props.url})`)
 				.setImage(`${props.url}?size=2048`)
-				.setFooter((props.guild) ? `${props.guild.name} | Created` : `${message.author.tag}`,(props.guild) ? props.guild.iconURL : message.author.avatarURL);
+				.setFooter(props.guild ? `${props.guild.name} | Created` : `${message.author.tag}`, (props.guild) ? props.guild.iconURL : message.author.avatarURL);
 			return embed;
 		},
-		menuGenerator: async (reactions,message,author) => {
+		menuGenerator: async (reactions, message, author) => {
 			const reactMenu = message.createReactionCollector(
-				(reaction,user) => (author === user.id) && reactions.includes(reaction.emoji.name),
+				(reaction, user) => (author === user.id) && reactions.includes(reaction.emoji.name),
 				{time: 120000}
 			);
 			reactMenu.on("collect", (reaction) => reaction.remove(author).catch());
@@ -50,6 +50,12 @@ module.exports = (client) => {
 				await message.react(reactions[index]).catch();
 			}
 			return reactMenu;
+		},
+		addable: async (message, props) => {
+			const emoteLimit = [50, 100, 150, 250][message.guild.premiumTier];
+			const emotes = message.guild.emojis;
+			if(emoteLimit === 50) return (emotes.filter(emote => (emote.animated === props.animated)).size < 25);
+			return (emotes.size < emoteLimit);
 		}
 	};
 };

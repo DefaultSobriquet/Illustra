@@ -1,4 +1,4 @@
-exports.run = async (_client, message, args) => {
+exports.run = async (client, message, args) => {
 	if(!args[0]) return message.channel.send("Please enter an input."); 
 	try {
 		let output = "No output.";

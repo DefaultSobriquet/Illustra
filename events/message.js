@@ -6,7 +6,10 @@ module.exports = async (client, message) => {
 	if (message.author.bot || !message.content.startsWith(client.config.sets.prefix)) return;
   
 	// Create arguments and command from message.
-	const args = message.content.slice(client.config.sets.prefix.length).trim().split(/ +/g);
+	const input = message.content.slice(client.config.sets.prefix.length).trim();
+	const args = input.split(/ +/g).filter(arg => !arg.startsWith("--"));
+	const flags = input.split(/ +/g).filter(arg => arg.startsWith("--")).map(flag => flag.replace("--", ""));
+
 	const command = args.shift().toLowerCase();
   
 	// Fetches the user.
@@ -32,7 +35,7 @@ module.exports = async (client, message) => {
 		.setTimestamp()
 		.setColor(message.guild.me.displayColor)
 		.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.\nPlease grant me: \`${missingPerms.join(", ")}\``)
-		.setFooter(`${message.guild.name} | Missing Permissions`,message.guild.iconURL);
+		.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL);
 
 	if (missingPerms.length > 0){
 		message.author.send(embed).catch((err) => console.log(err));
@@ -41,5 +44,5 @@ module.exports = async (client, message) => {
 
 	message.author.permLevel = level;
 	console.log(`(${client.config.permLevels.find(l => l.level === level).level}) | ${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);
-	cmd.run(client, message, args, level);
+	cmd.run(client, message, args, flags);
 };

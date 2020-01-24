@@ -5,12 +5,9 @@ exports.run = async (client, message, args) => {
 	try {
 		const evaled = eval(code); // Evaluate the code
 		const clean = await client.clean(client, evaled); // Clean the code
-		if (clean.length > 1950) {
-			const messages = Util.splitMessage(clean);
-			messages.forEach(value => message.channel.send(`\`\`\`js\n${value}\`\`\``));
-		} else {
-			message.channel.send(`\`\`\`js\n${clean}\n\`\`\``);
-		}
+		const messages = Util.splitMessage(clean);
+		if(typeof (messages) === "string") return message.channel.send(`\`\`\`js\n${messages}\`\`\``);
+		messages.forEach(value => message.channel.send(`\`\`\`js\n${value}\`\`\``));
 	} catch (err) {
 		message.channel.send(`\`ERROR\` \`\`\`xl\n${await client.clean(client, err)}\n\`\`\``);
 	}

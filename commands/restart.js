@@ -1,10 +1,10 @@
-exports.run = async (client, message,args) => {
+exports.run = async (client, message, args) => {
 	if(!isNaN(args[0]) && parseInt(args[0]) > 0){
 		await message.channel.send(`I'll be restarting in ${args[0]} seconds, if that's alright with you.`);
 		client.setTimeout(() => {
 			client.destroy();
 			process.exit(0);
-		}, args[0]*1000,client);
+		}, args[0]*1000, client);
 		return;
 	}
 	await message.channel.send("I'll be restarting now, if that's alright with you.");
@@ -13,7 +13,7 @@ exports.run = async (client, message,args) => {
 };
  
 exports.conf = {
-	aliases: ["die","kill"],
+	aliases: ["die", "kill"],
 	permLevel: 10,
 	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]

@@ -18,7 +18,7 @@ exports.conf = {
 	aliases: [],
 	permLevel: 10,
 	userRequires: ["SEND_MESSAGES"],
-	requires: ["SEND_MESSAGES","MANAGE_MESSAGES"]
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {

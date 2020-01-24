@@ -9,6 +9,10 @@ const config = {
 	sets: { // Settings
 		prefix: "_"
 	},
+	api_tokens: {
+		thecatapi: "ab08e4a4-95cc-46ce-b980-a499daf97270",
+		thedogapi: "5c9cb91b-91f3-4650-8704-6c6b8c709edc"
+	},
 	permLevels: [ // Permissions
 		{
 			level: 0, // Basic level command; return true automatically so all users can run.
