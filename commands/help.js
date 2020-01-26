@@ -1,8 +1,10 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => {
 	const { RichEmbed } = require("discord.js");
+	const sendGuild = flags.includes("guild") || flags.includes("noDM") || flags.includes("server");
+
 	if(!args[0]){ // Check if there is no argument.
 	
-		const commands = client.commands.array().sort((a,b) => a.help.category > b.help.category ? 1 : a.help.name > b.help.name && a.help.category === b.help.category ? 1 : -1); // Sort commands by category.
+		const commands = client.commands.array().sort((a, b) => a.help.category > b.help.category ? 1 : a.help.name > b.help.name && a.help.category === b.help.category ? 1 : -1); // Sort commands by category.
 		let category = "";
 		let cmdList = "";
 
@@ -20,9 +22,9 @@ exports.run = async (client, message, args) => {
 			.setDescription(cmdList)
 			.setTimestamp()
 			.setColor(message.guild.me.displayColor)
-			.setFooter(`Requested by ${message.author.tag}`,message.author.avatarURL);
+			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
 
-		message.channel.send(embed);
+		sendGuild ? message.channel.send(embed) : message.author.send(embed);
 
 	}else{
 		const search = args[0].toLowerCase(); // Take the first argument as a search term.
@@ -48,5 +50,11 @@ exports.help = {
 	category: "Information",
 	description: "Explains what a command does.",
 	usage: "help [command]",
-	example: "help ping"
+	example: "help ping",
+	flags: [
+		{
+			name: ["guild", "noDM", "server"],
+			use: "Sends the full help embed in the guild."
+		}
+	]
 };

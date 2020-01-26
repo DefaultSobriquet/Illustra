@@ -1,6 +1,6 @@
 module.exports = (client) => {
 	client.utils.users = {
-		resolve: (input,message) => {
+		resolve: (input, message) => {
 			if(!input) return message.member;
 			let target = message.mentions.members.first();
 			if(target == null) target = message.guild.members.find(member =>

@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 exports.run = async (client, message, args) => {
-	message.delete();
+	message.delete().catch();
 	message.channel.send(args.join(" "));
 };
  
@@ -7,7 +8,7 @@ exports.conf = {
 	aliases: ["speak"],
 	permLevel: 0,
 	userRequires: ["SEND_MESSAGES"],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES", "MANAGE_MESSAGES"]
 };
 
 exports.help = {

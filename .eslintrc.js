@@ -43,6 +43,7 @@ module.exports = {
 				"afterColon": true
 			}
 		],
-		"no-multi-spaces": "error"
+		"no-multi-spaces": "error",
+		"comma-spacing": ["error", { "before": false, "after": true }]
 	}
 };
