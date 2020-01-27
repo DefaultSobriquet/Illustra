@@ -9,13 +9,11 @@ exports.run = async (client, message, args) => {
 		.setImage(request[0].url)
 		.setColor(message.guild.me.displayColor)
 		.setTimestamp()
-		.setFooter("Powered by TheCatAPI");
+		.setFooter(`Requested by ${message.author.tag} • Powered by TheCatAPI`);
 	message.channel.send(embed);
 };
 exports.conf = {
 	aliases: ["meow"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 

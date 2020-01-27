@@ -9,7 +9,6 @@ exports.run = async (client, message, args, flags) => {
 		let cmdList = "";
 
 		commands.forEach(cmd => {
-			if(cmd.conf.permLevel > client.permlevel(message)) return;
 			if(cmd.help.category !== category){
 				cmdList+=`**${cmd.help.category}**\n`;
 				category = cmd.help.category;
@@ -40,8 +39,6 @@ exports.run = async (client, message, args, flags) => {
   
 exports.conf = {
 	aliases: [],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
   

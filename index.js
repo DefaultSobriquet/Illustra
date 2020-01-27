@@ -34,14 +34,7 @@ const init = async () => {
 		const event = require(`./events/${file}`);
 		client.on(eventName, event.bind(null, client));
 	});
-
-	// Builds the level Cache
-	client.levelCache = {};
-	for (let i = 0; i < client.config.permLevels.length; i++) {
-		const thisLevel = client.config.permLevels[i];
-		client.levelCache[thisLevel.level] = thisLevel.level;
-	}
-
+	
 	client.login(client.config.token);
 };
 

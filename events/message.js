@@ -15,18 +15,10 @@ module.exports = async (client, message) => {
 	// Fetches the user.
 	if (message.guild && !message.member) await message.guild.fetchMember(message.author);
   
-	// Get the level.
-	const level = client.permlevel(message);
-  
 	// Retrieve command
 	const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   
 	if (!cmd) return;
-  
-	if (level < client.levelCache[cmd.conf.permLevel]) {
-		message.channel.send("You don't have permissions to run this command.");
-		return;
-	}
 
 	const missingPerms = message.channel.memberPermissions(client.user).missing(cmd.conf.requires);
 
@@ -42,7 +34,6 @@ module.exports = async (client, message) => {
 		return;
 	}
 
-	message.author.permLevel = level;
-	console.log(`(${client.config.permLevels.find(l => l.level === level).level}) | ${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);
+	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);
 	cmd.run(client, message, args, flags);
 };

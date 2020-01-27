@@ -33,8 +33,6 @@ exports.run = async (client, message, args) => {
  
 exports.conf = {
 	aliases: ["restrict"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "MANAGE_MESSAGES", "ADD_REACTIONS"]
 };
 

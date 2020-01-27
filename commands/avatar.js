@@ -13,8 +13,6 @@ exports.run = async (client, message, args) => {
  
 exports.conf = {
 	aliases: ["av"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 
