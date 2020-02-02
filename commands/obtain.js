@@ -27,7 +27,7 @@ exports.run = async (client, message, args, flags) => {
 		if(reaction.emoji.name === "⏮️" && page !== 0) menu.edit(embed(emotes[page = 0], target));
 		if(reaction.emoji.name === "⏭️" && page !== emotes.length-1) menu.edit(embed(emotes[page = emotes.length-1], target));
 		if(reaction.emoji.name === "💾"){
-			if(!addable(message, emotes[page])){
+			if(!addable(emotes[page], message)){
 				collector.stop();
 				return message.channel.send("You have reached the guild limit for emotes!");
 			}
@@ -46,8 +46,6 @@ exports.run = async (client, message, args, flags) => {
  
 exports.conf = {
 	aliases: ["add"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES", "MANAGE_EMOJIS"],
 	requires: ["SEND_MESSAGES", "VIEW_CHANNEL", "MANAGE_EMOJIS", "READ_MESSAGE_HISTORY", "MANAGE_MESSAGES", "ADD_REACTIONS"]
 };
 

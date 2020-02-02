@@ -9,13 +9,11 @@ exports.run = async (client, message, args) => {
 		.setImage(request[0].url)
 		.setColor(message.guild.me.displayColor)
 		.setTimestamp()
-		.setFooter("Powered by TheDogAPI");
+		.setFooter(`Requested by ${message.author.tag} • Powered by TheDogAPI`);
 	message.channel.send(embed);
 };
 exports.conf = {
 	aliases: ["woof"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 

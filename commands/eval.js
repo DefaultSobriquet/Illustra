@@ -1,4 +1,5 @@
 exports.run = async (client, message, args) => {
+	if(!client.config.trusted.includes(message.author.id)) return;
 	const { Util } = require("discord.js");
 	const code = args.join(" "); // Generate string input.
 	if (code.includes("client.token")) return message.channel.send("No thanks."); // Prevent attempts to get the token.
@@ -15,8 +16,6 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["e", "evaluate"],
-	permLevel: 10,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 

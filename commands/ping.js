@@ -6,8 +6,6 @@ exports.run = async (client, message, args, flags) => {
  
 exports.conf = {
 	aliases: ["latency"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 
@@ -19,7 +17,7 @@ exports.help = {
 	example: "ping",
 	flags: [
 		{
-			name: "quote",
+			name: ["quote"],
 			use: "Adds a quote to your ping!"
 		}
 	]

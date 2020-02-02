@@ -1,4 +1,5 @@
 exports.run = async (client, message, args) => {
+	if(!client.config.trusted.includes(message.author.id)) return;
 	if(!args[0]) return message.channel.send("Please enter an input."); 
 	try {
 		let output = "No output.";
@@ -21,8 +22,6 @@ exports.run = async (client, message, args) => {
   
 exports.conf = {
 	aliases: ["ex", "exe", "exec"],
-	permLevel: 10,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
   

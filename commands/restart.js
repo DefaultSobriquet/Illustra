@@ -1,21 +1,21 @@
 exports.run = async (client, message, args) => {
-	if(!isNaN(args[0]) && parseInt(args[0]) > 0){
-		await message.channel.send(`I'll be restarting in ${args[0]} seconds, if that's alright with you.`);
-		client.setTimeout(() => {
-			client.destroy();
-			process.exit(0);
-		}, args[0]*1000, client);
+	if(!client.config.trusted.includes(message.author.id)) return;
+	const ms = require("ms");
+	const end = () => {
+		client.destroy();
+		process.exit(0);
+	};
+	if(args[0] && !isNaN(ms(args[0]))){
+		await message.channel.send(`I'll be restarting at ${new Date(Date.now()+ms(args[0])).toLocaleString()}, if that's alright with you.`);
+		client.setTimeout(end, ms(args[0]), client);
 		return;
 	}
 	await message.channel.send("I'll be restarting now, if that's alright with you.");
-	client.destroy();
-	process.exit(0);
+	end();
 };
  
 exports.conf = {
 	aliases: ["die", "kill"],
-	permLevel: 10,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 

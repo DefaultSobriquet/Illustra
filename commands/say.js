@@ -6,8 +6,6 @@ exports.run = async (client, message, args) => {
  
 exports.conf = {
 	aliases: ["speak"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES", "MANAGE_MESSAGES"]
 };
 

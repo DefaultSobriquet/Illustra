@@ -1,4 +1,5 @@
 exports.run = (client, message, args) => {
+	if(!client.config.trusted.includes(message.author.id)) return;
 	if(!args || args.length < 1) return message.channel.send("You must provide a command name to reload.");
 	const commandName = args[0];
 	// Check if the command exists and is valid
@@ -16,8 +17,6 @@ exports.run = (client, message, args) => {
 
 exports.conf = {
 	aliases: [],
-	permLevel: 10,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 

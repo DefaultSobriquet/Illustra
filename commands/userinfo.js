@@ -4,6 +4,7 @@ exports.run = async (client, message, args) => {
 	const keyPerms = ["ADMINISTRATOR", "CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "VIEW_AUDIT_LOG", "MANAGE_MESSAGES", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
 	const target = client.utils.users.resolve(args[0], message);
 	if(!target) return message.channel.send("I could not find a member matching that.");
+	const userPerms = keyPerms.filter(perm => target.permissions.toArray().includes(perm));
 	const roles = target.roles.filter(role => !(role.id === role.guild.defaultRole.id)).map(role => role).sort((a, b) => b.position - a.position);
 	const members = [...message.guild.members.filter(member => !member.user.bot).sort((a, b) => a.joinedAt - b.joinedAt)];
 	const position = members.findIndex(user => user[0] === target.id)+1;
@@ -20,16 +21,14 @@ exports.run = async (client, message, args) => {
 		.addField("Status", {"online": "Online", "idle": "Idle", "offline": "Offline", "dnd": "Do Not Disturb"}[target.user.presence.status], true)
 		.addField("Client", target.user.presence.clientStatus ? Object.keys(message.author.presence.clientStatus).map(client => ({"web": "Web", "desktop": "Desktop", "mobile": "Mobile"}[client])).join(", ") : "None", true)
 		.addField(`Roles [${roles.length}]`, roles.length ? roles.join(", ") : "None.")
-		.addField("Permissions", keyPerms.filter(perm => target.permissions.toArray().includes(perm)).join(", ").replace(/_/g, " ").replace(
-			/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()))
-		.setFooter(`ID: ${target.user.id}`);
+		.addField("Permissions", userPerms.length ? userPerms.join(", ").replace(/_/g, " ").replace(
+			/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()) : "")
+		.setFooter(`Requested by ${message.author.tag} • User ID: ${target.user.id}`);
 	message.channel.send(embed);
 };
  
 exports.conf = {
 	aliases: ["whois"],
-	permLevel: 0,
-	userRequires: ["SEND_MESSAGES"],
 	requires: ["SEND_MESSAGES"]
 };
 
