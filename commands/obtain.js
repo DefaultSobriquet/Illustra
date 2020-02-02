@@ -1,7 +1,7 @@
 exports.run = async (client, message, args, flags) => {
 	
 	const { extract, embed, props, obtain, menuGenerator, addable } = client.utils.emotes;
-	const reactions = ["⏮️", "⬅️", "➡️", "⏭️", "💾", "🗑️"];
+	const reactions = ["⏮️", "⬅️", "➡️", "⏭️", "💾", "📥", "🗑️"];
 	const allowGuild = flags.includes("guild") || flags.includes("server");
 
 
@@ -27,7 +27,7 @@ exports.run = async (client, message, args, flags) => {
 		if(reaction.emoji.name === "⏮️" && page !== 0) menu.edit(embed(emotes[page = 0], target));
 		if(reaction.emoji.name === "⏭️" && page !== emotes.length-1) menu.edit(embed(emotes[page = emotes.length-1], target));
 		if(reaction.emoji.name === "💾"){
-			if(!addable(emotes[page], message)){
+			if(!addable([emotes[page]], message)){
 				collector.stop();
 				return message.channel.send("You have reached the guild limit for emotes!");
 			}
@@ -38,6 +38,23 @@ exports.run = async (client, message, args, flags) => {
 				message.channel.send("> There was a unexpected error.");
 				collector.stop();
 			});
+		}
+		if(reaction.emoji.name === "📥"){
+			if(!addable(emotes, message)){
+				message.channel.send(`> You don't have enough space for ${emotes.length} emotes!`);
+			}else{
+				const status = await message.channel.send("> Adding all emotes to guild...");
+				for(let index in emotes){
+					const emote = emotes[index];
+					let added = await obtain(emote, message).catch((err) => {
+						collector.stop();
+						if(err.code === 50013) return status.edit("> There was a permissions error! Please make sure the correct permissions are granted.");
+						status.edit("> There was a unexpected error!");
+					});
+					if(!added) return;
+				}
+				status.edit("> All emotes have been succesfully added.");
+			}
 		}
 		if(reaction.emoji.name === "🗑️") collector.stop();
 	});

@@ -3,7 +3,7 @@ exports.run = async (client, message, args) => {
 	let emote;
 	if(/<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(args[0])) emote = props(args[0]);
 	if(!emote) emote = resolve(args[0], message);
-	if(!emote) return message.channel.send("Please enter an emote.");
+	if(!emote) return message.channel.send("Please enter a valid emote.");
 	message.channel.send(embed(emote, message));
 };
 

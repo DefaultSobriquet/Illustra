@@ -60,11 +60,18 @@ module.exports = (client) => {
 			}
 			return reactMenu; // Return the collector as a promise
 		},
-		addable: (props, message) => {
-			const emoteLimit = [50, 100, 150, 250][message.guild.premiumTier]; // Constant emote limits
-			const emotes = message.guild.emojis; // Get all guild emotes
-			if(emoteLimit === 50) return (emotes.filter(emote => (emote.animated === props.animated)).size < 25); // If emote limit is fifty, check for a type and return boolean
-			return (emotes.size < emoteLimit); // Otherwise, return boolean (still addable)
+		addable: (emotes, message) => {
+			const emoteLimit = [50, 100, 150, 250][message.guild.premiumTier];
+			const guildEmotes = [...message.guild.emojis.values()];
+			if(emoteLimit === 50){
+				// Partition all emotes (guild and added) into static and animated
+				const [static, animated] = emotes.concat(guildEmotes).reduce((result, emote) => {
+					result[emote.animated ? 1 : 0].push(emote);
+					return result;
+				}, [[], []]);
+				return (static.length <= 50 && animated.length <= 50);
+			}
+			return (guildEmotes.length+emotes.length <= emoteLimit);
 		}
 	};
 };

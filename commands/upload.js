@@ -4,13 +4,13 @@ exports.run = async (client, message, args) => {
 	if(message.attachments.size > 0){
 		const file = message.attachments.first();
 		if(file.filesize <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url)){
-			if(!/^[_a-z0-9]{2,32}$/i.test(file.filename.split(".")[0])) return message.channel.send(`Your filename [${file.filename.split(".")[0]}] is not a valid emote name! It must be alphanumerical, with at least two characters.`);
-			message.guild.createEmoji(file.url, args.length ? args[0] : file.filename.split(".")[0], [], `Added by ${message.author.tag}`)
+			const name = file.filename.split(".")[0];
+			if(!args[0] && !/^[_a-z0-9]{2,32}$/i.test(name)) return message.channel.send(`Your filename [${name}] is not a valid emote name! It must be alphanumerical, with at least two characters.`);
+			message.guild.createEmoji(file.url, args.length ? args[0] : name, [], `Added by ${message.author.tag}`)
 				.then(emote => {
 					message.channel.send(embed(emote, message));
 				})
-				.catch(err => {
-					console.log(err);
+				.catch(() => {
 					message.channel.send("There was an unexpected error!");
 				});
 			return;
@@ -22,8 +22,7 @@ exports.run = async (client, message, args) => {
 			.then(emote => {
 				message.channel.send(embed(emote, message));
 			})
-			.catch(err => {
-				console.log(err);
+			.catch(() => {
 				message.channel.send("The provided link was invalid! It may have been over 256 KB or of an incompatible file type.");
 			});
 		return;

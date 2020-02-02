@@ -8,7 +8,7 @@ const config = {
 	support: "https://discord.gg/gFv6Bpp",
 	invite: "https://discordapp.com/api/oauth2/authorize?client_id=659160163336323092&permissions=1141763265&scope=bot",
 	sets: { // Settings
-		prefix: "_"
+		prefix: "="
 	},
 	api_tokens: {
 		thecatapi: "ab08e4a4-95cc-46ce-b980-a499daf97270",

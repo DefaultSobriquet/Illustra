@@ -4,15 +4,9 @@ exports.run = async (client, message, args) => {
 	try {
 		let output = "No output.";
 		require("child_process").exec(args.join(" "), (err, stdout, stderr) => {
-			if (err) {
-				output = err.stack;
-			}
-			if (stdout && stdout.length !== 0) {
-				output = stdout;
-			}
-			if (stderr && stderr.length !== 0) {
-				output = stderr;
-			}
+			if (err) output = err.stack;
+			if (stdout && stdout.length !== 0) output = stdout;
+			if (stderr && stderr.length !== 0) output = stderr;
 			message.channel.send(`\`\`\`${output}\`\`\``);
 		});
 	} catch (err) {

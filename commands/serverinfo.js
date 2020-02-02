@@ -22,12 +22,12 @@ exports.run = async (client, message) => {
 		.addField("Features", guild.features.length ? guild.features.join(", ").replace(/_/g, " ").replace(
 			/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
 		) : "None", true)
-		.setFooter(`Requested by ${message.author.tag} • Server ID ${guild.id} • Server created on ${guild.createdAt.toLocaleDateString()}`);
+		.setFooter(`Server ID ${guild.id} • Server created on ${guild.createdAt.toLocaleDateString()}`);
 	message.channel.send(embed);
 };
  
 exports.conf = {
-	aliases: ["guildinfo"],
+	aliases: ["guildinfo", "server"],
 	requires: ["SEND_MESSAGES"]
 };
 
