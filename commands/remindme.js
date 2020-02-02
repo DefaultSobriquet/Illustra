@@ -2,7 +2,9 @@ exports.run = async (client, message, args) => {
 	const ms = require("ms");
 	const { RichEmbed } = require("discord.js");
 	if(!args.includes("in")) return message.channel.send("Please follow the reminder format!");
-	const [reminder, duration] = args.join(" ").split(" in ");
+	const reminderArray = args.join(" ").split(" in ");
+	const duration = reminderArray.pop();
+	const reminder = reminderArray.join(" in ");
 	if(!duration || !ms(duration)) return message.channel.send("That is not a valid format.");
 	client.setTimeout(() => {
 		client.users.get(message.author.id).send(`Reminder!\n> ${reminder}`);

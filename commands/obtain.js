@@ -1,7 +1,7 @@
 exports.run = async (client, message, args, flags) => {
 	
 	const { extract, embed, props, obtain, menuGenerator, addable } = client.utils.emotes;
-	const reactions = ["⏮️", "⬅️", "➡️", "⏭️", "💾", "📥", "🗑️"];
+	const reactions = ["⏮️", "⬅️", "➡️", "⏭️", "💾", "📥", "🛑"];
 	const allowGuild = flags.includes("guild") || flags.includes("server");
 
 
@@ -56,7 +56,7 @@ exports.run = async (client, message, args, flags) => {
 				status.edit("> All emotes have been succesfully added.");
 			}
 		}
-		if(reaction.emoji.name === "🗑️") collector.stop();
+		if(reaction.emoji.name === "🛑") collector.stop();
 	});
 
 };
