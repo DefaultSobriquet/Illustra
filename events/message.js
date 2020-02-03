@@ -2,11 +2,20 @@
 module.exports = async (client, message) => {
 	const { RichEmbed } = require("discord.js");
 
+	let prefix = client.config.sets.prefix;
+
+	// Mention Prefix
+	const prefixMention = new RegExp(`^<@!?${client.user.id}>`);
+	prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : prefix;
+
+	// Name Prefix
+	prefix = message.content.startsWith(client.config.name) ? client.config.name : prefix; 
+
 	// Prevent execution by bots and checks for messages without the prefix.
-	if (message.author.bot || !message.content.startsWith(client.config.sets.prefix)) return;
+	if (message.author.bot || !message.content.startsWith(prefix)) return;
   
 	// Create arguments and command from message.
-	const input = message.content.slice(client.config.sets.prefix.length).trim();
+	const input = message.content.slice(prefix.length).trim();
 	const args = input.split(/ +/g).filter(arg => !arg.startsWith("--"));
 	const flags = input.split(/ +/g).filter(arg => arg.startsWith("--")).map(flag => flag.replace("--", ""));
 

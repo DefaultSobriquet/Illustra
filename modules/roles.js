@@ -1,7 +1,7 @@
 module.exports = (client) => {
 	client.utils.roles = {
 		resolve: (input, message) => {
-			if(!input) return message.guild.defaultRole;
+			if(!input) return null;
 			let role = message.guild.roles.find(role => role.id === input);
 			if(role == null) role = message.guild.roles.find(role => role === input);
 			if(role == null) role = message.guild.roles.find(role => role.name.startsWith(input));

@@ -11,8 +11,8 @@ exports.run = async (client, message) => {
 		.addField("Developer", client.config.owner, true)
 		.addField("Language", "JavaScript", true)
 		.addField("Library", "Discord.js", true)
-		.addField("Invite", `[Click Here!](${client.config.invite})`, true)
-		.addField("Support", `[Get help!](${client.config.support})`, true)
+		.addField("Invite", `[Bot Invite](${client.config.invite})`, true)
+		.addField("Support", `[Server Invite](${client.config.support})`, true)
 		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
 	message.channel.send(embed);
 };
