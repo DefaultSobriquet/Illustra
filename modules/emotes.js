@@ -12,6 +12,7 @@ module.exports = (client) => {
 			return emote;
 		},
 		search: (input, message) => {
+			if(!input) return message.guild.emojis;
 			return message.guild.emojis.filter(emote => 
 				!input || input.includes(`${emote.name}:${emote.id}`) 
 				|| input.includes(emote.id) || emote.name.includes(input) 

@@ -35,25 +35,25 @@ exports.run = async (client, message, args, flags) => {
 				message.channel.send(`> ${emote}  | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``);
 			}).catch((err) => {
 				if(err.code === 50013) return message.channel.send("> There was a permissions error! Please make sure the correct permissions are granted.");
-				message.channel.send("> There was a unexpected error.");
+				message.channel.send(`> There was a unexpected error for ${emotes[page].name}! The emote may have been a legacy emote above 256KB.`);
 				collector.stop();
 			});
 		}
 		if(reaction.emoji.name === "📥"){
+			let errored = [];
 			if(!addable(emotes, message)){
 				message.channel.send(`> You don't have enough space for ${emotes.length} emotes!`);
 			}else{
 				const status = await message.channel.send("> Adding all emotes to guild...");
-				for(let index in emotes){
-					const emote = emotes[index];
-					let added = await obtain(emote, message).catch((err) => {
-						collector.stop();
+				for(const emote of emotes){
+					await obtain(emote, message).catch((err) => {
+						errored.push(emote.name);
 						if(err.code === 50013) return status.edit("> There was a permissions error! Please make sure the correct permissions are granted.");
-						status.edit("> There was a unexpected error!");
+						status.edit(`> There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
 					});
-					if(!added) return;
 				}
-				status.edit("> All emotes have been succesfully added.");
+				message.channel.send(errored.length ? `All emotes besides the following were added: \`${errored.join(", ")}\`.` : "All emotes were successfully added.");
+				collector.stop();
 			}
 		}
 		if(reaction.emoji.name === "🛑") collector.stop();
