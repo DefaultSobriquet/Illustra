@@ -1,4 +1,5 @@
 exports.run = async (client, message, args) => {
+	const { Util } = require("discord.js");
 	if(!client.config.trusted.includes(message.author.id)) return;
 	if(!args[0]) return message.channel.send("Please enter an input."); 
 	try {
@@ -7,7 +8,9 @@ exports.run = async (client, message, args) => {
 			if (err) output = err.stack;
 			if (stdout && stdout.length !== 0) output = stdout;
 			if (stderr && stderr.length !== 0) output = stderr;
-			message.channel.send(`\`\`\`${output}\`\`\``);
+			const messages = Util.splitMessage(output);
+			if(typeof (messages) === "string") return message.channel.send(`\`\`\`bash\n${messages}\`\`\``);
+			messages.forEach(value => message.channel.send(`\`\`\`bash\n${value}\`\`\``));
 		});
 	} catch (err) {
 		message.channel.send(`\`\`\`${err}\`\`\``);
