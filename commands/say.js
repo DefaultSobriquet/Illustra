@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => {
 };
  
 exports.conf = {
-	aliases: ["speak"],
+	aliases: ["speak", "echo"],
 	requires: ["SEND_MESSAGES", "MANAGE_MESSAGES"]
 };
 

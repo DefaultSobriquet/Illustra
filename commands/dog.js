@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 exports.run = async (client, message, args) => {
-	const r2 = require("r2");
+	const axios = require("axios").default;
 	const { RichEmbed } = require("discord.js");
 	const headers = {"x-api-key": client.config.api_tokens.thedogapi};
-	const request = await r2.get("https://api.thedogapi.com/v1/images/search", { headers }).json;
+	const request = (await axios.get("https://api.thedogapi.com/v1/images/search", { headers })).data;
 	const embed = new RichEmbed()
 		.setTitle("Woof!")
 		.setImage(request[0].url)
