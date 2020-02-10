@@ -1,9 +1,9 @@
 module.exports = (client) => {
 	// Command Loader
-	client.loadCommand = (commandName) => {
+	client.loadCommand = (commandName, commandFolder) => {
 		try {
 			console.log(`Loading command: ${commandName}`);
-			const props = require(`../commands/${commandName}`);
+			const props = require(`../commands/${commandFolder}/${commandName}`);
 			if (props.init) {
 				props.init(client);
 			}

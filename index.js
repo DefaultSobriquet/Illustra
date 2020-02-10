@@ -18,16 +18,19 @@ client.aliases = new Enmap();
 // The init script - prepares it all for starting
 const init = async () => {
 	// Searches for all commands & loads them
-	const cmdFiles = await readdir("./commands/");
-	console.log(`Loading a total of ${cmdFiles.length} commands.`);
-	cmdFiles.forEach(f => {
-		if (!f.endsWith(".js")) return;
-		const response = client.loadCommand(f);
-		if (response) console.log(response);
-	});
+	const cmdFolders = await readdir("./commands/");
+	for(const folder of cmdFolders){
+		const cmdFiles = await readdir(`./commands/${folder}/`);
+		console.log(`Loading ${folder} Module (${cmdFiles.length} commands)`);
+		cmdFiles.forEach(file => {
+			if (!file.endsWith(".js")) return;
+			const response = client.loadCommand(file, folder);
+			if (response) console.log(response);
+		});
+	}
 	// Searches for all events & loads them
 	const evtFiles = await readdir("./events/");
-	console.log(`Loading a total of ${evtFiles.length} events.`);
+	console.log(`Loading Events (Total ${evtFiles.length})`);
 	evtFiles.forEach(file => {
 		const eventName = file.split(".")[0];
 		console.log(`Loading Event: ${eventName}`);
