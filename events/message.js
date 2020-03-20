@@ -16,19 +16,18 @@ module.exports = async (client, message) => {
   
 	// Create arguments and command from message.
 	const input = message.content.slice(prefix.length).trim();
-	const args = input.split(/ +/g).filter(arg => !arg.startsWith("--"));
-	const flags = input.split(/ +/g).filter(arg => arg.startsWith("--")).map(flag => flag.replace("--", ""));
-
+	const args = input.split(/ +/g);
 	const command = args.shift().toLowerCase();
   
 	// Fetches the user.
-	if (message.guild && !message.member) await message.guild.fetchMember(message.author);
+	if (message.guild && !message.member) await message.guild.fetch(message.author.id);
   
 	// Retrieve command
 	const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   
 	if (!cmd) return;
-
+	
+	/*
 	const missingPerms = message.channel.memberPermissions(client.user).missing(cmd.conf.requires);
 
 	const embed = new RichEmbed()
@@ -41,8 +40,8 @@ module.exports = async (client, message) => {
 	if (missingPerms.length > 0){
 		message.author.send(embed).catch((err) => console.log(err));
 		return;
-	}
+	}*/
 
 	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);
-	cmd.run(client, message, args, flags);
+	cmd.run(client, message, args);
 };

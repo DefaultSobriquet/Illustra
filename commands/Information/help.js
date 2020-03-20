@@ -1,6 +1,5 @@
-exports.run = async (client, message, args, flags) => {
-	const { RichEmbed } = require("discord.js");
-	const sendGuild = flags.includes("guild") || flags.includes("noDM") || flags.includes("server");
+exports.run = async (client, message, args) => {
+	const { MessageEmbed } = require("discord.js");
 
 	if(!args[0]){ // Check if there is no argument.
 	
@@ -16,20 +15,20 @@ exports.run = async (client, message, args, flags) => {
 			cmdList+=`\`${cmd.help.name}\` - ${cmd.help.description}\n`;
 		});
 
-		const embed = new RichEmbed()
+		const embed = new MessageEmbed()
 			.setTitle("Commands")
 			.setDescription(cmdList)
 			.setTimestamp()
 			.setColor(message.guild.me.displayColor)
 			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
 
-		sendGuild ? message.channel.send(embed) : message.author.send(embed);
+		message.author.send(embed);
 
 	}else{
 		const search = args[0].toLowerCase(); // Take the first argument as a search term.
 		const command = client.commands.get(search) || client.commands.get(client.aliases.get(search)); // Attempt to retrieve search
 		if(!command) return message.channel.send("That command doesn't exist."); // If commmand doesn't exist, notify.
-		const embed = new RichEmbed()
+		const embed = new MessageEmbed()
 			.setTitle(`Command: ${command.help.name}`)
 			.setColor(message.guild.me.displayColor)
 			.setDescription(`**Description: **${command.help.description}\n**Usage:** \`${client.config.sets.prefix}${command.help.usage}\`\n**Example:** \`${client.config.sets.prefix}${command.help.example}\`\n**Aliases**: ${command.conf.aliases.length !== 0 ? command.conf.aliases.map(alias => `\`${client.config.sets.prefix}${alias}\``).join(", ") : "None."}`);

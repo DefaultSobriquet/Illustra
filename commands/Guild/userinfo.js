@@ -6,7 +6,7 @@ exports.run = async (client, message, args) => {
 	const target = client.utils.users.resolve(args[0], message);
 	if(!target) return message.channel.send("I could not find a member matching that.");
 	const userPerms = keyPerms.filter(perm => target.permissions.toArray().includes(perm)); // Filter by key permissions
-	const roles = target.roles.filter(role => !(role.id === role.guild.defaultRole.id)).map(role => role).sort((a, b) => b.position - a.position); // Sort by role position
+	const roles = target.roles.cache.filter(role => !(role.id === role.guild.defaultRole.id)).map(role => role).sort((a, b) => b.position - a.position); // Sort by role position
 	const members = [...message.guild.members.filter(member => !member.user.bot).sort((a, b) => a.joinedAt - b.joinedAt)]; // Sort by join date
 	const position = members.findIndex(user => user[0] === target.id)+1;
 	const embed = new RichEmbed()
