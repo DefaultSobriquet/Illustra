@@ -1,15 +1,15 @@
 exports.run = async (client, message, args) => {
 	const ms = require("ms");
-	const { RichEmbed } = require("discord.js");
-	if(!args.includes("in")) return message.channel.send("Please follow the reminder format!");
+	const {MessageEmbed} = require("discord.js");
+	if (!args.includes("in")) return message.channel.send("Please follow the reminder format!");
 	const reminderArray = args.join(" ").split(" in ");
 	const duration = reminderArray.pop();
 	const reminder = reminderArray.join(" in ");
-	if(!duration || !ms(duration)) return message.channel.send("That is not a valid format.");
+	if (!duration || !ms(duration)) return message.channel.send("That is not a valid format.");
 	client.setTimeout(() => {
 		client.users.get(message.author.id).send(`Reminder!\n> ${reminder}`);
 	}, ms(duration), client, message.author.id, reminder);
-	const embed = new RichEmbed()
+	const embed = new MessageEmbed()
 		.setTitle("Reminder")
 		.setDescription(`I'll remind you on ${new Date(Date.now()+ms(duration)).toLocaleString()}.\n\`\`\`${reminder}\`\`\``)
 		.setColor(message.guild.me.displayColor)
@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["remind"],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES"],
 };
 
 exports.help = {
@@ -29,5 +29,5 @@ exports.help = {
 	category: "Guild",
 	description: "Reminds you about something.",
 	usage: "remindme [reminder...] in [time]",
-	example: "remindme to check the cookies in 3 minutes"
+	example: "remindme to check the cookies in 3 minutes",
 };

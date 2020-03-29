@@ -5,5 +5,5 @@ module.exports = [
 	{quote: "We are what we pretend to be, so we must be careful about what we pretend to be.", source: "Kurt Vonnegut"},
 	{quote: "The pen is mightier than the sword if the sword is very short, and the pen is very sharp.", source: "Terry Pratchett"},
 	{quote: "Quoth the Raven 'Nevermore.'", source: "Edgar Allan Poe"},
-	{quote: "All those moments will be lost in time, like tears in rain.", source: "Blade Runner"}
+	{quote: "All those moments will be lost in time, like tears in rain.", source: "Blade Runner"},
 ];

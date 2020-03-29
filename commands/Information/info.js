@@ -1,13 +1,13 @@
 exports.run = async (client, message) => {
-	const { RichEmbed } = require("discord.js");
-	const embed = new RichEmbed()
+	const {MessageEmbed} = require("discord.js");
+	const embed = new MessageEmbed()
 		.setTitle(client.config.name)
 		.setTimestamp()
 		.setDescription(client.config.description)
 		.setColor(message.guild.me.displayColor)
 		.setThumbnail(client.user.avatarURL)
-		.addField("Users", client.users.size, true)
-		.addField("Servers", client.guilds.size, true)
+		.addField("Users", client.users.cache.size, true)
+		.addField("Servers", client.guilds.cache.size, true)
 		.addField("Developer", client.config.owner, true)
 		.addField("Language", "JavaScript", true)
 		.addField("Library", "Discord.js", true)
@@ -16,10 +16,10 @@ exports.run = async (client, message) => {
 		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
 	message.channel.send(embed);
 };
- 
+
 exports.conf = {
 	aliases: ["about", "information"],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES"],
 };
 
 exports.help = {
@@ -27,5 +27,5 @@ exports.help = {
 	category: "Information",
 	description: "Display information about the bot.",
 	usage: "info",
-	example: "info"
+	example: "info",
 };

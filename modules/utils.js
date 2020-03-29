@@ -8,7 +8,7 @@ module.exports = (client) => {
 				props.init(client);
 			}
 			client.commands.set(props.help.name, props);
-			props.conf.aliases.forEach(alias => {
+			props.conf.aliases.forEach((alias) => {
 				client.aliases.set(alias, props.help.name);
 			});
 			return false;
@@ -21,7 +21,7 @@ module.exports = (client) => {
 	client.clean = (client, text) => {
 		if (typeof (text) !== "string") {
 			text = require("util").inspect(text, {
-				depth: 0
+				depth: 0,
 			});
 		}
 		if (typeof (text) === "string") {
@@ -43,6 +43,9 @@ module.exports = (client) => {
 			const hrs = ((s - mins) / 60) % 24;
 			const days = (((s - mins) / 60) - hrs) / 24;
 			return `${days} days, ${hrs} hours, ${mins} minutes, and ${secs} seconds`;
-		}
+		},
+		capitalize: (s) => s.replace(
+			/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+		),
 	};
 };

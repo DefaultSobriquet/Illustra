@@ -13,5 +13,5 @@ module.exports = [
 	{type: "LISTENING", text: "raindrops."},
 	{type: "LISTENING", text: "waves crash."},
 	{type: "LISTENING", text: "an old record."},
-	{type: "LISTENING", text: "a whisper."}
+	{type: "LISTENING", text: "a whisper."},
 ];

@@ -1,6 +1,6 @@
 exports.run = async (client, message) => {
-	const { RichEmbed } = require("discord.js");
-	const embed = new RichEmbed()
+	const {MessageEmbed} = require("discord.js");
+	const embed = new MessageEmbed()
 		.setTitle("Uptime")
 		.setColor(message.guild.me.displayColor)
 		.setTimestamp()
@@ -8,16 +8,16 @@ exports.run = async (client, message) => {
 		.setFooter(`PID ${process.pid} | Started on ${client.readyAt.toLocaleString()}`);
 	message.channel.send(embed);
 };
-  
+
 exports.conf = {
 	aliases: ["up"],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES"],
 };
-  
+
 exports.help = {
 	name: "uptime",
 	category: "Information",
 	description: "Displays how long the bot has been up.",
 	usage: "uptime",
-	example: "uptime"
+	example: "uptime",
 };

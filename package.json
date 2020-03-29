@@ -7,11 +7,14 @@
     "axios": "^0.19.2",
     "discord.js": "^12.0.1",
     "enmap": "^5.2.4",
-    "eslint": "^6.8.0",
     "ms": "^2.1.2",
-    "pm2": "^4.2.3"
+    "pm2": "^4.2.3",
+    "uninstall": "0.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+    "eslint": "^6.8.0"
+  },
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore ."
   },
