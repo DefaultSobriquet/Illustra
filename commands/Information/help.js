@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
 			.setColor(message.guild.me.displayColor)
 			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
 
-		message.author.send(embed);
+		message.channel.send(embed);
 	} else {
 		const search = args[0].toLowerCase(); // Take the first argument as a search term.
 		const command = client.commands.get(search) || client.commands.get(client.aliases.get(search)); // Attempt to retrieve search

@@ -1,6 +1,6 @@
 exports.run = async (client, message, args) => {
 	const {MessageEmbed} = require("discord.js");
-	const {resolve, menuGenerator} = client.utils.emotes;
+	const {resolve} = client.utils.emotes;
 	const emote = resolve(args[0], message);
 
 	let roles = args.slice(1).map((role) => client.utils.roles.resolve(role, message)).filter((role) => !role ? false : true);
@@ -20,17 +20,12 @@ exports.run = async (client, message, args) => {
 		.setDescription(`**Roles**: ${roles.join(", ")}`)
 		.setFooter(`${message.author.tag}`, message.author.avatarURL);
 
-	const menu = await message.channel.send((integrated) ? "" : `Warning! ${client.config.name} does not have an integrated role and will no longer be able to use this emote.`, embed);
-	const reactMenu = await menuGenerator({preset: "confirm", id: message.author.id}, menu);
+	await message.channel.send((integrated) ? "" : `Warning! ${client.config.name} does not have an integrated role and will no longer be able to use this emote.`, embed);
 
-	reactMenu.on("collect", (reaction) => {
-		if (reaction.identifer === "success:691141985418870866") {
-			emote.roles.set(roles)
-				.then((emote) => message.channel.send(`> 🔒\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
-				.catch(() => message.channel.send("> There was a unexpected error."));
-		}
-		reactMenu.stop();
-	});
+	emote.roles
+		.set(roles)
+		.then((emote) => message.channel.send(`> 🔒\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+		.catch(() => message.channel.send("> There was a unexpected error."));
 };
 
 exports.conf = {

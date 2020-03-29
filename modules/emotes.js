@@ -32,11 +32,11 @@ module.exports = (client) => {
 				identifier: emote[1] ? `a:${emote[2]}:${emote[3]}` : `${emote[2]}:${emote[3]}`,
 			};
 		},
-		extract: (message, allowGuild = false) => {
+		extract: (message) => {
 			let emotes = message.content.match(/<(a*):(.*?)>/g);
 			if (!emotes) return [];
 			emotes = [...new Set(emotes)];
-			if (!allowGuild) emotes = emotes.filter((emote) => !message.guild.emojis.cache.has(emote.split(":")[2].replace(">", ""))); // If no guilds allowed, filter guild duplicates
+			emotes = emotes.filter((emote) => !message.guild.emojis.cache.has(emote.split(":")[2].replace(">", "")));
 			return emotes;
 		},
 		obtain: (props, message) => {
@@ -51,56 +51,6 @@ module.exports = (client) => {
 				.setImage(props.url)
 				.setFooter(props.guild ? `${props.guild.name} | Created` : message.author.tag, (props.guild) ? props.guild.iconURL : message.author.avatarURL);
 			return embed;
-		},
-		/**
-			* @function menuGenerator Creates a reaction menu
-			* @param options.preset Selects a preset list of reactions
-			* @param options.id Limits the collector to a specific User ID.
-			* @param options.reactions An array of reactions to use.
-			* @returns {Promise<ReactionCollector>} A message reaction collector.
-
-		*/
-		menuGenerator: async (options, message) => {
-			const reactionSet = {
-				confirm: ["success:691141985418870866", "failure:691142169565724672"],
-				pages: ["⏮️", "⬅️", "➡️", "⏭️"],
-			};
-
-			const reactions = options.reactions ? options.reactions : [];
-			if (options.preset) reactions.unshift(...reactionSet[options.preset]);
-
-			const reactMenu = await message.createReactionCollector(
-				(reaction, user) => (user.id === options.id) && reactions.includes(reaction.emoji.identifier),
-				{time: 120000, idle: 30000},
-			);
-
-			reactMenu.on("collect", (reaction, user) => {
-				reaction.users.remove(user).catch((err) => console.log(err));
-				console.log("hello there!");
-			});
-
-			reactMenu.on("end", (collector) =>
-				collector.message.reactions.removeAll(),
-			);
-
-			for (const reaction of reactions) {
-				await message.react(reaction).catch();
-			}
-
-			return reactMenu;
-		},
-		addable: (emotes, message) => {
-			const emoteLimit = [50, 100, 150, 250][message.guild.premiumTier];
-			const guildEmotes = [...message.guild.emojis.values()];
-			if (emoteLimit === 50) { // Check for the basic boost level situation
-				// Partition all emotes (guild and added) into static and animated
-				const [static, animated] = emotes.concat(guildEmotes).reduce((result, emote) => {
-					result[emote.animated ? 1 : 0].push(emote);
-					return result;
-				}, [[], []]);
-				return (static.length <= 50 && animated.length <= 50);
-			}
-			return (guildEmotes.length+emotes.length <= emoteLimit);
-		},
+		}
 	};
 };
