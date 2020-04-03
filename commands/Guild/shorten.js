@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const axios = require("axios").default;
 	axios.get(`https://zws.im/api/shortenURL?url=${args[0]}`)
 		.then((response) => {

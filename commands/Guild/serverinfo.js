@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-exports.run = async (client, message) => {
+exports.run = async (client, message) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const guild = message.guild;
 	const embed = new MessageEmbed()

@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const msg = await message.channel.send("Pong!");
 	msg.edit(`Pong! \`${msg.createdTimestamp - message.createdTimestamp}ms\``);
 };

@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const keyPerms = ["ADMINISTRATOR", "CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "VIEW_AUDIT_LOG", "MANAGE_MESSAGES", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
 	const capitalized = (text) => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();

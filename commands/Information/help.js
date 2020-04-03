@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { 
 	const {MessageEmbed} = require("discord.js");
 
 	if (!args[0]) { // Check if there is no argument.
@@ -44,11 +44,5 @@ exports.help = {
 	category: "Information",
 	description: "Explains what a command does.",
 	usage: "help [command]",
-	example: "help ping",
-	flags: [
-		{
-			name: ["guild", "noDM", "server"],
-			use: "Sends the full help embed in the guild.",
-		},
-	],
+	example: "help ping"
 };

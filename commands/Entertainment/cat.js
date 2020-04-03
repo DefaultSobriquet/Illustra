@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const axios = require("axios").default;
 	const {MessageEmbed} = require("discord.js");
 	const headers = {"x-api-key": client.config.api_tokens.thecatapi};

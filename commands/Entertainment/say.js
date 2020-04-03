@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	message.delete().catch();
 	message.channel.send(args.join(" "));
 };

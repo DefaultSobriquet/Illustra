@@ -1,4 +1,4 @@
-exports.run = async (client, message) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const embed = new MessageEmbed()
 		.setTitle(client.config.name)

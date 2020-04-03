@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const member = client.utils.users.resolve(args[0], message);
 	if (!member) return message.channel.send("I could not find a member matching that.");
