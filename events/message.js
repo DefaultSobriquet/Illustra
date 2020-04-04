@@ -34,7 +34,7 @@ module.exports = async (client, message) => {
 		.setTimestamp()
 		.setColor(message.guild.me.displayColor)
 		.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.\nPlease grant me: \`${missingPerms.join(", ")}\``)
-		.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL);
+		.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL());
 
 	if (missingPerms.length > 0){
 		message.author.send(embed).catch((err) => console.log(err));

@@ -13,6 +13,10 @@ module.exports = {
 		"ecmaVersion": 2018
 	},
 	"rules": {
+		"comma-dangle": [
+			"error",
+			"never"
+		],
 		"indent": [
 			"error",
 			"tab"

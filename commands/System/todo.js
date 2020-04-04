@@ -1,18 +1,21 @@
 exports.run = async (client, message, args) => {
 	if (!client.config.trusted.includes(message.author.id)) return;
+
+	if(!args[0]) return message.channel.send("Please enter a todo.");
+
 	client.channels.cache.get("675015929330925572").send(args.join(" "))
 		.then(() => {
 			message.react("success:691141985418870866").catch();
-		},
-		).catch(() => {
+		}).catch(() => {
 			message.react("failure:691142169565724672").catch();
 		});
+
 	message.delete({timeout: 5000}).catch();
 };
 
 exports.conf = {
 	aliases: ["t", "note"],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -20,5 +23,5 @@ exports.help = {
 	category: "System",
 	description: "Saves a todo for Illustra.",
 	usage: "todo [...todo]",
-	example: "todo Add self-awareness.",
+	example: "todo Add self-awareness."
 };

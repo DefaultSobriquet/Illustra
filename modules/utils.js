@@ -21,7 +21,7 @@ module.exports = (client) => {
 	client.clean = (client, text) => {
 		if (typeof (text) !== "string") {
 			text = require("util").inspect(text, {
-				depth: 0,
+				depth: 0
 			});
 		}
 		if (typeof (text) === "string") {
@@ -35,17 +35,8 @@ module.exports = (client) => {
 
 	// Various utilities
 	client.utils = {
-		msFormat: (s) => {
-			s = (s - (s % 1000)) / 1000;
-			const secs = s % 60;
-			s = (s - secs) / 60;
-			const mins = s % 60;
-			const hrs = ((s - mins) / 60) % 24;
-			const days = (((s - mins) / 60) - hrs) / 24;
-			return `${days} days, ${hrs} hours, ${mins} minutes, and ${secs} seconds`;
-		},
 		capitalize: (s) => s.replace(
-			/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
-		),
+			/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+		)
 	};
 };

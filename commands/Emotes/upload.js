@@ -1,38 +1,35 @@
-exports.run = async (client, message, args) => {
-	const { embed } = client.utils.emotes;
-	if (args.length && !/^[_a-z0-9]{2,32}$/i.test(args[0])) return message.channel.send("That is not a valid emote name! It must be alphanumerical, with at least two characters."); // Emote name check
-	if (message.attachments.size > 0) {
-		const file = message.attachments.first();
-		if (file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url)) {
-			const name = file.name.split(".")[0];
-			if (!args[0] && !/^[_a-z0-9]{2,32}$/i.test(name)) return message.channel.send(`Your filename [${name}] is not a valid emote name! It must be alphanumerical, with at least two characters.`);
-			return message.guild.emojis.create(file.url, args.length ? args[0] : name, [], `Added by ${message.author.tag}`)
-				.then((emote) => {
-					message.channel.send(embed(emote, message));
-				})
-				.catch(() => {
-					message.channel.send("There was an unexpected error!");
-				});
-		}
-		message.channel.send("The uploaded file was invalid! It may have been over 256 KB or of an incompatible file type.");
-		return;
-	} else if (args.length > 1 && /^https?:\/\//.test(args[1])) {
-		message.guild.emojis.create(args[1], args[0], [], `Added by ${message.author.tag}`)
-			.then((emote) => {
-				message.channel.send(embed(emote, message));
-			})
-			.catch(() => {
-				message.channel.send("The provided link was invalid! It may have been over 256 KB or of an incompatible file type.");
-			});
-		return;
-	}
+exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 
-	message.channel.send("Please enter a name and link, or upload a file!");
+	const { embed } = client.utils.emotes;
+	
+	const regName = /^[_a-z0-9]{2,32}$/i;
+	const regLink = /^https?:\/\//;
+
+	const file = message.attachments.first();
+	
+	let name = (args[0] && regName.test(args[0])) ? args[0] : undefined;
+	let link = (name && args[1] && regLink.test(args[1])) ? args[1] : undefined;
+
+	if(file){ // Alright, let's start using the attachment.
+		if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))) return message.channel.send("> That's an invalid attachment (over 256 KB or not an image)!");
+		if(regName.test(file.name)) name = file.name;
+		link = file.url;
+	}
+	
+	if(!link) return message.channel.send("> You didn't provide a valid link or attachment."); // Did we get a link?
+	if(!name) return message.channel.send("> You didn't provide a valid name emote name!"); // Is the name valid?
+
+	message.guild.emojis.create(link, name, {reason: `Added by ${message.author.tag}`})
+		.then(emote => message.channel.send(embed(emote, message)))
+		.catch(err => {
+			console.log(err);
+			message.channel.send("> There was an error! Your link might have been an invalid image.");
+		});
 };
 
 exports.conf = {
 	aliases: ["add"],
-	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "MANAGE_MESSAGES", "ADD_REACTIONS"],
+	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
 };
 
 exports.help = {
@@ -40,5 +37,5 @@ exports.help = {
 	category: "Emotes",
 	description: "Add an emote to the server with either a link or attachment.",
 	usage: "upload [name] (link/attachment)",
-	example: "upload placeholder https://via.placeholder.com/150",
+	example: "upload placeholder https://via.placeholder.com/150"
 };

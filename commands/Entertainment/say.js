@@ -1,11 +1,11 @@
 exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	message.delete().catch();
-	message.channel.send(args.join(" "));
+	message.channel.send(args.join(" ")).catch();
 };
 
 exports.conf = {
 	aliases: ["speak", "echo"],
-	requires: ["SEND_MESSAGES", "MANAGE_MESSAGES"],
+	requires: ["SEND_MESSAGES", "MANAGE_MESSAGES"]
 };
 
 exports.help = {
@@ -13,5 +13,5 @@ exports.help = {
 	category: "Entertainment",
 	description: "Make the bot say something.",
 	usage: "say",
-	example: "say",
+	example: "say"
 };

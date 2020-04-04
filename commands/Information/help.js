@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
 			.setDescription(cmdList)
 			.setTimestamp()
 			.setColor(message.guild.me.displayColor)
-			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
+			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
 
 		message.channel.send(embed);
 	} else {
@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: [],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {

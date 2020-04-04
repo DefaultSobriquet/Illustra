@@ -2,7 +2,9 @@ exports.run = async (client, message, args) => {
 	if (!client.config.trusted.includes(message.author.id)) return;
 	const {Util} = require("discord.js");
 	const code = args.join(" "); // Generate string input.
+
 	if (code.includes("client.token")) return message.channel.send("No thanks."); // Prevent attempts to get the token.
+	
 	try {
 		const evaled = await (code.includes("await") ? eval("async function foo(){" + code + "}; foo()") : eval(code)); // Evaluate the code
 		const clean = client.clean(client, evaled); // Clean the code
@@ -16,7 +18,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["e", "evaluate"],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -24,5 +26,5 @@ exports.help = {
 	category: "System",
 	description: "Evaluates arbitrary javascript.",
 	usage: "eval [...code]",
-	example: "eval message.reply('No')",
+	example: "eval message.reply('No')"
 };

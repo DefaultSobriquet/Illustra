@@ -4,8 +4,8 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 };
 
 exports.conf = {
-	aliases: ["latency"],
-	requires: ["SEND_MESSAGES"],
+	aliases: ["latency", "pong"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -13,5 +13,5 @@ exports.help = {
 	category: "Information",
 	description: "Check the bot and Discord's API latency.",
 	usage: "ping",
-	example: "ping",
+	example: "ping"
 };

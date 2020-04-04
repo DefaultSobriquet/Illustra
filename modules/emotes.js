@@ -1,5 +1,7 @@
 module.exports = (client) => {
 	const {MessageEmbed} = require("discord.js");
+	const _ = require("lodash/array");
+
 	client.utils.emotes = {
 		resolve: (input, message) => {
 			if (!input) return null;
@@ -18,7 +20,7 @@ module.exports = (client) => {
 			return emotes.cache.filter((emote) =>
 				!input || input.includes(`${emote.name}:${emote.id}`) ||
 				input.includes(emote.id) || emote.name.includes(input) ||
-				emote.name.toLowerCase().includes(input.toLowerCase()),
+				emote.name.toLowerCase().includes(input.toLowerCase())
 			);
 		},
 		props: (input) => {
@@ -29,27 +31,26 @@ module.exports = (client) => {
 				name: emote[2],
 				id: emote[3],
 				url: `https://cdn.discordapp.com/emojis/${emote[3]}.${emote[1] ? "gif" : "png"}`,
-				identifier: emote[1] ? `a:${emote[2]}:${emote[3]}` : `${emote[2]}:${emote[3]}`,
+				identifier: emote[1] ? `a:${emote[2]}:${emote[3]}` : `${emote[2]}:${emote[3]}`
 			};
 		},
 		extract: (message) => {
 			let emotes = message.content.match(/<(a*):(.*?)>/g);
 			if (!emotes) return [];
-			emotes = [...new Set(emotes)];
+			emotes = _.uniq(emotes);
 			emotes = emotes.filter((emote) => !message.guild.emojis.cache.has(emote.split(":")[2].replace(">", "")));
 			return emotes;
 		},
-		obtain: (props, message) => {
-			return message.guild.emojis.create(props.url, props.name, [], `Obtained by ${message.author.tag}`);
-		},
 		embed: (props, message) => {
+
 			const embed = new MessageEmbed()
 				.setTitle(`${props.animated ? "Animated" : "Still"} Emote - ${props.name}`)
 				.setTimestamp((props.guild) ? props.createdAt : message.createdAt)
 				.setColor(message.guild.me.displayColor)
 				.setDescription(`**ID**: ${props.id}\n**Link**: [Image URL](${props.url})`)
 				.setImage(props.url)
-				.setFooter(props.guild ? `${props.guild.name} | Created` : message.author.tag, (props.guild) ? props.guild.iconURL : message.author.avatarURL);
+				.setFooter(props.guild ? `${props.guild.name} • Created` : message.author.tag, (props.guild) ? props.guild.iconURL() : message.author.avatarURL());
+
 			return embed;
 		}
 	};

@@ -9,13 +9,13 @@ exports.run = async (client, message, args) => {
 			message.channel.send(embed(emote, message));
 		}).catch((err) => {
 			console.log(err);
-			message.channel.send("There was an unexpected error! This has been forwarded to the developers.");
+			message.channel.send("> There was an unexpected error!");
 		});
 };
 
 exports.conf = {
 	aliases: [],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -23,5 +23,5 @@ exports.help = {
 	category: "Emotes",
 	description: "Rename an existing emote.",
 	usage: "rename [emote] [name]",
-	example: "emote :pandaThink: :rooThink:",
+	example: "emote :pandaThink: :rooThink:"
 };

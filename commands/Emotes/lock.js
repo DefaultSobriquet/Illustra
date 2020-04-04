@@ -1,15 +1,14 @@
 exports.run = async (client, message, args) => {
+	const _ = require("lodash/array");
 	const {MessageEmbed} = require("discord.js");
 	const {resolve} = client.utils.emotes;
+	
 	const emote = resolve(args[0], message);
-
 	let roles = args.slice(1).map((role) => client.utils.roles.resolve(role, message)).filter((role) => !role ? false : true);
-
 	const integrated = message.guild.me.roles.cache.find((role) => role.managed);
-
+	
 	if (integrated) roles.push(integrated);
-	roles = [...new Set(roles)];
-
+	roles = _.uniq(roles);
 	if (!emote) return message.channel.send("I could not find the emote provided.");
 
 	const embed = new MessageEmbed()
@@ -18,7 +17,7 @@ exports.run = async (client, message, args) => {
 		.setImage(emote.url)
 		.setColor(message.guild.me.displayColor)
 		.setDescription(`**Roles**: ${roles.join(", ")}`)
-		.setFooter(`${message.author.tag}`, message.author.avatarURL);
+		.setFooter(`${message.author.tag}`, message.author.avatarURL());
 
 	await message.channel.send((integrated) ? "" : `Warning! ${client.config.name} does not have an integrated role and will no longer be able to use this emote.`, embed);
 
@@ -30,7 +29,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["restrict"],
-	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "MANAGE_MESSAGES", "ADD_REACTIONS"],
+	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "MANAGE_MESSAGES", "ADD_REACTIONS"]
 };
 
 exports.help = {
@@ -38,5 +37,5 @@ exports.help = {
 	category: "Emotes",
 	description: "Lock an emote to specific roles.",
 	usage: "lock [emote] [...role]",
-	example: "lock <:rooThink:511919341281738773> Pandas",
+	example: "lock :rooThink: Pandas"
 };

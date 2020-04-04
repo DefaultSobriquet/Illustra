@@ -4,9 +4,11 @@ module.exports = async (client) => {
 	(function statusChange() {
 		const status = client.config.status; // Retrieve status from config
 		const key = Math.floor(Math.random() * status.length);
-		client.user.setActivity(status[key].text, {
-			type: status[key].type,
-		});
+		client.user.setActivity(
+			status[key].text, { 
+				type: status[key].type
+			}
+		);
 		setTimeout(statusChange, 15000, client);
 	})();
 };

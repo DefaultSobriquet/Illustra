@@ -1,7 +1,9 @@
 exports.run = async (client, message, args) => {
 	const {Util} = require("discord.js");
 	if (!client.config.trusted.includes(message.author.id)) return;
+
 	if (!args[0]) return message.channel.send("Please enter an input.");
+	
 	try {
 		let output = "No output.";
 		require("child_process").exec(args.join(" "), (err, stdout, stderr) => {
@@ -13,13 +15,13 @@ exports.run = async (client, message, args) => {
 			messages.forEach((value) => message.channel.send(`\`\`\`bash\n${value}\`\`\``));
 		});
 	} catch (err) {
-		message.channel.send(`\`\`\`${err}\`\`\``);
+		message.channel.send(`\`\`\`bash\n${err}\`\`\``);
 	}
 };
 
 exports.conf = {
 	aliases: ["ex", "exe", "exec"],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -27,5 +29,5 @@ exports.help = {
 	category: "System",
 	description: "Executes a command",
 	usage: "exec [...command]",
-	example: "exec pm2 stop Illustra",
+	example: "exec pm2 stop Illustra"
 };

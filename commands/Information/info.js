@@ -5,7 +5,7 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 		.setTimestamp()
 		.setDescription(client.config.description)
 		.setColor(message.guild.me.displayColor)
-		.setThumbnail(client.user.avatarURL)
+		.setThumbnail(client.user.avatarURL())
 		.addField("Users", client.users.cache.size, true)
 		.addField("Servers", client.guilds.cache.size, true)
 		.addField("Developer", client.config.owner, true)
@@ -13,13 +13,13 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 		.addField("Library", "Discord.js", true)
 		.addField("Invite", `[Bot Invite](${client.config.invite})`, true)
 		.addField("Support", `[Server Invite](${client.config.support})`, true)
-		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
+		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
 	message.channel.send(embed);
 };
 
 exports.conf = {
 	aliases: ["about", "information"],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -27,5 +27,5 @@ exports.help = {
 	category: "Information",
 	description: "Display information about the bot.",
 	usage: "info",
-	example: "info",
+	example: "info"
 };

@@ -7,6 +7,6 @@ module.exports = (client) => {
 			if (role == null) role = message.guild.roles.cache.find((role) => role.name.startsWith(input));
 			if (role == null) role = message.guild.roles.cache.find((role) => role.name.toLowerCase().startsWith(input.toLowerCase()));
 			return role;
-		},
+		}
 	};
 };

@@ -1,13 +1,16 @@
 exports.run = async (client, message) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
+	const _ = require("lodash/string");
+	
 	const guild = message.guild;
+
 	const embed = new MessageEmbed()
 		.setTitle(guild.name)
 		.setColor(guild.me.displayColor)
 		.setDescription(`${guild.name} is a server with ${guild.verificationLevel.toLowerCase()} verification and ${guild.mfaLevel ? "" : "no"} MFA enabled.`)
-		.setThumbnail(guild.iconURL)
+		.setThumbnail(guild.iconURL())
 		.addField("Owner", guild.owner.user.tag, true)
-		.addField("Region", guild.region, true)
+		.addField("Region", _.startCase(guild.region), true)
 		.addField("Members", guild.memberCount, true)
 		.addField("Text Channels", guild.channels.cache.filter((channel) => channel.type === "text").size, true)
 		.addField("Voice Channels", guild.channels.cache.filter((channel) => channel.type === "voice").size, true)
@@ -17,14 +20,15 @@ exports.run = async (client, message) => { // eslint-disable-line no-unused-vars
 		.addField("Bots", guild.members.cache.filter((member) => member.user.bot).size, true)
 		.addField("Emotes", guild.emojis.cache.size, true)
 		.addField("Roles", guild.roles.cache.size, true)
-		.addField("Features", guild.features.length ? client.utils.capitalize(guild.features.join(", ").replace(/_/g, " ")) : "None", true)
+		.addField("Features", guild.features.length ? (guild.features.map(f => _.startCase(_.toLower(f))).join(", ").replace(/_/g, " ")) : "None", true)
 		.setFooter(`Server ID ${guild.id} • Server created on ${guild.createdAt.toLocaleDateString()}`);
+	
 	message.channel.send(embed);
 };
 
 exports.conf = {
 	aliases: ["guildinfo", "server"],
-	requires: ["SEND_MESSAGES"],
+	requires: ["SEND_MESSAGES"]
 };
 
 exports.help = {
@@ -32,5 +36,5 @@ exports.help = {
 	category: "Guild",
 	description: "Display information about the server.",
 	usage: "serverinfo",
-	example: "serverinfo",
+	example: "serverinfo"
 };
