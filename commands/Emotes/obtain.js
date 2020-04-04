@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
 		await message.guild.emojis.create(emote.url, emote.name, {reason: `Obtained by ${message.author.tag}`})
 			.catch((err) => {
 				console.log(err);
-				status.edit(`> There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
+				status.edit(`There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
 			});
 	}
 };

@@ -11,19 +11,19 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 	let link = (name && args[1] && regLink.test(args[1])) ? args[1] : undefined;
 
 	if(file){ // Alright, let's start using the attachment.
-		if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))) return message.channel.send("> That's an invalid attachment (over 256 KB or not an image)!");
+		if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))) return message.channel.send("That's an invalid attachment (over 256 KB or not an image)!");
 		if(regName.test(file.name)) name = file.name;
 		link = file.url;
 	}
 	
-	if(!link) return message.channel.send("> You didn't provide a valid link or attachment."); // Did we get a link?
-	if(!name) return message.channel.send("> You didn't provide a valid name emote name!"); // Is the name valid?
+	if(!link) return message.channel.send("You didn't provide a valid link or attachment."); // Did we get a link?
+	if(!name) return message.channel.send("You didn't provide a valid name emote name!"); // Is the name valid?
 
 	message.guild.emojis.create(link, name, {reason: `Added by ${message.author.tag}`})
 		.then(emote => message.channel.send(embed(emote, message)))
 		.catch(err => {
 			console.log(err);
-			message.channel.send("> There was an error! Your link might have been an invalid image.");
+			message.channel.send("There was an error! Your link might have been an invalid image.");
 		});
 };
 

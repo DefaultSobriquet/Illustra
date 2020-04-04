@@ -1,6 +1,8 @@
 exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
 	const axios = require("axios").default;
 
+	if(!args[0]) return message.channel.send("Please enter a URL.");
+	
 	axios.get(`https://zws.im/api/shortenURL?url=${args[0]}`)
 		.then((response) => {
 			message.channel.send(`**Here's your ZWS URL for <${args[0]}>.**\n\`\`\`https://zws.im/${response.data.short}/\`\`\``);
@@ -9,7 +11,7 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 			if ([400, 413].includes(response.status)) return message.channel.send(`**ERROR:** ${response.data.error}`);
 			return message.channel.send("There was an unexpected error.");
 		});
-		
+
 };
 
 exports.conf = {

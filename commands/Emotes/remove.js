@@ -8,16 +8,16 @@ exports.run = async (client, message, args) => {
 	
 	emote
 		.delete()
-		.then((emote) => message.channel.send(`> 🗑️\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+		.then((emote) => message.channel.send(`🗑️\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 		.catch((err) => {
 			console.log(err);
-			message.channel.send("> There was a unexpected error.");
+			message.channel.send("There was a unexpected error.");
 		});
 };
 
 exports.conf = {
 	aliases: ["delete"],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
 
 exports.help = {

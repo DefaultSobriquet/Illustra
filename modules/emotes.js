@@ -17,7 +17,7 @@ module.exports = (client) => {
 		search: (input, message) => {
 			const emotes = message.guild.emojis.cache;
 			if (!input) return emotes;
-			return emotes.cache.filter((emote) =>
+			return emotes.filter((emote) =>
 				!input || input.includes(`${emote.name}:${emote.id}`) ||
 				input.includes(emote.id) || emote.name.includes(input) ||
 				emote.name.toLowerCase().includes(input.toLowerCase())

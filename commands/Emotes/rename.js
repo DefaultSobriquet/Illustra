@@ -9,13 +9,13 @@ exports.run = async (client, message, args) => {
 			message.channel.send(embed(emote, message));
 		}).catch((err) => {
 			console.log(err);
-			message.channel.send("> There was an unexpected error!");
+			message.channel.send("There was an unexpected error!");
 		});
 };
 
 exports.conf = {
 	aliases: [],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
 };
 
 exports.help = {

@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: [],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
 
 exports.help = {

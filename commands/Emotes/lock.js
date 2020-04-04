@@ -23,13 +23,13 @@ exports.run = async (client, message, args) => {
 
 	emote.roles
 		.set(roles)
-		.then((emote) => message.channel.send(`> 🔒\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
-		.catch(() => message.channel.send("> There was a unexpected error."));
+		.then((emote) => message.channel.send(`🔒\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+		.catch(() => message.channel.send("There was a unexpected error."));
 };
 
 exports.conf = {
 	aliases: ["restrict"],
-	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "MANAGE_MESSAGES", "ADD_REACTIONS"]
+	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
 };
 
 exports.help = {

@@ -3,7 +3,7 @@ exports.run = async (client, message, args) => {
 	const {resolve} = client.utils.emotes;
 	const emote = resolve(args[0], message);
 	if (!emote) return message.channel.send("I could not find the emote provided.");
-	if (emote.roles.cache.size === 0) return message.channel.send(`> ${emote}  | There are no roles bound to \`\`${emote.name}\`\`!`);
+	//if (emote.roles.cache.size === 0) return message.channel.send(`> ${emote}  | There are no roles bound to \`\`${emote.name}\`\`!`);
 
 	const embed = new MessageEmbed()
 		.setTitle(`Unlock Emote [${emote.name}]`)
@@ -15,16 +15,16 @@ exports.run = async (client, message, args) => {
 
 	await message.channel.send(embed);
 	emote.roles.set([])
-		.then((emote) => message.channel.send(`> 🔓\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+		.then((emote) => message.channel.send(`🔓\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 		.catch((err) => {
 			console.log(err);
-			message.channel.send("> There was a unexpected error.");
+			message.channel.send("There was a unexpected error.");
 		});
 };
 
 exports.conf = {
 	aliases: ["unrestrict"],
-	requires: ["SEND_MESSAGES"]
+	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
 };
 
 exports.help = {
