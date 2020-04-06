@@ -1,15 +1,18 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const _ = require("lodash/array");
 	const {MessageEmbed} = require("discord.js");
 	const {resolve} = client.utils.emotes;
 	
 	const emote = resolve(args[0], message);
+
+	if (!emote) return message.channel.send("I could not find the emote provided.");
+
 	let roles = args.slice(1).map((role) => client.utils.roles.resolve(role, message)).filter((role) => !role ? false : true);
 	const integrated = message.guild.me.roles.cache.find((role) => role.managed);
 	
 	if (integrated) roles.push(integrated);
 	roles = _.uniq(roles);
-	if (!emote) return message.channel.send("I could not find the emote provided.");
+	
 
 	const embed = new MessageEmbed()
 		.setTitle(`Lock Emote [${emote.name}]`)
@@ -24,11 +27,15 @@ exports.run = async (client, message, args) => {
 	emote.roles
 		.set(roles)
 		.then((emote) => message.channel.send(`🔒\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
-		.catch(() => message.channel.send("There was a unexpected error."));
+		.catch((err) => {
+			console.log(err);
+			message.channel.send("There was a unexpected error.");
+		});
 };
 
 exports.conf = {
 	aliases: ["restrict"],
+	perms: ["MANAGE_EMOJIS", "MANAGE_ROLES"], 
 	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
 };
 

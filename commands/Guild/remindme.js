@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const ms = require("ms");
 	const {MessageEmbed} = require("discord.js");
 
@@ -30,6 +30,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["remind"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

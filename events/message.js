@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-undef
 module.exports = async (client, message) => {
 	const {MessageEmbed} = require("discord.js");
+	const _ = require("lodash");
 
 	let prefix = client.config.sets.prefix;
 
@@ -15,9 +16,8 @@ module.exports = async (client, message) => {
 	if (message.author.bot || !message.content.startsWith(prefix)) return;
 
 	// Create arguments and command from message.
-	const input = message.content.slice(prefix.length).trim();
-	const args = input.split(/ +/g);
-	const command = args.shift().toLowerCase();
+	const input = message.content.slice(prefix.length).trim().split(/ +/g);
+	const command = input.shift().toLowerCase();
 
 	// Fetches the user.
 	if (message.guild && !message.member) await message.guild.fetch(message.author.id);
@@ -27,20 +27,26 @@ module.exports = async (client, message) => {
 
 	if (!cmd) return;
 
+	const [args, flags] = _.partition(input, i => !i.startsWith("--") || (cmd.help.name === "execute"));
+
+	const userPerms = message.channel.permissionsFor(message.member).missing(cmd.conf.perms);
+	if(userPerms.length > 0) return message.channel.send("You don't have the permissions required for that command!").catch();
+
 	const missingPerms = message.channel.permissionsFor(client.user).missing(cmd.conf.requires);
 
-	const embed = new MessageEmbed()
-		.setTitle("Missing Permissions")
-		.setTimestamp()
-		.setColor(message.guild.me.displayColor)
-		.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.\nPlease grant me: \`${missingPerms.join(", ")}\``)
-		.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL());
-
 	if (missingPerms.length > 0){
+		const embed = new MessageEmbed()
+			.setTitle("Permissions Error")
+			.setTimestamp()
+			.setColor(message.guild.me.displayColor)
+			.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.`)
+			.addField("Missing Permissions", `\`${missingPerms.map(p => _.startCase(_.toLower(p))).join(", ")}\``)
+			.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL());
+			
 		message.author.send(embed).catch((err) => console.log(err));
 		return;
 	}
 
 	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);
-	cmd.run(client, message, args);
+	cmd.run(client, message, args, flags);
 };

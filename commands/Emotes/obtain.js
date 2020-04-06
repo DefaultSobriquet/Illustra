@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {extract, props} = client.utils.emotes;
 
 	if (!args[0] || !/^\d{17,19}$/.test(args[0])) return message.channel.send("Please enter a message ID!");
@@ -11,9 +11,8 @@ exports.run = async (client, message, args) => {
 	if (!target) return;
 
 	const emotes = extract(target).map((emote) => props(emote));
-	if (emotes.length === 0) return message.channel.send("I couldn't find any new emotes in that message.");
 
-	const status = await message.channel.send(`Adding ${emotes.length} emotes to the guild.`);
+	const status = await message.channel.send(emotes.length ? `Adding ${emotes.length} emotes to the guild.` : "I couldn't find any emotes!");
 
 	for (const emote of emotes) {
 		await message.guild.emojis.create(emote.url, emote.name, {reason: `Obtained by ${message.author.tag}`})
@@ -25,7 +24,8 @@ exports.run = async (client, message, args) => {
 };
 
 exports.conf = {
-	aliases: [],
+	aliases: ["steal"],
+	perms: ["MANAGE_EMOJIS"], 
 	requires: ["SEND_MESSAGES", "VIEW_CHANNEL", "MANAGE_EMOJIS", "READ_MESSAGE_HISTORY"]
 };
 

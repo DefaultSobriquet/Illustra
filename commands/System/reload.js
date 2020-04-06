@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	if (!client.config.trusted.includes(message.author.id)) return;
 	if (!args || args.length < 1) return message.channel.send("You must provide a command name to reload.");
 	
@@ -19,6 +19,7 @@ exports.run = (client, message, args) => {
 
 exports.conf = {
 	aliases: [],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

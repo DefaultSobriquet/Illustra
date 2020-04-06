@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const ms = require("ms");
 	const {MessageEmbed} = require("discord.js");
 	const embed = new MessageEmbed()
@@ -12,6 +12,7 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 
 exports.conf = {
 	aliases: ["up"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

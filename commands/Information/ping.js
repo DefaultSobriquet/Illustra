@@ -1,10 +1,11 @@
-exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const msg = await message.channel.send("Pong!");
 	msg.edit(`Pong! \`${msg.createdTimestamp - message.createdTimestamp}ms\``);
 };
 
 exports.conf = {
 	aliases: ["latency", "pong"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

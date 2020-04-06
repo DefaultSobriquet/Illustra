@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const axios = require("axios").default;
 	const {MessageEmbed} = require("discord.js");
 	const headers = {"x-api-key": client.config.api_tokens.thedogapi};
@@ -16,6 +16,7 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 };
 exports.conf = {
 	aliases: ["woof"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

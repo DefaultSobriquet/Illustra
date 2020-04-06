@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {Util} = require("discord.js");
 	if (!client.config.trusted.includes(message.author.id)) return;
 
@@ -21,6 +21,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["ex", "exe", "exec"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

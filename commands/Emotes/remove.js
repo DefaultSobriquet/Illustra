@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {embed, resolve} = client.utils.emotes;
 	const emote = resolve(args[0], message);
 	
@@ -16,7 +16,8 @@ exports.run = async (client, message, args) => {
 };
 
 exports.conf = {
-	aliases: ["delete"],
+	aliases: ["delete", "del"],
+	perms: ["MANAGE_EMOJIS"], 
 	requires: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
 

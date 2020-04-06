@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const _ = require("lodash/string");
 
@@ -11,7 +11,8 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 	const roles = target.roles.cache.filter((role) => !(role.id === role.guild.id)).map((role) => role).sort((a, b) => b.position - a.position); // Sort by role position
 	const members = [...message.guild.members.cache.filter((member) => !member.user.bot).sort((a, b) => a.joinedAt - b.joinedAt)]; // Sort by join date
 	const position = members.findIndex((user) => user[0] === target.id)+1;
-	
+	const status = {"online": "Online", "idle": "Idle", "offline": "Offline", "dnd": "Do Not Disturb"};
+
 	const embed = new MessageEmbed()
 		.setTimestamp()
 		.setAuthor(target.user.tag, target.user.avatarURL())
@@ -21,10 +22,10 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 		.addField("Joined", target.joinedAt.toLocaleString(), true)
 		.addField("Position", position ? position : "None", true)
 		.addField("Registered", target.user.createdAt.toLocaleString(), true)
-		.addField("Presence", target.user.presence.game ? `${["Playing ", "Streaming ", "Listening to ", "Watching ", ""][target.user.presence.game.type]}${target.user.presence.game.name}` : "None", true)
-		.addField("Status", {"online": "Online", "idle": "Idle", "offline": "Offline", "dnd": "Do Not Disturb"}[target.user.presence.status], true)
-		.addField("Client", target.user.presence.clientStatus ? Object.keys(target.user.presence.clientStatus).map((client) => _.capitalize(client)).join(", ") : "None", true)
-		.addField(`Roles [${roles.length}]`, roles.length ? (roles.join(", ").length <= 1024 ? roles.join(", ") : "Too Many to Display."): "None.")
+		.addField("Presence", target.presence.activities[0] ? target.presence.activities[0].name : "None", true)
+		.addField("Status", status[target.user.presence.status], true)
+		.addField("Client", target.presence.clientStatus ? _.startCase(Object.keys(target.presence.clientStatus).join(", ")) : "None", true)
+		.addField(`Roles [${roles.length}]`, roles.length ? (roles.join(", ").length <= 1024 ? roles.join(", ") : "Too Many to Display.") : "None.")
 		.addField("Permissions", userPerms.length ? userPerms.map(f => _.startCase(_.toLower(f))).join(", ").replace(/_/g, " ") : "")
 		.setFooter(`Requested by ${message.author.tag} • User ID: ${target.user.id}`);
 	
@@ -33,6 +34,7 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 
 exports.conf = {
 	aliases: ["whois"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

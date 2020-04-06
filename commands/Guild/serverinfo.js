@@ -1,4 +1,4 @@
-exports.run = async (client, message) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const _ = require("lodash/string");
 	
@@ -28,6 +28,7 @@ exports.run = async (client, message) => { // eslint-disable-line no-unused-vars
 
 exports.conf = {
 	aliases: ["guildinfo", "server"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

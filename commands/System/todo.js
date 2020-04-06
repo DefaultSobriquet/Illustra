@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	if (!client.config.trusted.includes(message.author.id)) return;
 
 	if(!args[0]) return message.channel.send("Please enter a todo.");
@@ -15,6 +15,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
 	aliases: ["t", "note"],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

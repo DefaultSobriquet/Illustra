@@ -1,41 +1,46 @@
-exports.run = async (client, message, args) => { 
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
+	const _ = require("lodash/collection");
+
 
 	if (!args[0]) { // Check if there is no argument.
-		const commands = client.commands.array().sort((a, b) => a.help.category > b.help.category ? 1 : a.help.name > b.help.name && a.help.category === b.help.category ? 1 : -1); // Sort commands by category.
-		let category = "";
-		let cmdList = "";
-
-		commands.forEach((cmd) => {
-			if (cmd.help.category !== category) {
-				cmdList+=`**${cmd.help.category}**\n`;
-				category = cmd.help.category;
-			}
-			cmdList+=`\`${cmd.help.name}\` - ${cmd.help.description}\n`;
-		});
-
+		const commands = _.groupBy(client.commands.array(), (cmd) => cmd.help.category);
+		
 		const embed = new MessageEmbed()
 			.setTitle("Commands")
-			.setDescription(cmdList)
 			.setTimestamp()
 			.setColor(message.guild.me.displayColor)
 			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
 
+		for(const category in commands){
+			const cmds = commands[category];
+			embed.addField(category, cmds.map(cmd => `\`${cmd.help.name}\` - ${cmd.help.description}`).join("\n"));
+		}
+
 		message.channel.send(embed);
-	} else {
+
+	}else{
+
 		const search = args[0].toLowerCase(); // Take the first argument as a search term.
 		const command = client.commands.get(search) || client.commands.get(client.aliases.get(search)); // Attempt to retrieve search
 		if (!command) return message.channel.send("That command doesn't exist."); // If commmand doesn't exist, notify.
 		const embed = new MessageEmbed()
 			.setTitle(`Command: ${command.help.name}`)
 			.setColor(message.guild.me.displayColor)
-			.setDescription(`**Description: **${command.help.description}\n**Usage:** \`${client.config.sets.prefix}${command.help.usage}\`\n**Example:** \`${client.config.sets.prefix}${command.help.example}\`\n**Aliases**: ${command.conf.aliases.length !== 0 ? command.conf.aliases.map((alias) => `\`${client.config.sets.prefix}${alias}\``).join(", ") : "None."}`);
+			.setDescription(command.help.description)
+			.addField("Category", command.help.category, true)
+			.addField("Aliases", command.conf.aliases.length !== 0 ? command.conf.aliases.map((a) => `\`${client.config.sets.prefix}${a}\``).join(", ") : "None.", true)
+			.addField("Usage", `\`\`\`${client.config.sets.prefix}${command.help.usage}\`\`\``)
+			.addField("Example", `\`\`\`${client.config.sets.prefix}${command.help.example}\`\`\``)
+			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
+		
 		message.channel.send(embed);
 	}
 };
 
 exports.conf = {
 	aliases: [],
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 

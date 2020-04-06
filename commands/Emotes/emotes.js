@@ -1,22 +1,27 @@
-exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {search} = client.utils.emotes;
 	const {MessageEmbed} = require("discord.js");
 	const _ = require("lodash");
 	const emojis = [...search(args.join("_"), message).values()];
-	const [animated, static] = _.partition(emojis, e => e.animated);
-	const embed = new MessageEmbed()
-		.setTitle("Emotes")
-		.setTimestamp();
-	
-	embed.setDescription(`Static - ${static.length} | Animated - ${animated.length}`, "\u200B");
+	if(emojis.length === 0) return message.channel.send("I could not find any emotes.");
 
-	_.chunk(static.sort((a, b) => (_.toLower(a.name) >= _.toLower(b.name)) ? 1 : -1), 10).forEach(chunk => {
+	const [animated, static] = _.partition(emojis, e => e.animated);
+
+	const embed = new MessageEmbed()
+		.setAuthor(`${message.guild.name} ${args[0] ? `- ${args.join(" ")}` : ""}`, message.guild.iconURL())
+		.setColor(message.guild.me.displayColor)
+		.setTimestamp()
+		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
+	
+	embed.setDescription(`Static - ${static.length} | Animated - ${animated.length}`);
+
+	_.chunk(static.sort((a, b) => (_.toLower(a.name) >= _.toLower(b.name)) ? 1 : -1), 20).forEach(chunk => {
 		const first = chunk[0].name.slice(0, 2);
 		const last = chunk[chunk.length-1].name.slice(0, 2);
 		embed.addField(_.toLower(`${first} to ${last}`), chunk.map(e => `${e}`).join(" "));
 	});
 
-	_.chunk(animated.sort((a, b) => (_.toLower(a.name) >= _.toLower(b.name)) ? 1 : -1), 10).forEach(chunk => {
+	_.chunk(animated.sort((a, b) => (_.toLower(a.name) >= _.toLower(b.name)) ? 1 : -1), 20).forEach(chunk => {
 		const first = chunk[0].name.slice(0, 2);
 		const last = chunk[chunk.length-1].name.slice(0, 2);
 		embed.addField(_.toLower(`${first} to ${last}`), chunk.map(e => `${e}`).join(" "));
@@ -26,7 +31,8 @@ exports.run = async (client, message, args) => { // eslint-disable-line no-unuse
 };
 
 exports.conf = {
-	aliases: [],
+	aliases: ["serveremotes", "emojis"],
+	perms: [], 
 	requires: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
 
