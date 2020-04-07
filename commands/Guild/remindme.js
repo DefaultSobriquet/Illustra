@@ -23,7 +23,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setColor(message.guild.me.displayColor)
 		.setThumbnail("https://cdn.discordapp.com/emojis/478393538980347924.png")
 		.setTimestamp(new Date(Date.now()+ms(duration)).toISOString())
-		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
+		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 	
 	message.channel.send(embed);
 };

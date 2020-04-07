@@ -15,7 +15,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		if(regName.test(file.name)) name = file.name;
 		link = file.url;
 	}
-	
+
 	if(!link) return message.channel.send("You didn't provide a valid link or attachment."); // Did we get a link?
 	if(!name) return message.channel.send("You didn't provide a valid name emote name!"); // Is the name valid?
 

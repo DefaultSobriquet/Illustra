@@ -5,7 +5,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setTimestamp()
 		.setDescription(client.config.description)
 		.setColor(message.guild.me.displayColor)
-		.setThumbnail(client.user.avatarURL())
+		.setThumbnail(client.user.displayAvatarURL())
 		.addField("Users", client.users.cache.size, true)
 		.addField("Servers", client.guilds.cache.size, true)
 		.addField("Developer", client.config.owner, true)
@@ -13,7 +13,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.addField("Library", "Discord.js", true)
 		.addField("Invite", `[Bot Invite](${client.config.invite})`, true)
 		.addField("Support", `[Server Invite](${client.config.support})`, true)
-		.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
+		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 	message.channel.send(embed);
 };
 

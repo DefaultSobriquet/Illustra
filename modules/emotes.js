@@ -1,6 +1,6 @@
 module.exports = (client) => {
 	const {MessageEmbed} = require("discord.js");
-	const _ = require("lodash/array");
+	const _ = require("lodash");
 
 	client.utils.emotes = {
 		resolve: (input, message) => {
@@ -42,14 +42,13 @@ module.exports = (client) => {
 			return emotes;
 		},
 		embed: (props, message) => {
-
 			const embed = new MessageEmbed()
 				.setTitle(`${props.animated ? "Animated" : "Still"} Emote - ${props.name}`)
 				.setTimestamp((props.guild) ? props.createdAt : message.createdAt)
 				.setColor(message.guild.me.displayColor)
-				.setDescription(`**ID**: ${props.id}\n**Link**: [Image URL](${props.url})`)
+				.setDescription(`**ID**: ${props.id}\n**Link**: [Image URL](${props.url})\n**Roles:** ${(props.guild) ? props.roles.cache.map(r => r.toString()).join(", ") || "None.": "Unknown."}`)
 				.setImage(props.url)
-				.setFooter(props.guild ? `${props.guild.name} • Created` : message.author.tag, (props.guild) ? props.guild.iconURL() : message.author.avatarURL());
+				.setFooter(props.guild ? `${props.guild.name} • Created` : message.author.tag, (props.guild) ? props.guild.iconURL() : message.author.displayAvatarURL());
 
 			return embed;
 		}

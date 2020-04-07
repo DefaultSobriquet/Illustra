@@ -10,7 +10,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setDescription(`**Current Roles**: ${emote.roles.cache.map((role) => `${role}`).join(", ")}`)
 		.setImage(emote.url)
 		.setColor(message.guild.me.displayColor)
-		.setFooter(`${message.author.tag}`, message.author.avatarURL());
+		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
 
 	await message.channel.send(embed);
 	emote.roles.set([])

@@ -10,7 +10,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		const clean = client.clean(client, evaled); // Clean the code
 		const messages = Util.splitMessage(clean);
 		if (typeof (messages) === "string") return message.channel.send(`\`\`\`js\n${messages}\`\`\``);
-		messages.forEach((value) => message.channel.send(`\`\`\`js\n${value}\`\`\``));
+		messages.forEach((value) => message.channel.send(`\`\`\`js\n${value || "No output."}\`\`\``));
 	} catch (err) {
 		message.channel.send(`\`ERROR\` \`\`\`xl\n${client.clean(client, err)}\n\`\`\``);
 	}

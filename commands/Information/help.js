@@ -1,6 +1,6 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
-	const _ = require("lodash/collection");
+	const _ = require("lodash");
 
 
 	if (!args[0]) { // Check if there is no argument.
@@ -10,7 +10,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 			.setTitle("Commands")
 			.setTimestamp()
 			.setColor(message.guild.me.displayColor)
-			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
+			.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 
 		for(const category in commands){
 			const cmds = commands[category];
@@ -29,10 +29,11 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 			.setColor(message.guild.me.displayColor)
 			.setDescription(command.help.description)
 			.addField("Category", command.help.category, true)
-			.addField("Aliases", command.conf.aliases.length !== 0 ? command.conf.aliases.map((a) => `\`${client.config.sets.prefix}${a}\``).join(", ") : "None.", true)
+			.addField("Aliases", command.conf.aliases.map((a) => `\`${client.config.sets.prefix}${a}\``).join(", ") || "None.", true)
 			.addField("Usage", `\`\`\`${client.config.sets.prefix}${command.help.usage}\`\`\``)
 			.addField("Example", `\`\`\`${client.config.sets.prefix}${command.help.example}\`\`\``)
-			.setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL());
+			.addField("Permissions", `${command.conf.perms.map(p => _.startCase(_.toLower(p))).join(", ") || "None."}`)
+			.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 		
 		message.channel.send(embed);
 	}

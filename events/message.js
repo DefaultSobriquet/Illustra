@@ -27,10 +27,10 @@ module.exports = async (client, message) => {
 
 	if (!cmd) return;
 
-	const [args, flags] = _.partition(input, i => !i.startsWith("--") || (cmd.help.name === "execute"));
+	let [args, flags] = _.partition(input, i => !i.startsWith("--") || (cmd.help.name === "execute"));
+	flags = flags.map(flag => flag.replace("--", "").toLowerCase());
 
-	const userPerms = message.channel.permissionsFor(message.member).missing(cmd.conf.perms);
-	if(userPerms.length > 0) return message.channel.send("You don't have the permissions required for that command!").catch();
+	if(!message.member.hasPermission(cmd.conf.perms) || !client.config.trusted.includes(message.author.id)) return;
 
 	const missingPerms = message.channel.permissionsFor(client.user).missing(cmd.conf.requires);
 
@@ -47,6 +47,6 @@ module.exports = async (client, message) => {
 		return;
 	}
 
-	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.help.name}.`);
+	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.help.name}`);
 	cmd.run(client, message, args, flags);
 };

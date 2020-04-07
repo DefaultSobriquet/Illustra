@@ -7,9 +7,11 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 	if (!emote) return message.channel.send("I could not find the emote provided.");
 
-	let roles = args.slice(1).map((role) => client.utils.roles.resolve(role, message)).filter((role) => !role ? false : true);
+	let roles = args.slice(1).map((role) => client.utils.roles.resolve(role, message)).filter((role) => Boolean(role));
 	const integrated = message.guild.me.roles.cache.find((role) => role.managed);
 	
+	if(!roles.length) return message.channel.send("I could not find any valid roles!");
+
 	if (integrated) roles.push(integrated);
 	roles = _.uniq(roles);
 	
@@ -20,9 +22,9 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setImage(emote.url)
 		.setColor(message.guild.me.displayColor)
 		.setDescription(`**Roles**: ${roles.join(", ")}`)
-		.setFooter(`${message.author.tag}`, message.author.avatarURL());
+		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
 
-	await message.channel.send((integrated) ? "" : `Warning! ${client.config.name} does not have an integrated role and will no longer be able to use this emote.`, embed);
+	await message.channel.send((!integrated) ? `Warning! ${client.config.name} does not have an integrated role and will no longer be able to use this emote.` : "", embed);
 
 	emote.roles
 		.set(roles)
