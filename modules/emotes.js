@@ -1,7 +1,6 @@
+const {MessageEmbed} = require("discord.js");
+const {uniq, partition} = require("lodash");
 module.exports = (client) => {
-	const {MessageEmbed} = require("discord.js");
-	const _ = require("lodash");
-
 	client.utils.emotes = {
 		resolve: (input, message) => {
 			if (!input) return null;
@@ -37,7 +36,7 @@ module.exports = (client) => {
 		extract: (message) => {
 			let emotes = message.content.match(/<(a*):(.*?)>/g);
 			if (!emotes) return [];
-			emotes = _.uniq(emotes);
+			emotes = uniq(emotes);
 			emotes = emotes.filter((emote) => !message.guild.emojis.cache.has(emote.split(":")[2].replace(">", "")));
 			return emotes;
 		},
@@ -51,6 +50,16 @@ module.exports = (client) => {
 				.setFooter(props.guild ? `${props.guild.name} • Created` : message.author.tag, (props.guild) ? props.guild.iconURL() : message.author.displayAvatarURL());
 
 			return embed;
+		},
+		space: (message) => {
+			const [a, s] = partition(message.guild.emojis.cache.array(), e => e.animated);
+			const limit = [50, 100, 150, 250][message.guild.premiumTier];
+			const space = {
+				animated: limit-a.length,
+				static: limit-s.length,
+				limit
+			};
+			return space;
 		}
 	};
 };

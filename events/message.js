@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 module.exports = async (client, message) => {
 	const {MessageEmbed} = require("discord.js");
-	const _ = require("lodash");
+	const {partition, startCase, toLower} = require("lodash");
 
 	let prefix = client.config.sets.prefix;
 
@@ -27,7 +27,7 @@ module.exports = async (client, message) => {
 
 	if (!cmd) return;
 
-	let [args, flags] = _.partition(input, i => !i.startsWith("--") || (cmd.help.name === "execute"));
+	let [args, flags] = partition(input, i => !i.startsWith("--") || (cmd.help.name === "execute"));
 	flags = flags.map(flag => flag.replace("--", "").toLowerCase());
 
 	if(!message.member.hasPermission(cmd.conf.perms) || !client.config.trusted.includes(message.author.id)) return;
@@ -40,7 +40,7 @@ module.exports = async (client, message) => {
 			.setTimestamp()
 			.setColor(message.guild.me.displayColor)
 			.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.`)
-			.addField("Missing Permissions", `\`${missingPerms.map(p => _.startCase(_.toLower(p))).join(", ")}\``)
+			.addField("Missing Permissions", `\`${missingPerms.map(p => startCase(toLower(p))).join(", ")}\``)
 			.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL());
 			
 		message.author.send(embed).catch((err) => console.log(err));

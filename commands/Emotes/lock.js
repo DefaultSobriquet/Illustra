@@ -1,5 +1,5 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const _ = require("lodash/array");
+	const {uniq} = require("lodash/array");
 	const {MessageEmbed} = require("discord.js");
 	const {resolve} = client.utils.emotes;
 	
@@ -13,7 +13,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	if(!roles.length) return message.channel.send("I could not find any valid roles!");
 
 	if (integrated) roles.push(integrated);
-	roles = _.uniq(roles);
+	roles = uniq(roles);
 	
 
 	const embed = new MessageEmbed()
@@ -24,11 +24,10 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setDescription(`**Roles**: ${roles.join(", ")}`)
 		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
 
-	await message.channel.send((!integrated) ? `Warning! ${client.config.name} does not have an integrated role and will no longer be able to use this emote.` : "", embed);
+	await message.channel.send((!integrated) ? "Warning! I don't have an integrated role and will no longer be able to use this emote." : "", embed);
 
-	emote.roles
-		.set(roles)
-		.then((emote) => message.channel.send(`🔒\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+	emote.roles.set(roles)
+		.then((emote) => message.channel.send(`\`🔒\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 		.catch((err) => {
 			console.log(err);
 			message.channel.send("There was a unexpected error.");

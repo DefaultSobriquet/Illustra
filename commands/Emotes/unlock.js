@@ -13,8 +13,9 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
 
 	await message.channel.send(embed);
+
 	emote.roles.set([])
-		.then((emote) => message.channel.send(`🔓\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+		.then((emote) => message.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 		.catch((err) => {
 			console.log(err);
 			message.channel.send("There was a unexpected error.");

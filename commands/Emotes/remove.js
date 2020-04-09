@@ -6,9 +6,8 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	
 	await message.channel.send(embed(emote, message));
 	
-	emote
-		.delete()
-		.then((emote) => message.channel.send(`🗑️\t| [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+	emote.delete(`Removed by ${message.author.tag}`)
+		.then((emote) => message.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 		.catch((err) => {
 			console.log(err);
 			message.channel.send("There was a unexpected error.");

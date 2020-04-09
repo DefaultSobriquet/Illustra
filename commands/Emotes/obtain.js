@@ -1,6 +1,7 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {extract, props} = client.utils.emotes;
+	const {extract, props, space} = client.utils.emotes;
 	const {MessageEmbed} = require("discord.js");
+	const {partition} = require("lodash");
 
 	let target;
 
@@ -14,20 +15,29 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	if (!target) return message.channel.send("Please provide either a message ID or emotes as arguments!");
 
 	const emotes = extract(target).map((emote) => props(emote));
+	const [a, s] = partition(emotes, "animated");
 
-	if(!emotes.length) return message.channel.send("I couldn't find any emotes!");
-	
+	if(!emotes.length) return message.channel.send("I couldn't find any new emotes!");
+
+	const server = space(message);
+
+	if(server.animated - a.length < 0 || server.static - s.length < 0){
+		return message.channel.send(`I can't add that many emotes! Currently, there are ${server.static}/${server.limit} static and ${server.animated}/${server.limit} animated spaces for emotes.`);
+	}
+
 	const embed = new MessageEmbed()
 		.setTitle("Obtaining Status")
 		.setAuthor(message.guild.name, message.guild.iconURL())
 		.setColor(message.guild.me.displayColor)
 		.setTimestamp()
-		.setDescription(`${emotes.length} emote${emotes.length >=1 ? "s" : ""} found — now adding.`)
+		.setDescription(`**I found ${emotes.length} emote${emotes.length > 1 ? "s" : ""}!**\n${emotes.map(e => `\`[ID ${e.id}] - ${e.name}\``).join("\n")}`)
 		.addField("Message", `[Jump!](${target.url})`, true)
 		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 
 	const status = await message.channel.send(embed);
 	
+	if(flags.includes("dry")) return;
+
 	const success = [];
 	const failed = [];
 

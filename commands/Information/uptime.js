@@ -7,6 +7,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setTimestamp()
 		.setDescription(`${client.config.name} has been online for ${ms(client.uptime, {long: true})}.`)
 		.setFooter(`PID ${process.pid} | Started on ${client.readyAt.toLocaleString()}`);
+		
 	message.channel.send(embed);
 };
 

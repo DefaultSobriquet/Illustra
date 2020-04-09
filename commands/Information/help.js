@@ -1,10 +1,10 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
-	const _ = require("lodash");
+	const {groupBy, toLower, startCase} = require("lodash");
 
 
 	if (!args[0]) { // Check if there is no argument.
-		const commands = _.groupBy(client.commands.array(), (cmd) => cmd.help.category);
+		const commands = groupBy(client.commands.array(), (cmd) => cmd.help.category);
 		
 		const embed = new MessageEmbed()
 			.setTitle("Commands")
@@ -23,7 +23,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 		const search = args[0].toLowerCase(); // Take the first argument as a search term.
 		const command = client.commands.get(search) || client.commands.get(client.aliases.get(search)); // Attempt to retrieve search
-		if (!command) return message.channel.send("That command doesn't exist."); // If commmand doesn't exist, notify.
+		if (!command) return message.channel.send("I've never heard of that command before."); // If commmand doesn't exist, notify.
 		const embed = new MessageEmbed()
 			.setTitle(`Command: ${command.help.name}`)
 			.setColor(message.guild.me.displayColor)
@@ -32,7 +32,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 			.addField("Aliases", command.conf.aliases.map((a) => `\`${client.config.sets.prefix}${a}\``).join(", ") || "None.", true)
 			.addField("Usage", `\`\`\`${client.config.sets.prefix}${command.help.usage}\`\`\``)
 			.addField("Example", `\`\`\`${client.config.sets.prefix}${command.help.example}\`\`\``)
-			.addField("Permissions", `${command.conf.perms.map(p => _.startCase(_.toLower(p))).join(", ") || "None."}`)
+			.addField("Permissions", `${command.conf.perms.map(p => startCase(toLower(p))).join(", ") || "None."}`)
 			.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 		
 		message.channel.send(embed);

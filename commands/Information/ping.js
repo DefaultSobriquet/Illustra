@@ -1,11 +1,11 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const msg = await message.channel.send("Pong!");
 	const prefix = client.config.sets.prefix;
-	const _ = require("lodash/collection");
+	const {sample} = require("lodash/collection");
 	const tips = [`Restrict usage of emotes in your server with \`${prefix}lock\`!`, 
 		`See an emote you like? \`${prefix}obtain [message ID]\` it!`, `Questions? *Psst* — the support server's link is in \`${prefix}info\`!`];
 
-	msg.edit(`Pong! \`${msg.createdTimestamp - message.createdTimestamp}ms\`\n${flags.includes("tip") ? _.sample(tips) : ""}`);
+	msg.edit(`Pong! \`${msg.createdTimestamp - message.createdTimestamp}ms\`\n${flags.includes("tip") ? sample(tips) : ""}`);
 };
 
 exports.conf = {
