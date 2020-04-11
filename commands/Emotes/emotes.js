@@ -2,7 +2,10 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	const {search} = client.utils.emotes;
 	const {MessageEmbed} = require("discord.js");
 	const {toLower, chunk, partition, lowerCase} = require("lodash");
-	const emotes = [...search(args.join("_"), message).values()];
+	let emotes = [...search(args.join("_"), message).values()];
+	if(flags.includes("locked")) emotes = emotes.filter(e => e.roles.cache.size);
+	if(flags.includes("animated")) emotes = emotes.filter(e => e.animated);
+	if(flags.includes("static")) emotes = emotes.filter(e => !e.animated);
 	if(!emotes.length) return message.channel.send("I could not find any emotes.");
 
 	const [animated, static] = partition(emotes, e => e.animated);
@@ -18,7 +21,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	const addEmbeds = (e) => chunk(e.sort((a, b) => (toLower(a.name) >= toLower(b.name)) ? 1 : -1), 20).forEach(chunk => {
 		const first = chunk[0].name.slice(0, 2);
 		const last = chunk[chunk.length-1].name.slice(0, 2);
-		embed.addField(lowerCase(`${first} to ${last}`), chunk.map(e => `${e}`).join(" "));
+		embed.addField(lowerCase(`${first} to ${last}`), chunk.map(e => e.roles.cache.size ? `\`${e.name}\`` : `${e}`).join(" "));
 	});
 
 	addEmbeds(static);

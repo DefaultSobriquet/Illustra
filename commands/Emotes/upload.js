@@ -11,7 +11,9 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	let link = (name && args[1] && regLink.test(args[1])) ? args[1] : undefined;
 
 	if(file){ // Alright, let's start using the attachment.
-		if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))) return message.channel.send("That's an invalid attachment (over 256 KB or not an image)!");
+		if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))){
+			return message.channel.send("That's an invalid attachment (over 256 KB or not a valid image)!");
+		}
 		if(regName.test(file.name)) name = file.name;
 		link = file.url;
 	}

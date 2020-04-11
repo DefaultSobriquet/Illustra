@@ -6,7 +6,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	
 	const embed = new MessageEmbed()
 		.setTitle("Avatar")
-		.setURL(message.author.displayAvatarURL())
+		.setURL(member.user.displayAvatarURL())
 		.setColor(message.guild.me.displayColor)
 		.setAuthor(member.user.tag, member.user.displayAvatarURL())
 		.setImage(member.user.avatarURL({dynamic: true, size: 1024}));

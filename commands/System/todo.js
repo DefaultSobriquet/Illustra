@@ -3,7 +3,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 	if(!args[0]) return message.channel.send("Please enter a todo.");
 
-	client.channels.cache.get("675015929330925572").send(args.join(" "))
+	client.channels.cache.get("675015929330925572").send(`**${message.author.tag}**: ${args.join(" ")}`)
 		.then(() => {
 			message.react("success:691141985418870866").catch();
 		}).catch(() => {

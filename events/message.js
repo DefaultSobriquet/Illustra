@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 	let [args, flags] = partition(input, i => !i.startsWith("--") || (cmd.help.name === "execute"));
 	flags = flags.map(flag => flag.replace("--", "").toLowerCase());
 
-	if(!message.member.hasPermission(cmd.conf.perms) || !client.config.trusted.includes(message.author.id)) return;
+	if(!message.member.hasPermission(cmd.conf.perms) && !client.config.trusted.includes(message.author.id)) return;
 
 	const missingPerms = message.channel.permissionsFor(client.user).missing(cmd.conf.requires);
 
