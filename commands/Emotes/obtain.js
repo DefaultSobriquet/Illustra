@@ -31,7 +31,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setColor(message.guild.me.displayColor)
 		.setTimestamp()
 		.setDescription(`**I found ${emotes.length} emote${emotes.length > 1 ? "s" : ""}!**\n${emotes.map(e => `\`[ID ${e.id}] - ${e.name}\``).join("\n")}`)
-		.addField("Message", `[Jump!](${target.url})`, true)
+		.addField("Message", `[Jump!](${target.url} 'Emotes were obtained from this message.')`, true)
 		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 
 	const status = await message.channel.send(embed);

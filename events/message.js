@@ -1,9 +1,18 @@
-// eslint-disable-next-line no-undef
-module.exports = async (client, message) => {
+module.exports = async (client, message) => { // eslint-disable-line no-unused-vars
 	const {MessageEmbed} = require("discord.js");
 	const {partition, startCase, toLower} = require("lodash");
+	const GuildModel = require("../models/Guild.js");
 
-	let prefix = client.config.sets.prefix;
+	if(!message.guild) return;
+
+	let guild = await GuildModel.findOne({id: message.guild.id});
+
+	if(!guild){
+		guild = new GuildModel({id: message.guild.id});
+		await guild.save();
+	}
+
+	let prefix = guild.prefix;
 
 	// Mention Prefix
 	const prefixMention = new RegExp(`^<@!?${client.user.id}>`);
@@ -12,7 +21,7 @@ module.exports = async (client, message) => {
 	// Name Prefix
 	prefix = message.content.startsWith(client.config.name) ? client.config.name : prefix;
 
-	// Prevent execution by bots and checks for messages without the prefix.
+	// Prevent execution by bots and checks for messages without the prefix, within a guild.
 	if (message.author.bot || !message.content.startsWith(prefix)) return;
 
 	// Create arguments and command from message.
@@ -20,7 +29,7 @@ module.exports = async (client, message) => {
 	const command = input.shift().toLowerCase();
 
 	// Fetches the user.
-	if (message.guild && !message.member) await message.guild.fetch(message.author.id);
+	if (!message.member) await message.guild.fetch(message.author.id);
 
 	// Retrieve command
 	const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));

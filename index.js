@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const {promisify} = require("util");
 const readdir = promisify(require("fs").readdir);
+const {connect} = require("mongoose");
+
 
 const client = new Discord.Client();
 
@@ -36,6 +38,14 @@ const init = async () => {
 		console.log(`Loading Event: ${eventName}`);
 		const event = require(`./events/${file}`);
 		client.on(eventName, event.bind(null, client));
+	});
+
+	connect(`mongodb+srv://${client.config.mongo.username}:${client.config.mongo.password}@cerulean-yzqbh.azure.mongodb.net/test?retryWrites=true&w=majority`, {
+		useNewUrlParser: true,
+		useFindAndModify: false,
+		useUnifiedTopology: true
+	}, (err) => {
+		if (err) console.error(err);
 	});
 
 	client.login(client.config.token);

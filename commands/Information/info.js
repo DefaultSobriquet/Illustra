@@ -11,8 +11,8 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.addField("Developer", client.config.owner, true)
 		.addField("Language", "JavaScript", true)
 		.addField("Library", "Discord.js", true)
-		.addField("Invite", `[Bot Invite](${client.config.invite})`, true)
-		.addField("Support", `[Server Invite](${client.config.support})`, true)
+		.addField("Invite", `[Bot Invite](${client.config.invite} 'Invite me!')`, true)
+		.addField("Support", `[Server Invite](${client.config.support} 'To click or not to click.')`, true)
 		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 	message.channel.send((args.join(" ") === "コナミコマンド") ? `\`🔓\` | *Admin permissions granted, ${message.author.tag}!*` : "", embed);
 };

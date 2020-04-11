@@ -23,7 +23,7 @@ exports.conf = {
 exports.help = {
 	name: "shorten",
 	category: "Guild",
-	description: "Shortens a URL with the [Zero Width Shortener](https://zws.im/).",
+	description: "Shortens a URL with the [Zero Width Shortener](https://zws.im/ 'This is the Zero-Width Shortener site.').",
 	usage: "shorten [url]",
 	example: "shorten https://google.com"
 };

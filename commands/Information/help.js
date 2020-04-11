@@ -29,9 +29,9 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 			.setColor(message.guild.me.displayColor)
 			.setDescription(command.help.description)
 			.addField("Category", command.help.category, true)
-			.addField("Aliases", command.conf.aliases.map((a) => `\`${client.config.sets.prefix}${a}\``).join(", ") || "None.", true)
-			.addField("Usage", `\`\`\`${client.config.sets.prefix}${command.help.usage}\`\`\``)
-			.addField("Example", `\`\`\`${client.config.sets.prefix}${command.help.example}\`\`\``)
+			.addField("Aliases", command.conf.aliases.map((a) => `\`${a}\``).join(", ") || "None.", true)
+			.addField("Usage", `\`\`\`${client.config.name} ${command.help.usage}\`\`\``)
+			.addField("Example", `\`\`\`${client.config.name} ${command.help.example}\`\`\``)
 			.addField("Permissions", `${command.conf.perms.map(p => startCase(toLower(p))).join(", ") || "None."}`)
 			.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 		
