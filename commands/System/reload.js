@@ -19,8 +19,7 @@ exports.run = (client, message, args, flags) => { // eslint-disable-line no-unus
 
 exports.conf = {
 	aliases: [],
-	perms: [],
-	flags: [], 
+	perms: [], 
 	requires: ["SEND_MESSAGES"]
 };
 
