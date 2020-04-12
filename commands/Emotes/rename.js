@@ -15,6 +15,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 exports.conf = {
 	aliases: [],
+	flags: [],
 	perms: ["MANAGE_EMOJIS"], 
 	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
 };

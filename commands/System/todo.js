@@ -15,7 +15,8 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 exports.conf = {
 	aliases: ["t", "note"],
-	perms: [], 
+	perms: [],
+	flags: [],
 	requires: ["SEND_MESSAGES"]
 };
 

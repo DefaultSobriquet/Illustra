@@ -4,7 +4,8 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 exports.conf = {
 	aliases: ["coin", "coinflip"],
-	perms: [], 
+	perms: [],
+	flags: [],
 	requires: ["SEND_MESSAGES"]
 };
 
