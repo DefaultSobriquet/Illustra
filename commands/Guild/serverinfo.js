@@ -1,7 +1,6 @@
+const {MessageEmbed} = require("discord.js");
+const {startCase, toLower} = require("lodash/string");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {MessageEmbed} = require("discord.js");
-	const {startCase, toLower} = require("lodash/string");
-	
 	const guild = message.guild;
 
 	const embed = new MessageEmbed()

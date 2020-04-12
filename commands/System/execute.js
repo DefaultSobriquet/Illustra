@@ -1,5 +1,5 @@
+const {Util} = require("discord.js");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {Util} = require("discord.js");
 	if (!client.config.trusted.includes(message.author.id)) return;
 
 	if (!args[0]) return message.channel.send("Please enter an input.");

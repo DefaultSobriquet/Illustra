@@ -1,6 +1,6 @@
+const {sample} = require("lodash/collection");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const msg = await message.channel.send("Pong!");
-	const {sample} = require("lodash/collection");
 	const tips = [`Restrict usage of emotes in your server with \`${client.config.name}lock\`!`, 
 		`See an emote you like? \`${client.config.name} obtain [message ID]\` it!`, `Questions? *Psst* — the support server's link is in \`${client.config.name} info\`!`];
 

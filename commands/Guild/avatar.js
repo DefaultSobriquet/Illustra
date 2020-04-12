@@ -1,6 +1,5 @@
+const {MessageEmbed} = require("discord.js");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {MessageEmbed} = require("discord.js");
-
 	const member = client.utils.users.resolve(args[0], message);
 	if (!member) return message.channel.send("I could not find a member matching that.");
 	

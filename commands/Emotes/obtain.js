@@ -1,7 +1,7 @@
+const {MessageEmbed} = require("discord.js");
+const {partition} = require("lodash");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	const {extract, props, space} = client.utils.emotes;
-	const {MessageEmbed} = require("discord.js");
-	const {partition} = require("lodash");
 
 	let target;
 

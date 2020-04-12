@@ -1,5 +1,5 @@
+const {MessageEmbed} = require("discord.js");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {MessageEmbed} = require("discord.js");
 	const embed = new MessageEmbed()
 		.setTitle(client.config.name)
 		.setTimestamp()

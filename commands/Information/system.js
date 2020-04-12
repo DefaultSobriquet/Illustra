@@ -1,6 +1,6 @@
+const {MessageEmbed} = require("discord.js");
+const {release} = require("os");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {MessageEmbed} = require("discord.js");
-	const {release} = require("os");
 	const embed = new MessageEmbed()
 		.setTitle("System Information")
 		.setTimestamp()

@@ -1,6 +1,6 @@
+const {Util} = require("discord.js");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	if (!client.config.trusted.includes(message.author.id)) return;
-	const {Util} = require("discord.js");
 	const code = args.join(" "); // Generate string input.
 
 	if (code.includes("client.token")) return message.channel.send("No thanks."); // Prevent attempts to get the token.

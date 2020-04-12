@@ -1,7 +1,6 @@
+const {MessageEmbed} = require("discord.js");
+const {startCase, toLower} = require("lodash/string");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {MessageEmbed} = require("discord.js");
-	const {startCase, toLower} = require("lodash/string");
-	
 	const keyPerms = ["ADMINISTRATOR", "CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "VIEW_AUDIT_LOG", "MANAGE_MESSAGES", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
 	const target = client.utils.users.resolve(args[0], message);
 	

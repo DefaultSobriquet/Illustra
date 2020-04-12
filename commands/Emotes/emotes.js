@@ -1,7 +1,7 @@
+const {MessageEmbed} = require("discord.js");
+const {toLower, chunk, partition, lowerCase} = require("lodash");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {search} = client.utils.emotes;
-	const {MessageEmbed} = require("discord.js");
-	const {toLower, chunk, partition, lowerCase} = require("lodash");
+	const {search} = client.utils.emotes;	
 	let emotes = [...search(args.join("_"), message).values()];
 	if(flags.includes("locked")) emotes = emotes.filter(e => e.roles.cache.size);
 	if(flags.includes("animated")) emotes = emotes.filter(e => e.animated);

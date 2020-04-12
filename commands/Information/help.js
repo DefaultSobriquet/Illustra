@@ -1,8 +1,6 @@
+const {MessageEmbed} = require("discord.js");
+const {groupBy, toLower, startCase} = require("lodash");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const {MessageEmbed} = require("discord.js");
-	const {groupBy, toLower, startCase} = require("lodash");
-
-
 	if (!args[0]) { // Check if there is no argument.
 		const commands = groupBy(client.commands.array(), (cmd) => cmd.help.category);
 		

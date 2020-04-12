@@ -1,6 +1,5 @@
+const axios = require("axios").default;
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const axios = require("axios").default;
-
 	if(!args[0]) return message.channel.send("Please enter a URL.");
 	
 	axios.get(`https://zws.im/api/shortenURL?url=${args[0]}`)

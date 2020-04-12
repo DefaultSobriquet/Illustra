@@ -1,5 +1,4 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-
 	const { embed } = client.utils.emotes;
 	
 	const regName = /^[_a-z0-9]{2,32}$/i;

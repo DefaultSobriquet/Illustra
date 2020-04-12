@@ -1,6 +1,6 @@
+const ms = require("ms");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
 	if (!client.config.trusted.includes(message.author.id)) return;
-	const ms = require("ms");
 	const end = () => {
 		client.destroy();
 		process.exit(0);

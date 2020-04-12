@@ -1,6 +1,6 @@
+const axios = require("axios").default;
+const {MessageEmbed} = require("discord.js");
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const axios = require("axios").default;
-	const {MessageEmbed} = require("discord.js");
 	const headers = {"x-api-key": client.config.api_tokens.thecatapi};
 	
 	const request = (await axios.get("https://api.thecatapi.com/v1/images/search", {headers})).data;
