@@ -9,7 +9,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setTimestamp()
 		.setDescription(`**Current Roles**: ${emote.roles.cache.map((role) => `${role}`).join(", ")}`)
 		.setImage(emote.url)
-		.setColor(message.guild.me.displayColor)
+		.setColor(message.guild.me.displayColor || 0x2f3136)
 		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
 
 	await message.channel.send(embed);

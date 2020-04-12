@@ -6,7 +6,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setTimestamp()
 		.addField("OS", `${process.platform}-${process.arch} (${release()})`, true)
 		.addField("Node", `${process.release.name}-${process.version}`, true)
-		.setColor(message.guild.me.displayColor)
+		.setColor(message.guild.me.displayColor || 0x2f3136)
 		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 	message.channel.send(embed);
 };

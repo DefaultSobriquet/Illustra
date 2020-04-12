@@ -9,7 +9,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		const embed = new MessageEmbed()
 			.setTitle("Commands")
 			.setTimestamp()
-			.setColor(message.guild.me.displayColor)
+			.setColor(message.guild.me.displayColor || 0x2f3136)
 			.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 
 		for(const category in commands){
@@ -26,7 +26,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		if (!command) return message.channel.send("I've never heard of that command before."); // If commmand doesn't exist, notify.
 		const embed = new MessageEmbed()
 			.setTitle(`Command: ${command.help.name}`)
-			.setColor(message.guild.me.displayColor)
+			.setColor(message.guild.me.displayColor || 0x2f3136)
 			.setDescription(command.help.description)
 			.addField("Category", command.help.category, true)
 			.addField("Aliases", command.conf.aliases.map((a) => `\`${a}\``).join(", ") || "None.", true)

@@ -8,7 +8,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	const embed = new MessageEmbed()
 		.setTitle("Woof!")
 		.setImage(request[0].url)
-		.setColor(message.guild.me.displayColor)
+		.setColor(message.guild.me.displayColor || 0x2f3136)
 		.setTimestamp()
 		.setFooter(`Requested by ${message.author.tag} • Powered by TheDogAPI`);
 	

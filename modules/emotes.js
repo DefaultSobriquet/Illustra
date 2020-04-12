@@ -44,7 +44,7 @@ module.exports = (client) => {
 			const embed = new MessageEmbed()
 				.setTitle(`${props.animated ? "Animated" : "Still"} Emote - ${props.name}`)
 				.setTimestamp((props.guild) ? props.createdAt : message.createdAt)
-				.setColor(message.guild.me.displayColor)
+				.setColor(message.guild.me.displayColor || 0x2f3136)
 				.setDescription(`**ID**: ${props.id}\n**Link**: [Image URL](${props.url} 'Click me for the image!')\n**Roles:** ${(props.guild) ? props.roles.cache.map(r => r.toString()).join(", ") || "None.": "Unknown."}`)
 				.setImage(props.url)
 				.setFooter(props.guild ? `${props.guild.name} • Created` : message.author.tag, (props.guild) ? props.guild.iconURL() : message.author.displayAvatarURL());

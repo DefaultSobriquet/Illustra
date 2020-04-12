@@ -12,7 +12,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 
 	const embed = new MessageEmbed()
 		.setAuthor(`${message.guild.name} ${args[0] ? `- ${args.join(" ")}` : ""}`, message.guild.iconURL())
-		.setColor(message.guild.me.displayColor)
+		.setColor(message.guild.me.displayColor || 0x2f3136)
 		.setTimestamp()
 		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
 	
@@ -21,7 +21,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	const addEmbeds = (e) => chunk(e.sort((a, b) => (toLower(a.name) >= toLower(b.name)) ? 1 : -1), 20).forEach(chunk => {
 		const first = chunk[0].name.slice(0, 2);
 		const last = chunk[chunk.length-1].name.slice(0, 2);
-		embed.addField(lowerCase(`${first} to ${last}`), chunk.map(e => e.roles.cache.size ? `\`${e.name}\`` : `${e}`).join(" "));
+		embed.addField(lowerCase(`${first} to ${last}`), chunk.map(e => e.roles.cache.size || flags.includes("names") ? `\`${e.name}\`` : `${e}`).join(" "));
 	});
 
 	addEmbeds(static);

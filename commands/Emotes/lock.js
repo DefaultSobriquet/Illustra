@@ -20,7 +20,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setTitle(`Lock Emote [${emote.name}]`)
 		.setTimestamp()
 		.setImage(emote.url)
-		.setColor(message.guild.me.displayColor)
+		.setColor(message.guild.me.displayColor || 0x2f3136)
 		.setDescription(`**Roles**: ${roles.join(", ")}`)
 		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
 

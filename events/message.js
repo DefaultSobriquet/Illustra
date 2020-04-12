@@ -47,7 +47,7 @@ module.exports = async (client, message) => { // eslint-disable-line no-unused-v
 		const embed = new MessageEmbed()
 			.setTitle("Permissions Error")
 			.setTimestamp()
-			.setColor(message.guild.me.displayColor)
+			.setColor(message.guild.me.displayColor || 0x2f3136)
 			.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.`)
 			.addField("Missing Permissions", `\`${missingPerms.map(p => startCase(toLower(p))).join(", ")}\``)
 			.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL());

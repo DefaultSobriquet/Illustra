@@ -4,7 +4,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setTitle(client.config.name)
 		.setTimestamp()
 		.setDescription(client.config.description)
-		.setColor(message.guild.me.displayColor)
+		.setColor(message.guild.me.displayColor || 0x2f3136)
 		.setThumbnail(client.user.displayAvatarURL())
 		.addField("Users", client.users.cache.size, true)
 		.addField("Servers", client.guilds.cache.size, true)
