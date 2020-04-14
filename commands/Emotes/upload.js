@@ -1,6 +1,7 @@
 exports.run = async (client, message, args, flags) => { // eslint-disable-line no-unused-vars
-	const { embed } = client.utils.emotes;
+	const { embed, props, space } = client.utils.emotes;
 	
+	const {animated, static} = space(message);
 	const regName = /^[_a-z0-9]{2,32}$/i;
 	const regLink = /^https?:\/\//;
 
@@ -13,12 +14,18 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))){
 			return message.channel.send("That's an invalid attachment (over 256 KB or not a valid image)!");
 		}
+		
+		if(!animated && /\.gif$/.test(file.url)) return message.channel.send("You don't have space for an animated emote!");
+		if(!static && /\.(png|jpg|jpeg|webp)$/.test(file.url)) return message.channel.send("You don't have space for an static emote!");
+
 		if(regName.test(file.name)) name = file.name;
 		link = file.url;
 	}
 
-	if(!link) return message.channel.send("You didn't provide a valid link or attachment."); // Did we get a link?
+	if(!link && /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(args[1])) link = props(args[1]).url;
+
 	if(!name) return message.channel.send("You didn't provide a valid name emote name!"); // Is the name valid?
+	if(!link) return message.channel.send("You didn't provide a valid link, emote, or attachment."); // Did we get a link?
 
 	message.guild.emojis.create(link, name, {reason: `Added by ${message.author.tag}`})
 		.then(emote => message.channel.send(embed(emote, message)))
@@ -37,7 +44,7 @@ exports.conf = {
 exports.help = {
 	name: "upload",
 	category: "Emotes",
-	description: "Add an emote to the server with either a link or attachment.",
-	usage: "upload [name] (link/attachment)",
+	description: "Add an emote to the server with either a link, emote, or attachment.",
+	usage: "upload [name] (link/attachment/emote)",
 	example: "upload placeholder https://via.placeholder.com/150"
 };

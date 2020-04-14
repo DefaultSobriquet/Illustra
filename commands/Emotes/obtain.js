@@ -69,6 +69,6 @@ exports.help = {
 	name: "obtain",
 	category: "Emotes",
 	description: "Add custom emotes from a message to the server.",
-	usage: "obtain [message id | emotes...]",
+	usage: "obtain [message id | ...emotes]",
 	example: "obtain 29394959239030102"
 };

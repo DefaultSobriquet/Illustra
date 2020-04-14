@@ -40,7 +40,7 @@ const init = async () => {
 		client.on(eventName, event.bind(null, client));
 	});
 
-	connect(`mongodb+srv://${client.config.mongo.username}:${client.config.mongo.password}@cerulean-yzqbh.azure.mongodb.net/test?retryWrites=true&w=majority`, {
+	connect(`mongodb+srv://${client.config.mongo.username}:${client.config.mongo.password}@${client.config.mongo.database}/${client.config.name}?retryWrites=true&w=majority`, {
 		useNewUrlParser: true,
 		useFindAndModify: false,
 		useUnifiedTopology: true

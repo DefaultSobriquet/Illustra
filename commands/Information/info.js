@@ -8,6 +8,7 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		.setThumbnail(client.user.displayAvatarURL())
 		.addField("Users", client.users.cache.size, true)
 		.addField("Servers", client.guilds.cache.size, true)
+		.addField("Emotes", client.emojis.cache.size, true)
 		.addField("Developer", client.config.owner, true)
 		.addField("Language", "JavaScript", true)
 		.addField("Library", "Discord.js", true)
