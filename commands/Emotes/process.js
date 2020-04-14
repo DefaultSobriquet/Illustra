@@ -3,12 +3,12 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 	const {embed, resolve, props, space} = client.utils.emotes;
 
 	const server = space(message);
-	if(!server.static) return message.channel.send(`You don't have a static emote slot out of ${server.limit}!`);
+	if(!server.static && !flags.includes("replace")) return message.channel.send(`You don't have a static emote slot out of ${server.limit}!`);
 	
 	const emote = /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(args[0]) ? props(args[0]) : resolve(args.join("_"), message);
 	if(!emote) return message.channel.send("I couldn't find a valid emote!");
 	if(emote.animated) return message.channel.send("I can't process animated emotes!");
-	
+	if(flags.includes("replace") && emote.guild && emote.guild.id === message.guild.id) emote.delete();
 	try{
 		message.channel.startTyping();
 		const image = await jimp.read(emote.url);
@@ -27,7 +27,6 @@ exports.run = async (client, message, args, flags) => { // eslint-disable-line n
 		
 		message.channel.send(embed(processedEmote, message));
 		
-		if(flags.includes("replace") && emote.guild && emote.guild.id === message.guild.id) emote.delete();
 
 	}catch(err){
 		message.channel.send("There was an unexpected error!");
