@@ -10,7 +10,7 @@ exports.run = async (client: any, message: Message, args: string[], flags: strin
 		.addField("Servers", client.guilds.cache.size, true)
 		.addField("Emotes", client.emojis.cache.size, true)
 		.addField("Developer", client.config.owner, true)
-		.addField("Language", "JavaScript", true)
+		.addField("Language", "TypeScript", true)
 		.addField("Library", "Discord.js", true)
 		.addField("Invite", `[Bot Invite](${client.config.invite} 'Invite me!')`, true)
 		.addField("Support", `[Server Invite](${client.config.support} 'To click or not to click.')`, true)

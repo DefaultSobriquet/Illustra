@@ -1,20 +1,25 @@
-const Discord = require("discord.js");
-const Enmap = require("enmap");
-const {promisify} = require("util");
+import Discord from "discord.js";
+import Enmap from "enmap";
+import {promisify} from "util";
 const readdir = promisify(require("fs").readdir);
-const {connect} = require("mongoose");
+import {connect} from "mongoose";
 
 
 const client = new Discord.Client();
 
-client.config = require("./config.js");
+import config from "./config.js";
+
+//@ts-ignore
+client.config = config;
 
 require("./modules/utils.js")(client);
 require("./modules/users.js")(client);
 require("./modules/emotes.js")(client);
 require("./modules/roles.js")(client);
 
+//@ts-ignore Until we add a proper Client wrapper, this is the best we can do.
 client.commands = new Enmap();
+//@ts-ignore Same here.
 client.aliases = new Enmap();
 
 // The init script - prepares it all for starting
@@ -26,6 +31,7 @@ const init = async () => {
 		console.log(`Loading ${folder} Module (${cmdFiles.length} commands)`);
 		cmdFiles.forEach((file: string) => {
 			if (!file.endsWith(".js")) return;
+			//@ts-ignore See above.
 			const response = client.loadCommand(file, folder);
 			if (response) console.log(response);
 		});
@@ -39,7 +45,7 @@ const init = async () => {
 		const event = require(`./events/${file}`);
 		client.on(eventName, event.bind(null, client));
 	});
-
+	//@ts-ignore See above.
 	connect(`mongodb+srv://${client.config.mongo.username}:${client.config.mongo.password}@${client.config.mongo.database}/${client.config.name}?retryWrites=true&w=majority`, {
 		useNewUrlParser: true,
 		useFindAndModify: false,
@@ -48,6 +54,7 @@ const init = async () => {
 		if (err) console.error(err);
 	});
 
+	//@ts-ignore See above.
 	client.login(client.config.token);
 };
 

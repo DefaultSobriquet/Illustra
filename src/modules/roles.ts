@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 
-export const roles = (client: any) => {
+module.exports = (client: any) => {
 	client.utils.roles = {
 		resolve: (input: string, message: Message) => {
 			if (!input) return null;
