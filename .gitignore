@@ -1,4 +1,6 @@
 .gitignore
 node_modules
 Illustra.code-workspace
-config.js
+.vscode
+build
+config.ts
