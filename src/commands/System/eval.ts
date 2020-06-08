@@ -9,7 +9,7 @@ exports.run = async (client: any, message: Message, args: string[], flags: strin
 	try {
 		const evaled = await (code.includes("await") ? eval("async function foo(){" + code + "}; foo()") : eval(code)); // Evaluate the code
 		const clean = client.clean(client, evaled); // Clean the code
-		const messages = Util.splitMessage(clean);
+		const messages = Util.splitMessage(clean, {maxLength: 1990});
 		if (typeof (messages) === "string") return message.channel.send(`\`\`\`js\n${messages}\`\`\``);
 		messages.forEach((value) => message.channel.send(`\`\`\`js\n${value || "No output."}\`\`\``));
 	} catch (err) {

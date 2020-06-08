@@ -1,8 +1,7 @@
-import { Message } from "discord.js";
+import { Message, MessageEmbed} from "discord.js";
+import {partition, startCase, toLower} from "lodash";
 
 module.exports = async (client: any, message: Message) => {
-	const {MessageEmbed} = require("discord.js");
-	const {partition, startCase, toLower} = require("lodash");
 	const GuildModel = require("../models/Guild.js");
 
 	if(!message.guild) return;
@@ -53,7 +52,7 @@ module.exports = async (client: any, message: Message) => {
 			.setColor(message!.guild!.me!.displayColor || 0x2f3136)
 			.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.`)
 			.addField("Missing Permissions", `\`${missingPerms.map((p:string) => startCase(toLower(p))).join(", ")}\``)
-			.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL());
+			.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL() ?? undefined);
 			
 		message.author.send(embed).catch((err) => console.log(err));
 		return;

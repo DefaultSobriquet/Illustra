@@ -1,11 +1,10 @@
-import Discord from "discord.js";
-import Enmap from "enmap";
+import {Collection, Client} from "discord.js";
 import {promisify} from "util";
 const readdir = promisify(require("fs").readdir);
 import {connect} from "mongoose";
 
 
-const client = new Discord.Client();
+const client = new Client();
 
 import config from "./config.js";
 
@@ -18,9 +17,9 @@ require("./modules/emotes.js")(client);
 require("./modules/roles.js")(client);
 
 //@ts-ignore Until we add a proper Client wrapper, this is the best we can do.
-client.commands = new Enmap();
+client.commands = new Collection();
 //@ts-ignore Same here.
-client.aliases = new Enmap();
+client.aliases = new Collection();
 
 // The init script - prepares it all for starting
 const init = async () => {
@@ -49,7 +48,8 @@ const init = async () => {
 	connect(`mongodb+srv://${client.config.mongo.username}:${client.config.mongo.password}@${client.config.mongo.database}/${client.config.name}?retryWrites=true&w=majority`, {
 		useNewUrlParser: true,
 		useFindAndModify: false,
-		useUnifiedTopology: true
+		useUnifiedTopology: true,
+		useCreateIndex: true
 	}, (err: Error) => {
 		if (err) console.error(err);
 	});

@@ -19,7 +19,7 @@ module.exports = {
 		],
 		"indent": [
 			"error",
-			"tab"
+			"space"
 		],
 		"linebreak-style": [
 			"error",

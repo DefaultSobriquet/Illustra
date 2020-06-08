@@ -1,6 +1,5 @@
 import { Message } from "discord.js";
-
-const axios = require("axios").default;
+import axios from "axios";
 exports.run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
 	if(!args[0]) return message.channel.send("Please enter a URL.");
 	
