@@ -1,21 +1,27 @@
-import {Message} from "discord.js";
-export const run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	const {props, embed, resolve} = client.utils.emotes;
-	const emote = /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(args[0]) ? props(args[0]) : resolve(args.join("_"), message);
-	if (!emote) return message.channel.send("Please enter a valid emote.");
-	message.channel.send(embed(emote, message));
-};
+import {Command} from "../../structures/Command";
+import {ICommandContext} from "../../types";
 
-export const conf = {
-	aliases: ["emoji"],
-	perms: [], 
-	requires: ["SEND_MESSAGES", "EMBED_LINKS"]
-};
-
-export const help = {
+const options = {
 	name: "emote",
-	category: "Emotes",
 	description: "Get information about an emote.",
-	usage: "emote [emote]",
-	example: "emote :rooThink:"
-};
+	module: "Emotes",
+	usage: "[emote]",
+	examples: ["rooThink"],
+	aliases: ["emoji"],
+	userPerms: [],
+	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+}
+
+class Emote extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const {props, embed, resolve} = client.utils.emotes;
+		const emote = /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.message);
+		if (!emote) return ctx.channel.send("Please enter a valid emote.");
+		ctx.channel.send(embed(emote, ctx.message));
+	}
+}
+
+export default Emote;

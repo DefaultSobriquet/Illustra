@@ -1,19 +1,21 @@
-import { Message } from "discord.js";
+import { Message} from "discord.js";
+import { ICommandContext } from "../types";
 // import IllustraClient from "./IllustraClient";
-import { Flag } from "./Flag";
 // import Module from "./Module";
 
 export class Command{
     
-    aliases: string[];
+    name: string;
+    aliases: string[]; 
     userPerms: string[];
     botPerms: string[];
-    name: string;
-    module: string/*Module goes here later.*/;
+    module: string /*Module goes here later.*/;
     description: string;
-    usage: string;
-    example: string;
-    flags: Flag[]
+    usage: string; 
+    examples: string[];
+    enabled: boolean;
+    guildOnly: boolean;
+    dev: boolean;
 
     constructor(options: Partial<Command>){
         this.aliases = options.aliases ?? [];
@@ -22,12 +24,15 @@ export class Command{
         this.name = options.name ?? "test";
         this.module = options.module ?? "System" /* new Module() */;
         this.description = options.description ?? "What can this do?";
-        this.usage = options.usage ?? "test [target]";
-        this.example = options.example ?? "test me";
-        this.flags = options.flags ?? [];
+        this.usage = options.usage ?? "[user]";
+        this.examples = options.examples ?? [];
+        this.enabled = true;
+        this.dev = false;
+        this.guildOnly = true;
     }
 
-    async execute(client: any /* IllustraClient goes here later.*/, message: Message, args: string[], flags: Flag[]): Promise<any|void>{
+    async execute(ctx: ICommandContext, client: any /* IllustraClient goes here later.*/): Promise<any|void>{
         new Error("You didn't make me something!");
     }
+    
 }
