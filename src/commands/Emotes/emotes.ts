@@ -1,4 +1,4 @@
-import {MessageEmbed, Message} from "discord.js";
+import {MessageEmbed} from "discord.js";
 import {toLower, chunk, partition, lowerCase} from "lodash";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";

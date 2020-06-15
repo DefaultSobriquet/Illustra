@@ -1,30 +1,34 @@
-import { Message } from "discord.js";
-export const run = async (client: any, message: Message, args:string[], flags:string[]) => { // eslint-disable-line no-unused-vars
-	const {embed, resolve} = client.utils.emotes;
-	const emote = resolve(args[0], message);
-	
-	if (!emote) return message.channel.send("Please enter a valid emote.");
-	
-	await message.channel.send(embed(emote, message));
-	
-	emote.delete(`Removed by ${message.author.tag}`)
-		.then((emote: any) => message.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
-		.catch((err: any) => {
-			console.log(err);
-			message.channel.send("There was a unexpected error.");
-		});
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
+
+const options = {
+    name: "remove",
+    description: "Remove an emote from the current guild.",
+    module: "Emotes",
+    usage: "[emote]",
+    examples: ["rooThink"],
+    aliases: ["delete", "del"],
+    userPerms: ["MANAGE_EMOJIS"],
+	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 };
 
-export const conf = {
-	aliases: ["delete", "del"],
-	perms: ["MANAGE_EMOJIS"], 
-	requires: ["SEND_MESSAGES", "EMBED_LINKS"]
-};
-
-export const help = {
-	name: "remove",
-	category: "Emotes",
-	description: "Remove an emote from the current guild.",
-	usage: "remove [emote]",
-	example: "remove :rooThink:"
-};
+class Remove extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const {embed, resolve} = client.utils.emotes;
+		const emote = resolve(ctx.args[0], ctx.message);
+		
+		if (!emote) return ctx.channel.send("Please enter a valid emote.");
+		
+		await ctx.channel.send(embed(emote, ctx.message));
+		
+		emote.delete(`Removed by ${ctx.user.tag}`)
+			.then((emote: any) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+			.catch((err: any) => {
+				console.log(err);
+				ctx.channel.send("There was a unexpected error.");
+			});
+	}
+}

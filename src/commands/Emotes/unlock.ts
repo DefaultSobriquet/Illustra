@@ -1,37 +1,44 @@
 import {MessageEmbed, Message, Role, GuildEmoji} from "discord.js";
-export const run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	const {resolve} = client.utils.emotes;
-	const emote = resolve(args[0], message);
-	if (!emote) return message.channel.send("I could not find the emote provided.");
-	
-	const embed = new MessageEmbed()
-		.setTitle(`Unlock Emote [${emote.name}]`)
-		.setTimestamp()
-		.setDescription(`**Current Roles**: ${emote.roles.cache.map((role: Role) => `${role}`).join(", ")}`)
-		.setImage(emote.url)
-		.setColor(message!.guild!.me!.displayColor || 0x2f3136)
-		.setFooter(`${message.author.tag}`, message.author.displayAvatarURL());
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
 
-	await message.channel.send(embed);
+const options = {
+    name: "unlock",
+    description: "Unlock an emote from all roles.",
+    module: "Emotes",
+    usage: "[emote]",
+    examples: ["rooThink"],
+    aliases: ["unrestrict"],
+    userPerms: ["MANAGE_EMOJIS", "MANAGE_ROLES"],
+    botPerms: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
+}
 
-	emote.roles.set([])
-		.then((emote: GuildEmoji) => message.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
-		.catch((err: Error) => {
-			console.log(err);
-			message.channel.send("There was a unexpected error.");
-		});
-};
+class Unlock extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const {resolve} = client.utils.emotes;
+		const emote = resolve(ctx.args[0], ctx.message);
+		if (!emote) return ctx.channel.send("I could not find the emote provided.");
+		
+		const embed = new MessageEmbed()
+			.setTitle(`Unlock Emote [${emote.name}]`)
+			.setTimestamp()
+			.setDescription(`**Current Roles**: ${emote.roles.cache.map((role: Role) => `${role}`).join(", ")}`)
+			.setImage(emote.url)
+			.setColor(ctx.guild!.me!.displayColor || 0x2f3136)
+			.setFooter(`${ctx.user.tag}`, ctx.user.displayAvatarURL());
 
-export const conf = {
-	aliases: ["unrestrict"],
-	perms: ["MANAGE_EMOJIS", "MANAGE_ROLES"], 
-	requires: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
-};
+		await ctx.channel.send(embed);
 
-export const help = {
-	name: "unlock",
-	category: "Emotes",
-	description: "Lock an emote to specific roles.",
-	usage: "unlock [emote]",
-	example: "unlock <:rooThink:511919341281738773>"
-};
+		emote.roles.set([])
+			.then((emote: GuildEmoji) => ctx.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+			.catch((err: Error) => {
+				console.log(err);
+				ctx.channel.send("There was a unexpected error.");
+			});
+	}
+}
+
+export default Unlock;
