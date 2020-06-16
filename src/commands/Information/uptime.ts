@@ -29,3 +29,5 @@ class Uptime extends Command{
 		ctx.channel.send(embed);
 	}
 }
+
+export default Uptime;

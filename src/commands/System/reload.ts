@@ -1,34 +1,40 @@
-import { Message } from "discord.js";
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
 
-exports.run = (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	if (!client.config.trusted.includes(message.author.id)) return;
-	if (!args || args.length < 1) return message.channel.send("You must provide a command name to reload.");
-	
-	const commandName = args[0];
-	
-	if (!client.commands.has(commandName)) return message.channel.send("That command does not exist!");
-
-	const commandCategory = client.commands.get(commandName).help.category;
-	
-	delete require.cache[require.resolve(`../${commandCategory}/${commandName}.js`)];
-	
-	client.commands.delete(commandName);
-	const props = require(`../${commandCategory}/${commandName}.js`);
-	client.commands.set(commandName, props);
-	
-	message.channel.send(`The command ${commandName} has been reloaded!`);
-};
-
-exports.conf = {
-	aliases: [],
-	perms: [], 
-	requires: ["SEND_MESSAGES"]
-};
-
-exports.help = {
+const options = {
 	name: "reload",
-	category: "System",
-	description: "Reload a command.",
-	usage: "reload [command]",
-	example: "reload ping"
-};
+	description: "Reloads a bot command.",
+	module: "System",
+	usage: "[command]",
+	examples: ["ping"],
+	aliases: [],
+	userPerms: [],
+	botPerms: ["SEND_MESSAGES"],
+	devOnly: true
+}
+
+class Reload extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		if (!client.config.trusted.includes(ctx.user.id)) return;
+		if (!ctx.args || ctx.args.length < 1) return ctx.channel.send("You must provide a command name to reload.");
+		
+		const commandName = ctx.args[0];
+		
+		if (!client.commands.has(commandName)) return ctx.channel.send("That command does not exist!");
+	
+		const commandModule = client.commands.get(commandName).module;
+		
+		delete require.cache[require.resolve(`../${commandModule}/${commandName}.js`)];
+		
+		client.commands.delete(commandName);
+		const props = require(`../${commandModule}/${commandName}.js`);
+		client.commands.set(commandName, props);
+		
+		ctx.channel.send(`The command ${commandName} has been reloaded!`);
+	}
+}
+
+export default Reload;

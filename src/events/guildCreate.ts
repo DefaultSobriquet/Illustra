@@ -1,9 +1,9 @@
 import { Guild, MessageEmbed } from "discord.js";
+import GuildModel from "./../models/Guild";
 
-const GuildModel = require("./../models/Guild");
-module.exports = async (client: any, guild: Guild) => {
-	try{
-		const mongoGuild = new GuildModel({id: guild.id}); // Add the new guild model
+export default async function (client: any, guild: Guild) {
+	try {
+		const mongoGuild = new GuildModel({ id: guild.id }); // Add the new guild model
 		await mongoGuild.save();
 
 		const embed = new MessageEmbed()
@@ -16,8 +16,9 @@ module.exports = async (client: any, guild: Guild) => {
 
 		const logs = await client.channels.fetch(client.config.settings.log); // Log the guild addition
 		logs.send(embed);
-		
-	}catch(err){
+
+	}
+	catch (err) {
 		console.error(err);
 	}
 };
