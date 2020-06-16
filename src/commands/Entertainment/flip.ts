@@ -22,3 +22,5 @@ class Flip extends Command{
 		ctx.channel.send(`\`${result}\``);
 	}
 }
+
+export default Flip;

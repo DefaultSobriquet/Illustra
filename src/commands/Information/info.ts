@@ -1,10 +1,28 @@
-import {MessageEmbed, Message} from "discord.js";
-exports.run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	const embed = new MessageEmbed()
+import {MessageEmbed} from "discord.js";
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
+
+const options = {
+	name: "info",
+	description: "Displays information about the bot.",
+	module: "Information",
+	usage: "",
+	examples: [""],
+	aliases: ["about", "information"],
+	userPerms: [],
+	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+}
+
+class Info extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const embed = new MessageEmbed()
 		.setTitle(client.config.name)
 		.setTimestamp()
 		.setDescription(client.config.description)
-		.setColor(message!.guild!.me!.displayColor || 0x2f3136)
+		.setColor(ctx.guild!.me!.displayColor || 0x2f3136)
 		.setThumbnail(client.user.displayAvatarURL())
 		.addField("Users", client.users.cache.size, true)
 		.addField("Servers", client.guilds.cache.size, true)
@@ -14,21 +32,11 @@ exports.run = async (client: any, message: Message, args: string[], flags: strin
 		.addField("Library", "Discord.js", true)
 		.addField("Invite", `[Bot Invite](${client.config.invite} 'Invite me!')`, true)
 		.addField("Support", `[Server Invite](${client.config.support} 'To click or not to click.')`, true)
-		.setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL());
+		.setFooter(`Requested by ${ctx.user.tag}`, ctx.user.displayAvatarURL());
 
-	message.channel.send((args.join(" ") === "コナミコマンド") ? `\`🔓\` | *Admin permissions granted, ${message.author.tag}!*` : "", embed);
-};
+		ctx.channel.send(embed);
+		
+	}
+}
 
-exports.conf = {
-	aliases: ["about", "information"],
-	perms: [], 
-	requires: ["SEND_MESSAGES"]
-};
-
-exports.help = {
-	name: "info",
-	category: "Information",
-	description: "Display information about the bot.",
-	usage: "info",
-	example: "info"
-};
+export default Info;

@@ -37,3 +37,5 @@ class Dog extends Command{
 		ctx.channel.send(embed);
 	}
 }
+
+export default Dog;

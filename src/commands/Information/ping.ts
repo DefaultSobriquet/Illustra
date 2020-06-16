@@ -1,24 +1,25 @@
-import {sample} from "lodash";
-import { Message} from "discord.js";
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
 
-export const run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	const msg = await message.channel.send("Pong!");
-	const tips = [`Restrict usage of emotes in your server with \`${client.config.name}lock\`!`, 
-		`See an emote you like? \`${client.config.name} obtain [message ID]\` it!`, `Questions? *Psst* — the support server's link is in \`${client.config.name} info\`!`];
-
-	msg.edit(`Pong! \`${msg.createdTimestamp - message.createdTimestamp}ms\`\n${flags.includes("tip") ? sample(tips) : ""}`);
-};
-
-export const conf = {
-	aliases: ["latency", "pong"],
-	perms: [], 
-	requires: ["SEND_MESSAGES"]
-};
-
-export const help = {
+const options = {
 	name: "ping",
-	category: "Information",
 	description: "Check the bot and Discord's API latency.",
-	usage: "ping",
-	example: "ping"
+	module: "Information",
+	usage: "",
+	examples: [""],
+	aliases: ["latency", "pong"],
+	userPerms: [],
+	botPerms: ["SEND_MESSAGES"]
 };
+
+class Ping extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const msg = await ctx.channel.send("Pong!");
+		msg.edit(`Pong! \`${msg.createdTimestamp - ctx.message.createdTimestamp}ms\``);
+	}
+}
+
+export default Ping;

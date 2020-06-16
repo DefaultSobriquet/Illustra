@@ -1,25 +1,7 @@
 import { Message } from "discord.js";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
-
-const GuildModel = require("../../models/Guild.js");
-exports.run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	
-};
-
-exports.conf = {
-	aliases: [],
-	perms: ["MANAGE_GUILD"], 
-	requires: ["SEND_MESSAGES"]
-};
-
-exports.help = {
-	name: "prefix",
-	category: "Guild",
-	description: "Sets or resets the guild prefix.",
-	usage: "prefix (prefix)",
-	example: "prefix !!"
-};
+import GuildModel from "../../models/Guild.js";
 
 const options = {
     name: "prefix",
@@ -50,3 +32,5 @@ class Prefix extends Command{
 		ctx.channel.send(`\`${ctx.args[0]}\` is now your prefix!`);
 	}
 }
+
+export default Prefix;

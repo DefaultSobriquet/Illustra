@@ -11,7 +11,7 @@ const options = {
     examples: [""],
     aliases: ["meow"],
     userPerms: [],
-    botPerms: ["SEND_MESSAGES"]
+    botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
 }
 
 class Cat extends Command{
@@ -33,3 +33,5 @@ class Cat extends Command{
 		ctx.channel.send(embed);
 	}
 }
+
+export default Cat;

@@ -21,3 +21,5 @@ class Say extends Command{
 		ctx.channel.send(ctx.args.join(" ")).catch();
 	}
 }
+
+export default Say;
