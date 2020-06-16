@@ -1,19 +1,24 @@
 import { Message } from "discord.js";
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
 
-export const run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	message.channel.send(["`Heads!`", "`Tails!`"][Math.floor(Math.random() * 2)]);
-};
+const options = {
+    name: "flip",
+    description: "Flip a coin!",
+    module: "Entertainment",
+    usage: "",
+    examples: [""],
+    aliases: ["coin", "coinflip"],
+    userPerms: [],
+    botPerms: ["SEND_MESSAGES"]
+}
 
-export const conf = {
-	aliases: ["coin", "coinflip"],
-	perms: [], 
-	requires: ["SEND_MESSAGES"]
-};
-
-export const help = {
-	name: "flip",
-	category: "Entertainment",
-	description: "Flip a coin.",
-	usage: "flip",
-	example: "flip"
-};
+class Flip extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const result = ["Heads!", "Tails!"][Math.floor(Math.random() * 2)];
+		ctx.channel.send(`\`${result}\``);
+	}
+}

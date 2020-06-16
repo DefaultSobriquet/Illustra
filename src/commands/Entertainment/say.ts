@@ -1,20 +1,23 @@
-import { Message } from "discord.js";
+import { ICommandContext } from "../../types";
+import { Command } from "../../structures/Command";
 
-export const run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	message.delete().catch();
-	message.channel.send(args.join(" ")).catch();
-};
+const options = {
+    name: "say",
+    description: "Make the bot say something.",
+    module: "Entertainment",
+    usage: "[...message]",
+    examples: ["A towel has immense psychological value."],
+    aliases: ["echo", "speak"],
+    userPerms: ["MANAGE_MESSAGES"],
+    botPerms: ["SEND_MESSAGES", "MANAGE_MESSAGES"]
+}
 
-export const conf = {
-	aliases: ["speak", "echo"],
-	perms: ["MANAGE_MESSAGES"], 
-	requires: ["SEND_MESSAGES", "MANAGE_MESSAGES"]
-};
-
-export const help = {
-	name: "say",
-	category: "Entertainment",
-	description: "Make the bot say something.",
-	usage: "say",
-	example: "say"
-};
+class Say extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		ctx.message.delete().catch();
+		ctx.channel.send(ctx.args.join(" ")).catch();
+	}
+}

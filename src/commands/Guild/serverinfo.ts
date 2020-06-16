@@ -1,8 +1,25 @@
-import {MessageEmbed, Message} from "discord.js";
+import {MessageEmbed} from "discord.js";
 import {startCase, toLower} from "lodash";
+import { Command } from "../../structures/Command";
+import { ICommandContext } from "../../types";
 
-exports.run = async (client: any, message: Message, args: string[], flags: string[]) => { // eslint-disable-line no-unused-vars
-	const guild = message.guild;
+const options = {
+    name: "serverinfo",
+    description: "Display information about the guild.",
+    module: "Guild",
+    usage: "serverinfo",
+    examples: [""],
+    aliases: ["guildinfo", "server"],
+    userPerms: [],
+    botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
+};
+
+class Serverinfo extends Command{
+	constructor(){
+		super(options);
+	}
+	async execute(ctx: ICommandContext, client: any){
+		const guild = ctx.guild;
 
 	const embed = new MessageEmbed()
 		.setTitle(guild!.name)
@@ -23,19 +40,8 @@ exports.run = async (client: any, message: Message, args: string[], flags: strin
 		.addField("Features", guild!.features.length ? (guild!.features.map(f => startCase(toLower(f))).join(", ").replace(/_/g, " ")) : "None", true)
 		.setFooter(`Server ID ${guild!.id} • Server created on ${guild!.createdAt.toLocaleDateString()}`);
 	
-	message.channel.send(embed);
-};
+		ctx.channel.send(embed);
+	}
+}
 
-exports.conf = {
-	aliases: ["guildinfo", "server"],
-	perms: [], 
-	requires: ["SEND_MESSAGES"]
-};
-
-exports.help = {
-	name: "serverinfo",
-	category: "Guild",
-	description: "Display information about the server.",
-	usage: "serverinfo",
-	example: "serverinfo"
-};
+export default Serverinfo;
