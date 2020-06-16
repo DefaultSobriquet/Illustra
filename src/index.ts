@@ -11,10 +11,10 @@ import config from "./config.js";
 //@ts-ignore
 client.config = config;
 
-require("./modules/utils.js")(client);
-require("./modules/users.js")(client);
-require("./modules/emotes.js")(client);
-require("./modules/roles.js")(client);
+require("./utils/utils.js")(client);
+require("./utils/users.js")(client);
+require("./utils/emotes.js")(client);
+require("./utils/roles.js")(client);
 
 //@ts-ignore Until we add a proper Client wrapper, this is the best we can do.
 client.commands = new Collection();
@@ -41,7 +41,7 @@ const init = async () => {
 	evtFiles.forEach((file: string) => {
 		const eventName = file.split(".")[0];
 		console.log(`Loading Event: ${eventName}`);
-		const event = require(`./events/${file}`);
+		const event = require(`./events/${file}`).default;
 		client.on(eventName, event.bind(null, client));
 	});
 	//@ts-ignore See above.

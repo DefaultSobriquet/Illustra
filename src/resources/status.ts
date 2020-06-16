@@ -1,4 +1,4 @@
-export const status = [
+const status = [
 	{type: "PLAYING", text: "with emotes!"},
 	{type: "PLAYING", text: "with cats!"},
 	{type: "PLAYING", text: "with cheat codes."},
@@ -16,3 +16,5 @@ export const status = [
 	{type: "LISTENING", text: "an old record."},
 	{type: "LISTENING", text: "a whisper."}
 ];
+
+export default status;

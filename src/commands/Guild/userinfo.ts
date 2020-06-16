@@ -28,7 +28,7 @@ class Userinfo extends Command{
 		const userPerms = keyPerms.filter((perm) => target.permissions.toArray().includes(perm)); // Filter by key permissions
 		const roles = target.roles.cache.filter((role: Role) => !(role.id === role.guild.id)).map((role: Role) => role).sort((a: Role, b: Role) => b.position - a.position); // Sort by role position
 		// @ts-ignore This needs to be fixed at some point.
-		const members = [...message!.guild!.members.cache.filter((member) => !member.user.bot).sort((a: GuildMember, b:GuildMember) => a!.joinedAt - b!.joinedAt)]; // Sort by join date 
+		const members = [...ctx.guild!.members.cache.filter((member) => !member.user.bot).sort((a: GuildMember, b:GuildMember) => a!.joinedAt - b!.joinedAt)]; // Sort by join date 
 		const position = members.findIndex((user) => user[0] === target.id)+1;
 		const status = {"online": "Online", "idle": "Idle", "offline": "Offline", "dnd": "Do Not Disturb"};
 

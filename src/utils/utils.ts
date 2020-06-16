@@ -2,14 +2,15 @@ module.exports = (client: any) => {
 	// Command Loader
 	client.loadCommand = (commandName: string, commandFolder: string) => {
 		try {
-			console.log(`Loading command: ${commandName}`);
-			const props = require(`../commands/${commandFolder}/${commandName}`);
+			console.log(`Loading command: ${commandName} from ${commandFolder}`);
+			const cmd = require(`../commands/${commandFolder}/${commandName}`).default;
+			const props = new cmd();
 			if (props.init) {
 				props.init(client);
 			}
-			client.commands.set(props.help.name, props);
-			props.conf.aliases.forEach((alias: string) => {
-				client.aliases.set(alias, props.help.name);
+			client.commands.set(props.name, props);
+			props.aliases.forEach((alias: string) => {
+				client.aliases.set(alias, props.name);
 			});
 			return false;
 		} catch (e) {

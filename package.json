@@ -9,7 +9,6 @@
     "@types/node": "^13.11.1",
     "@types/ws": "^7.2.4",
     "axios": "^0.19.2",
-    "axois": "0.0.1-security",
     "discord.js": "^12.0.1",
     "jimp": "^0.10.1",
     "lodash": "^4.17.15",
@@ -24,7 +23,7 @@
     "eslint": "^6.8.0"
   },
   "scripts": {
-    "pretest": "eslint --ignore-path .gitignore ."
+    "pretest": "eslint --ignore-path .gitignore"
   },
   "repository": {
     "type": "git",
