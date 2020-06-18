@@ -1,15 +1,20 @@
-import { Message } from "discord.js";
+import { Client, Guild} from "discord.js";
+import { IUtilsOptions } from "../types";
 
-module.exports = (client: any) => {
-	client.utils.roles = {
-		resolve: (input: string, message: Message) => {
-			if (!input) return null;
-			let role = message!.guild!.roles.cache.find((role) => role.id === input);
-			role = role || message!.guild!.roles.cache.find((role) => role.toString() === input);
-			role = role || message!.guild!.roles.cache.find((role) => role.name === input)
-			role = role || message!.guild!.roles.cache.find((role) => role.name.startsWith(input));
-			role = role || message!.guild!.roles.cache.find((role) => role.name.toLowerCase().startsWith(input.toLowerCase()));
-			return role;
-		}
-	};
+class RoleUtils{
+	client: Client;
+	constructor(options: IUtilsOptions){
+		this.client = options.client;
+	}
+	resolve = (input: string, guild: Guild) => {
+		if (!input) return null;
+		let role = guild.roles.cache.find((role) => role.id === input);
+		role = role ?? guild.roles.cache.find((role) => role.toString() === input);
+		role = role ?? guild.roles.cache.find((role) => role.name === input)
+		role = role ?? guild.roles.cache.find((role) => role.name.startsWith(input));
+		role = role ?? guild.roles.cache.find((role) => role.name.toLowerCase().startsWith(input.toLowerCase()));
+		return role;
+	}
 };
+
+export default RoleUtils;

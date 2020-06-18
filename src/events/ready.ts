@@ -1,11 +1,6 @@
-export default async function (client: any) {
+import IllustraClient from "../structures/IllustraClient";
+
+export default async function (Illustra: IllustraClient) {
 	// Log that the bot is online and sets the status.
-	console.log(`${client.user.tag}, ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers with ${client.commands.size} commands.`);
-	const statusChange = () => {
-		const status = client.config.status; // Retrieve status from config
-		const key = Math.floor(Math.random() * status.length);
-		client.user.setActivity(status[key].text, { type: status[key].type });
-		setTimeout(statusChange, 15000, client);
-	};
-	statusChange();
+	console.log(`${Illustra.client.user!.tag}, ready to serve ${Illustra.client.users.cache.size} users in ${Illustra.client.guilds.cache.size} servers with ${Illustra.commands.size} commands.`);
 };

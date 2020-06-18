@@ -3,9 +3,9 @@ import {startCase, toLower} from "lodash";
 import {ICommandContext} from "../types";
 import {Command} from "../structures/Command";
 import GuildModel from "../models/Guild";
+import IllustraClient from "../structures/IllustraClient";
 
-// Note: This needs to be changed to an Illustra Client later
-export default async function (client: any, message: Message) {
+export default async function (Illustra: IllustraClient, message: Message) {
 
 	let prefix;
 
@@ -22,15 +22,16 @@ export default async function (client: any, message: Message) {
 	}
 
 	// Mention Prefix
-	const prefixMention = new RegExp(`^<@!?${client.user.id}>`);
+	const prefixMention = new RegExp(`^<@!?${Illustra.client.user!.id}>`);
 	prefix = message.content.match(prefixMention)?.shift() ?? prefix;
 
 	// Name Prefix
-	prefix = message.content.startsWith(client.config.name) ? client.config.name : prefix;
+	prefix = message.content.startsWith(Illustra.config.name) ? Illustra.config.name : prefix;
+
+	if(!prefix) return;
 
 	// Prevent execution by bots and checks for messages without the prefix, within a guild.
-	if (message.author.bot || !message.content.startsWith(prefix))
-		return;
+	if (message.author.bot || !message.content.startsWith(prefix)) return;
 
 	// Create arguments and command from message.
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -38,7 +39,7 @@ export default async function (client: any, message: Message) {
 	const command = args.shift()!.toLowerCase();
 
 	// Retrieve command
-	let cmd = client.commands.get(command) ?? client.commands.find((c: Command) => c.aliases.includes(command));
+	let cmd = Illustra.commands.get(command) ?? Illustra.commands.find((c: Command) => c.aliases.includes(command));
 	if (!cmd) return;
 
 	const ctx: ICommandContext = {
@@ -50,11 +51,11 @@ export default async function (client: any, message: Message) {
 
 	if (message.guild) {
 		// Permission checks (this will need to be reworked)
-		if (!message.member!.hasPermission(cmd.userPerms) && !client.config.trusted.includes(message.author.id))
+		if (!message.member!.hasPermission(cmd.userPerms) && !Illustra.config.trusted.includes(message.author.id))
 			return;
 
 		//@ts-ignore This message will never be in a DM channel because the message has a guild.
-		const missingPerms = message.channel.permissionsFor(client.user).missing(cmd.botPerms);
+		const missingPerms = message.channel.permissionsFor(Illustra.client.user).missing(cmd.botPerms);
 
 		if (missingPerms.length > 0) {
 			const embed = new MessageEmbed()
@@ -62,11 +63,11 @@ export default async function (client: any, message: Message) {
 				.setTimestamp()
 				// It would be optimal to fetch the Illlustra guild member for each guild to get the color (or just remove it — is adaptive colouring such a useful feature?).
 				.setColor(message.guild.me!.displayColor || 0x2f3136)
-				.setDescription(`I do not have adequate permissions to run the command \`${cmd.help.name}\`.`)
+				.setDescription(`I do not have adequate permissions to run the command \`${cmd.name}\`.`)
 				.addField("Missing Permissions", `\`${missingPerms.map((p: string) => startCase(toLower(p))).join(", ")}\``)
 				.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL() ?? undefined);
 
-			message.author.send(embed).catch((err) => console.log(err));
+			message.author.send(embed).catch((err) => console.error(err));
 			return;
 		}
 
@@ -75,5 +76,5 @@ export default async function (client: any, message: Message) {
 	}
 
 	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.name}`);
-	cmd.execute(ctx, client);
+	cmd.execute(ctx, Illustra);
 };

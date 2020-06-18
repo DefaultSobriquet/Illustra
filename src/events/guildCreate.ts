@@ -1,7 +1,8 @@
 import { Guild, MessageEmbed } from "discord.js";
 import GuildModel from "./../models/Guild";
+import IllustraClient from "../structures/IllustraClient";
 
-export default async function (client: any, guild: Guild) {
+export default async function (Illustra: IllustraClient, guild: Guild) {
 	try {
 		const mongoGuild = new GuildModel({ id: guild.id }); // Add the new guild model
 		await mongoGuild.save();
@@ -12,9 +13,10 @@ export default async function (client: any, guild: Guild) {
 			.setTimestamp()
 			.setDescription(`A guild of ${guild.memberCount} members owned by \`\`${guild!.owner!.user.tag}\`\`, ${guild.name} was created at ${guild.createdAt.toLocaleString()}.`)
 			.setThumbnail(guild.iconURL() ?? "")
-			.setFooter(`${guild.name} is Guild #${client.guilds.cache.size} for ${client.config.name}.`);
+			.setFooter(`${guild.name} is Guild #${Illustra.client.guilds.cache.size} for ${Illustra.config.name}.`);
 
-		const logs = await client.channels.fetch(client.config.settings.log); // Log the guild addition
+		const logs = await Illustra.client.channels.fetch(Illustra.config.settings.log); // Log the guild addition
+		//@ts-ignore We know the config provides a text channel.
 		logs.send(embed);
 
 	}
