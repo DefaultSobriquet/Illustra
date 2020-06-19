@@ -12,15 +12,18 @@ const options: Partial<Command> = {
     aliases: ["av"],
     userPerms: [],
     botPerms: ["SEND_MESSAGES"]
-}
+};
 
 class Avatar extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const member = Illustra.utils.user.resolve(ctx.args[0], ctx.message);
-		if (!member) return ctx.channel.send("I could not find a member matching that.");
+		if (!member){
+			ctx.channel.send("I could not find a member matching that.");
+			return;
+		}
 		
 		const embed = new MessageEmbed()
 			.setTitle("Avatar")

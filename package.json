@@ -19,12 +19,12 @@
     "signale": "^1.4.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^3.1.0",
-    "@typescript-eslint/parser": "^3.1.0",
-    "eslint": "^6.8.0"
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
+    "eslint": "^7.2.0"
   },
   "scripts": {
-    "pretest": "eslint --ignore-path .gitignore"
+    "pretest": "eslint . --ignore-path .gitignore"
   },
   "repository": {
     "type": "git",

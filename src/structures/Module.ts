@@ -10,3 +10,5 @@ class Module{
 		this.dirname = __dirname;
 	}
 }
+
+export default Module;

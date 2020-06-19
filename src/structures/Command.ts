@@ -7,7 +7,7 @@ import IllustraClient from "./IllustraClient";
 export class Command{
     
     name: string;
-    aliases: string[]; 
+    aliases: string[];
     userPerms: PermissionString[];
     botPerms: PermissionString[];
     module: string /*Module goes here later.*/;
@@ -17,6 +17,7 @@ export class Command{
     enabled: boolean;
     guildOnly: boolean;
     devOnly: boolean;
+    reqArgs: number;
     subcommands: Collection<string, Command>
 
     constructor(options: Partial<Command>){
@@ -31,10 +32,12 @@ export class Command{
         this.enabled = options.enabled ?? true;
         this.devOnly = options.devOnly ?? false;
         this.guildOnly = options.guildOnly ?? true;
+        this.reqArgs = options.reqArgs ?? 0;
         this.subcommands = options.subcommands ?? new Collection();
     }
 
-    async execute(ctx: ICommandContext, Illustra: IllustraClient /* IllustraClient goes here later.*/): Promise<any|void>{
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
         new Error("You didn't make me something!");
     }
     

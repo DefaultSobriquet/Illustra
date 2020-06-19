@@ -17,7 +17,8 @@ class Ping extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const msg = await ctx.channel.send("Pong!");
 		msg.edit(`Pong! \`${msg.createdTimestamp - ctx.message.createdTimestamp}ms\``);
 	}

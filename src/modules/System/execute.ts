@@ -13,18 +13,22 @@ const options: Partial<Command> = {
 	aliases: ["exec", "exe"],
 	userPerms: [],
 	botPerms: ["SEND_MESSAGES"],
-	devOnly: true
-}
+	devOnly: true,
+	reqArgs: 1
+};
 
 class Execute extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		if (!Illustra.config.trusted.includes(ctx.user.id)) return;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 
-		if (!ctx.args[0]) return ctx.channel.send("Please enter an input.");
-		
+		if (!ctx.args[0]){
+			ctx.channel.send("Please enter an input.");
+			return;
+		}
+
 		try {
 			let output = "No output.";
 			

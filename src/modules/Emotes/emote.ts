@@ -10,17 +10,21 @@ const options: Partial<Command> = {
 	examples: ["rooThink"],
 	aliases: ["emoji"],
 	userPerms: [],
-	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
-}
+	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"],
+	reqArgs: 1
+};
 
 class Emote extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		const {props, embed, resolve} = Illustra.utils.emote;
-		const emote = /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
-		if (!emote) return ctx.channel.send("Please enter a valid emote.");
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+		const {props, embed, resolve, validate} = Illustra.utils.emote;
+		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
+		if (!emote){
+			ctx.channel.send("Please enter a valid emote.");
+			return;
+		}
 		ctx.channel.send(embed(emote, ctx.message));
 	}
 }

@@ -13,14 +13,14 @@ const options: Partial<Command> = {
 	userPerms: [],
 	botPerms: ["SEND_MESSAGES"],
 	devOnly: true
-}
+};
 
 class Restart extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		if (!Illustra.config.trusted.includes(ctx.user.id)) return;
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+		
 		const end = () => {
 			Illustra.client.destroy();
 			process.exit(0);

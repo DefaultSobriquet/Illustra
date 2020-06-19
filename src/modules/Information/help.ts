@@ -13,13 +13,13 @@ const options: Partial<Command> = {
 	aliases: [],
 	userPerms: [],
 	botPerms: ["SEND_MESSAGES"]
-}
+};
 
 class Help extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		if (!ctx.args[0]) { // Check if there is no argument.
 			const commands = groupBy(Illustra.commands.array(), (cmd: Command) => cmd.module);
 			
@@ -40,7 +40,12 @@ class Help extends Command{
 
 			const search = ctx.args[0].toLowerCase(); // Take the first argument as a search term.
 			const command: (Command|undefined) = Illustra.commands.get(search) ?? Illustra.commands.find((c:Command) => c.aliases.includes(search)); // Attempt to retrieve search
-			if (!command) return ctx.channel.send("I've never heard of that command before."); // If commmand doesn't exist, notify.
+			
+			if (!command){
+				ctx.channel.send("I've never heard of that command before."); // If commmand doesn't exist, notify.
+				return;
+			}
+
 			const embed = new MessageEmbed()
 				.setTitle(`Command: ${command.name}`)
 				.setColor(ctx.guild!.me!.displayColor || 0x2f3136)

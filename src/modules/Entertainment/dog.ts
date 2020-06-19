@@ -13,13 +13,13 @@ const options: Partial<Command> = {
     aliases: ["woof"],
     userPerms: [],
     botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
-}
+};
 
 class Dog extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const headers = {"x-api-key": Illustra.config.api_tokens.thedogapi};
 	
 		const request = (await axios.get("https://api.thedogapi.com/v1/images/search", {headers})).data;

@@ -11,14 +11,14 @@ const options: Partial<Command> = {
     aliases: ["add"],
     userPerms: ["MANAGE_EMOJIS"],
     botPerms: ["SEND_MESSAGES", "MANAGE_EMOJIS", "EMBED_LINKS"]
-}
+};
 
 class Upload extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		const { embed, props, space } = Illustra.utils.emote;
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+		const { embed, props, space, validate } = Illustra.utils.emote;
 	
 		const calculated = space(ctx.guild!);
 		const a = calculated.animated;
@@ -33,20 +33,34 @@ class Upload extends Command{
 	
 		if(file){ // Alright, let's start using the attachment.
 			if(!(file.size <= 256000 && /\.(gif|png|jpg|jpeg|webp)$/.test(file.url))){
-				return ctx.channel.send("That's an invalid attachment (over 256 KB or not a valid image)!");
+				ctx.channel.send("That's an invalid attachment (over 256 KB or not a valid image)!");
+				return;
 			}
 			
-			if(!a && /\.gif$/.test(file.url)) return ctx.channel.send("You don't have space for an animated emote!");
-			if(!s && /\.(png|jpg|jpeg|webp)$/.test(file.url)) return ctx.channel.send("You don't have space for an static emote!");
+			if(!a && /\.gif$/.test(file.url)){
+				ctx.channel.send("You don't have space for an animated emote!");
+				return;
+			}
+			if(!s && /\.(png|jpg|jpeg|webp)$/.test(file.url)){
+				ctx.channel.send("You don't have space for an static emote!");
+				return;
+			}
 	
 			if(regName.test(file.name ?? "")) name = file.name;
 			link = file.url;
 		}
 	
-		if(!link && /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(ctx.args[1])) link = props(ctx.args[1])?.url ?? undefined;
+		if(!link && validate(ctx.args[1])) link = props(ctx.args[1])?.url ?? undefined;
 	
-		if(!name) return ctx.channel.send("You didn't provide a valid name emote name!"); // Is the name valid?
-		if(!link) return ctx.channel.send("You didn't provide a valid link, emote, or attachment."); // Did we get a link?
+		if(!name){
+			ctx.channel.send("You didn't provide a valid name emote name!"); // Is the name valid?
+			return;
+		}
+
+		if(!link){
+			ctx.channel.send("You didn't provide a valid link, emote, or attachment."); // Did we get a link?
+			return;
+		}
 	
 		ctx.guild!.emojis.create(link, name, {reason: `Added by ${ctx.user.tag}`})
 			.then(emote => ctx.channel.send(embed(emote, ctx.message)))

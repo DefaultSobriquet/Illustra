@@ -19,7 +19,8 @@ class System extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const embed = new MessageEmbed()
 			.setTitle("System Information")
 			.setTimestamp()

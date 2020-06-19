@@ -12,13 +12,13 @@ const options: Partial<Command> = {
 	aliases: ["about", "information"],
 	userPerms: [],
 	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
-}
+};
 
 class Info extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const embed = new MessageEmbed()
 		.setTitle(Illustra.config.name)
 		.setTimestamp()

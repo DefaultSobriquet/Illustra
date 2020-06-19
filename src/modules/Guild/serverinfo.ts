@@ -19,7 +19,8 @@ class Serverinfo extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const guild = ctx.guild;
 
 	const embed = new MessageEmbed()

@@ -11,27 +11,30 @@ const options: Partial<Command> = {
 	aliases: [],
 	userPerms: [],
 	botPerms: ["SEND_MESSAGES"],
-	devOnly: true
-}
+	devOnly: true,
+	reqArgs: 1
+};
 
 class Reload extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		if (!Illustra.config.trusted.includes(ctx.user.id)) return;
-		if (!ctx.args || ctx.args.length < 1) return ctx.channel.send("You must provide a command name to reload.");
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		
 		const commandName = ctx.args[0];
 		
-		if (!Illustra.commands.has(commandName)) return ctx.channel.send("That command does not exist!");
+		if (!Illustra.commands.has(commandName)){
+			ctx.channel.send("That command does not exist!");
+			return;
+		}
 	
-		//@ts-ignore This shouldn't have an error; we already verify that the command does in fact exist (see above).
-		const commandModule = Illustra.commands.get(commandName).module;
+		
+		const commandModule = Illustra.commands.get(commandName)!.module;
 		
 		delete require.cache[require.resolve(`../${commandModule}/${commandName}.js`)];
 		
 		Illustra.commands.delete(commandName);
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		const cmd = require(`../${commandModule}/${commandName}.js`).default;
 		const props = new cmd();
 		Illustra.commands.set(commandName, props);

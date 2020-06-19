@@ -1,23 +1,26 @@
-import { Message, MessageEmbed} from "discord.js";
+import { Message, MessageEmbed, TextChannel} from "discord.js";
 import {startCase, toLower} from "lodash";
 import {ICommandContext} from "../types";
 import {Command} from "../structures/Command";
 import GuildModel from "../models/Guild";
 import IllustraClient from "../structures/IllustraClient";
 
-export default async function (Illustra: IllustraClient, message: Message) {
+export default async function (Illustra: IllustraClient, message: Message): Promise<void> {
 
-	let prefix;
+	let prefix: (string|undefined);
 
 	if (message.guild) {
 		//Fetch the guild member if unavailable
-		if (!message.member)
+		if (!message.member) 
 			await message.guild.members.fetch(message.author.id);
+
 		let guild = await GuildModel.findOne({ id: message.guild.id });
+		
 		if (!guild) {
 			guild = new GuildModel({ id: message.guild.id });
 			await guild.save();
 		}
+		
 		prefix = guild.prefix; // Guild prefix as starting prefix
 	}
 
@@ -39,7 +42,7 @@ export default async function (Illustra: IllustraClient, message: Message) {
 	const command = args.shift()!.toLowerCase();
 
 	// Retrieve command
-	let cmd = Illustra.commands.get(command) ?? Illustra.commands.find((c: Command) => c.aliases.includes(command));
+	const cmd = Illustra.commands.get(command) ?? Illustra.commands.find((c: Command) => c.aliases.includes(command));
 	if (!cmd) return;
 
 	const ctx: ICommandContext = {
@@ -49,13 +52,13 @@ export default async function (Illustra: IllustraClient, message: Message) {
 		channel: message.channel
 	};
 
-	if (message.guild) {
+	if (message.guild && message.channel instanceof TextChannel) {
 		// Permission checks (this will need to be reworked)
-		if (!message.member!.hasPermission(cmd.userPerms) && !Illustra.config.trusted.includes(message.author.id))
+		if (!message.member!.hasPermission(cmd.userPerms) && !Illustra.config.devs.includes(message.author.id))
 			return;
 
-		//@ts-ignore This message will never be in a DM channel because the message has a guild.
-		const missingPerms = message.channel.permissionsFor(Illustra.client.user).missing(cmd.botPerms);
+		
+		const missingPerms = message.channel.permissionsFor(Illustra.client.user!)!.missing(cmd.botPerms);
 
 		if (missingPerms.length > 0) {
 			const embed = new MessageEmbed()
@@ -75,6 +78,18 @@ export default async function (Illustra: IllustraClient, message: Message) {
 		ctx.guild = message.guild;
 	}
 
+	// Arg check
+	if(args.length < cmd.reqArgs){
+		message.channel.send(`The command \`\`${cmd.name}\`\` requires at least ${cmd.reqArgs} arguments to run!`);
+		return;
+	}
+
+	// Dev check
+	if(cmd.devOnly && !Illustra.config.devs.includes(ctx.user.id)){
+		message.channel.send("I know, I wish I was a developer too sometimes.");
+		return;
+	}
+
 	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.name}`);
 	cmd.execute(ctx, Illustra);
-};
+}

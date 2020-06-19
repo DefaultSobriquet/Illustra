@@ -1,24 +1,31 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Client, Collection } from "discord.js";
-import { IClientOptions, IConfig} from "../types";
+import { IClientOptions, IConfig, ISigns} from "../types";
 import { Command } from "./Command";
 import Utils from "../utils/utils";
-import {promisify} from "util";
-const readdir = promisify(require("fs").readdir);
-import {connect} from "mongoose";
+import { promisify } from "util";
+import { connect } from "mongoose";
+import { Signs } from "../utils/IllustraEnums";
+import { readdir } from "fs";
+
+
+const areaddir = promisify(readdir);
+
 
 class IllustraClient{
 	client: Client;
 	config: IConfig;
 	commands: Collection<string, Command>;
 	utils: Utils;
+	signs: ISigns; // This isn't good, though — 
 	constructor(options: IClientOptions){
 		this.client = new Client();
 		this.config = options.config;
 		this.commands = new Collection();
 		this.utils = new Utils({client: this.client});
+		this.signs = Signs;
 	}
-
-	async loadCommand(commandName: string, commandFolder: string): Promise<Boolean|String>{
+	async loadCommand(commandName: string, commandFolder: string): Promise<boolean|string>{
 		try {
 			console.log(`Loading command: ${commandName} from ${commandFolder}`);
 			const cmd = require(`../modules/${commandFolder}/${commandName}`).default;
@@ -33,7 +40,7 @@ class IllustraClient{
 		}
 	}
 	
-	clean(text: string){
+	clean(text: string): string{
 		if (typeof (text) !== "string") {
 			text = require("util").inspect(text, {
 				depth: 0
@@ -46,12 +53,12 @@ class IllustraClient{
 				.replace(this.client.token!, "TOKEN");
 		}
 		return text;
-	};
+	}
 	
-	async loadModules(){
-		const cmdFolders = await readdir("./modules/");
+	async loadModules(): Promise<void>{
+		const cmdFolders = await areaddir("./modules/");
 		for (const folder of cmdFolders) {
-			const cmdFiles = await readdir(`./modules/${folder}/`);
+			const cmdFiles = await areaddir(`./modules/${folder}/`);
 			console.log(`Loading ${folder} Module (${cmdFiles.length} commands)`);
 			cmdFiles.forEach((file: string) => {
 				if (!file.endsWith(".js")) return;
@@ -59,10 +66,10 @@ class IllustraClient{
 				if (response) console.log(response);
 			});
 		}
-	};
+	}
 	
-	async loadEvents(){
-		const evtFiles = await readdir("./events/");
+	async loadEvents(): Promise<void>{
+		const evtFiles = await areaddir("./events/");
 		console.log(`Loading Events (Total ${evtFiles.length})`);
 		evtFiles.forEach((file: string) => {
 			const eventName = file.split(".")[0];
@@ -72,7 +79,7 @@ class IllustraClient{
 		});
 	}
 	
-	async init(): Promise<any>{
+	async init(): Promise<void>{
 		try{
 			await this.loadModules();
 			await this.loadEvents();
@@ -88,7 +95,7 @@ class IllustraClient{
 		}catch(e){
 			console.error(e);
 		}
-	};
+	}
 }
 
 export default IllustraClient;

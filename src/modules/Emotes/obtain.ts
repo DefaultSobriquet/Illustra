@@ -13,36 +13,44 @@ const options: Partial<Command> = {
 	examples: ["717601958126420029", ":rooThink:"],
 	aliases: ["steal"],
 	userPerms: ["MANAGE_EMOJIS"],
-	botPerms: ["SEND_MESSAGES", "VIEW_CHANNEL", "MANAGE_EMOJIS", "READ_MESSAGE_HISTORY"]
-}
+	botPerms: ["SEND_MESSAGES", "VIEW_CHANNEL", "MANAGE_EMOJIS", "READ_MESSAGE_HISTORY"],
+	reqArgs: 1
+};
 
 class Obtain extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		const {extract, props, space} = Illustra.utils.emote;
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+		const {extract, props, space, validate} = Illustra.utils.emote;
 
 		let target;
 	
-		if(ctx.args.some(arg => /<?(a:)?(\w{2,32}):(\d{17,19})>?/.test(arg))) target = ctx.message;
+		if(ctx.args.some(arg => validate(arg))) target = ctx.message;
 	
 		if (!target && ctx.args[0] && /^\d{17,19}$/.test(ctx.args[0])) target = await ctx.message.channel.messages.fetch(ctx.args[0], true)
 			.catch(() => {
 				ctx.channel.send("I could not get that message. Are you in the same channel?");
 			});
 	
-		if (!target) return ctx.channel.send("Please provide either a message ID or emotes as arguments!");
+		if (!target){
+			ctx.channel.send("Please provide either a message ID or emotes as arguments!");
+			return;
+		}
 	
-		const emotes = extract(target).map((emote:any) => props(emote));
+		const emotes = extract(target).map((emote:string) => props(emote)!);
 		const [a, s] = partition(emotes, "animated");
 	
-		if(!emotes.length) return ctx.channel.send("I couldn't find any new emotes!");
-	
+		if(!emotes.length){
+			ctx.channel.send("I couldn't find any new emotes!");
+			return;
+		}
+
 		const server = space(ctx.guild!);
 	
 		if(server.animated - a.length < 0 || server.static - s.length < 0){
-			return ctx.channel.send(`I can't add that many emotes! Currently, there are ${server.static}/${server.limit} static and ${server.animated}/${server.limit} animated spaces for emotes.`);
+			ctx.channel.send(`I can't add that many emotes! Currently, there are ${server.static}/${server.limit} static and ${server.animated}/${server.limit} animated spaces for emotes.`);
+			return;
 		}
 	
 		const embed = new MessageEmbed()
@@ -50,7 +58,7 @@ class Obtain extends Command{
 			.setAuthor(ctx.guild!.name, ctx.guild!.iconURL() ?? undefined)
 			.setColor(ctx.guild!.me!.displayColor || 0x2f3136)
 			.setTimestamp()
-			.setDescription(`**I found ${emotes.length} emote${emotes.length > 1 ? "s" : ""}!**\n${emotes.map((e:any) => `\`[ID ${e.id}] - ${e.name}\``).join("\n")}`)
+			.setDescription(`**I found ${emotes.length} emote${emotes.length > 1 ? "s" : ""}!**\n${emotes.map((e:Emoji) => `\`[ID ${e.id}] - ${e.name}\``).join("\n")}`)
 			.addField("Message", `[Jump!](${target.url} 'Emotes were obtained from this message.')`, true)
 			.setFooter(`Requested by ${ctx.user.tag}`, ctx.user.displayAvatarURL());
 	
@@ -81,5 +89,6 @@ class Obtain extends Command{
 	
 	}
 }
+
 
 export default Obtain;

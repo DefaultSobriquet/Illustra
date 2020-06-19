@@ -1,4 +1,4 @@
-import { Message, Guild, User, GuildMember, TextChannel, DMChannel, GuildEmoji, Emoji, MessageEmbed, Role, Client, Collection } from "discord.js";
+import { Message, Guild, User, GuildMember, TextChannel, DMChannel, Client} from "discord.js";
 
 export interface ICommandContext{
 	message: Message,
@@ -13,7 +13,7 @@ export interface IConfig{
 	token: string,
 	name: string,
 	owner: string,
-	trusted: string[],
+	devs: string[],
 	description: string,
 	support: string,
 	invite: string,
@@ -39,10 +39,6 @@ export interface IUtilsOptions{
 	client: Client;
 }
 
-export interface IRoleUtils{
-	resolve: (input: string, guild: Guild) => Role;
-}
-
-export interface IMemberUtils{
-	resolve: (input: string, guild: Guild) => GuildMember;
+export interface ISigns{
+	[key: string]: string
 }

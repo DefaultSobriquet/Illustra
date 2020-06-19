@@ -12,24 +12,31 @@ const options: Partial<Command> = {
 	aliases: ["e", "evaluate"],
 	userPerms: [],
 	botPerms: ["SEND_MESSAGES"],
-	devOnly: true
-}
+	devOnly: true,
+	reqArgs: 1
+};
 
 class Eval extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
-		if (!Illustra.config.trusted.includes(ctx.user.id)) return;
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+
 		const code = ctx.args.join(" "); // Generate string input.
 
-		if (code.includes("client.token")) return ctx.channel.send("No thanks."); // Prevent attempts to get the token.
+		if (code.includes("client.token")){
+			ctx.channel.send("No thanks."); // Prevent attempts to get the token.
+			return;
+		}
 		
 		try {
 			const evaled = await (code.includes("await") ? eval("async function foo(){" + code + "}; foo()") : eval(code)); // Evaluate the code
 			const clean = Illustra.clean(evaled); // Clean the code
 			const messages = Util.splitMessage(clean, {maxLength: 1990});
-			if (typeof (messages) === "string") return ctx.channel.send(`\`\`\`js\n${messages}\`\`\``);
+			if (typeof (messages) === "string"){
+				ctx.channel.send(`\`\`\`js\n${messages}\`\`\``);
+				return;
+			}
 			messages.forEach((value) => ctx.channel.send(`\`\`\`js\n${value || "No output."}\`\`\``));
 		} catch (err) {
 			ctx.channel.send(`\`ERROR\` \`\`\`xl\n${Illustra.clean(err)}\n\`\`\``);

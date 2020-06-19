@@ -19,7 +19,7 @@ class Uptime extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient){
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const embed = new MessageEmbed()
 			.setTitle("Uptime")
 			.setColor(ctx.guild!.me!.displayColor || 0x2f3136)
