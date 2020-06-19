@@ -22,7 +22,7 @@ class Emote extends Command{
 		const {props, embed, resolve, validate} = Illustra.utils.emote;
 		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
 		if (!emote){
-			ctx.channel.send("Please enter a valid emote.");
+			ctx.channel.send("I really don't think that's a valid emote.");
 			return;
 		}
 		ctx.channel.send(embed(emote, ctx.message));

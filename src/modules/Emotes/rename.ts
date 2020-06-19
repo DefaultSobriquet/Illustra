@@ -24,11 +24,11 @@ class Run extends Command{
 		const {embed, resolve} = Illustra.utils.emote;
 		const emote = resolve(ctx.args[0], ctx.guild!);
 		if (!emote){
-			ctx.channel.send("I could not find the emote provided.");
+			ctx.channel.send("Are you sure that emote exists? I couldn't find it.");
 			return;
 		}
 		if (!/^[_a-z0-9]{2,32}$/i.test(ctx.args[1])){
-			ctx.channel.send("That is not a valid emote name!");
+			ctx.channel.send("Hmm — that doesn't seem to be a valid emote name.");
 			return;
 		}
 		
@@ -37,7 +37,7 @@ class Run extends Command{
 				ctx.channel.send(embed(emote, ctx.message));
 			}).catch((err: Error) => {
 				console.error(err);
-				ctx.channel.send("There was an unexpected error!");
+				ctx.channel.send("There was an unexpected error (as opposed to the expected ones).");
 			});
 	}
 }

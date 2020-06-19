@@ -24,7 +24,7 @@ class Remove extends Command{
 		const emote = resolve(ctx.args[0], ctx.guild!);
 		
 		if (!emote){
-			ctx.channel.send("Please enter a valid emote.");
+			ctx.channel.send("Hmm — are you sure that's a valid emote?");
 			return;
 		}
 		
@@ -34,7 +34,7 @@ class Remove extends Command{
 			.then((emote: Emoji) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err: Error) => {
 				console.error(err);
-				ctx.channel.send("There was a unexpected error.");
+				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
 			});
 	}
 }

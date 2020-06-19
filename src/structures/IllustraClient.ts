@@ -7,6 +7,7 @@ import { promisify } from "util";
 import { connect } from "mongoose";
 import { Signs } from "../utils/IllustraEnums";
 import { readdir } from "fs";
+import { Signale } from "signale";
 
 
 const areaddir = promisify(readdir);
@@ -17,13 +18,15 @@ class IllustraClient{
 	config: IConfig;
 	commands: Collection<string, Command>;
 	utils: Utils;
-	signs: ISigns; // This isn't good, though — 
+	signs: ISigns;
+	logger: Signale;
 	constructor(options: IClientOptions){
 		this.client = new Client();
 		this.config = options.config;
 		this.commands = new Collection();
 		this.utils = new Utils({client: this.client});
 		this.signs = Signs;
+		this.logger = new Signale();
 	}
 	async loadCommand(commandName: string, commandFolder: string): Promise<boolean|string>{
 		try {

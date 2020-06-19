@@ -14,7 +14,7 @@ export default async function (Illustra: IllustraClient, guild: Guild): Promise<
 			.setTitle(`New Guild: ${guild.name}`)
 			.setColor(0x2f3136)
 			.setTimestamp()
-			.setDescription(`A guild of ${guild.memberCount} members owned by \`\`${guild!.owner!.user.tag}\`\`, ${guild.name} was created at ${guild.createdAt.toLocaleString()}.`)
+			.setDescription(`A guild of ${guild.memberCount} members owned by \`\`${guild.owner!.user.tag}\`\`, ${guild.name} was created at ${guild.createdAt.toLocaleString()}.`)
 			.setThumbnail(guild.iconURL() ?? "")
 			.setFooter(`${guild.name} is Guild #${Illustra.client.guilds.cache.size} for ${Illustra.config.name}.`);
 

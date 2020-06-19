@@ -25,10 +25,9 @@ class Lock extends Command{
 		const emote = resolve(ctx.args[0], ctx.guild!);
 	
 		if (!emote){
-			ctx.channel.send("I could not find the emote provided.");
+			ctx.channel.send("I — don't think that emote exists.");
 			return;
 		}
-	
 		
 		const roles: Role[] = [];
 
@@ -39,7 +38,7 @@ class Lock extends Command{
 		}
 	
 		if(!roles.length){
-			ctx.channel.send("I could not find any valid roles!");
+			ctx.channel.send("Are you sure those are valid roles?");
 			return;
 		}
 	
@@ -58,13 +57,13 @@ class Lock extends Command{
 			.setDescription(`**Roles**: ${roles.join(", ")}`)
 			.setFooter(`${ctx.user.tag}`,ctx.user.displayAvatarURL());
 	
-		await ctx.channel.send((!integrated) ? "Warning! I don't have an integrated role and will no longer be able to use this emote." : "", embed);
+		await ctx.channel.send((!integrated) ? "Careful! I don't have an integrated role and will no longer be able to use this emote." : "", embed);
 	
 		emote.roles.set(uniqRoles)
 			.then((emote: Emoji) => ctx.channel.send(`\`🔒\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err: Error) => {
 				console.error(err);
-				ctx.channel.send("There was a unexpected error.");
+				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
 			});
 	}
 }

@@ -66,7 +66,7 @@ export default async function (Illustra: IllustraClient, message: Message): Prom
 				.setTimestamp()
 				// It would be optimal to fetch the Illlustra guild member for each guild to get the color (or just remove it — is adaptive colouring such a useful feature?).
 				.setColor(message.guild.me!.displayColor || 0x2f3136)
-				.setDescription(`I do not have adequate permissions to run the command \`${cmd.name}\`.`)
+				.setDescription(`I don't have adequate permissions to run \`${cmd.name}\`.`)
 				.addField("Missing Permissions", `\`${missingPerms.map((p: string) => startCase(toLower(p))).join(", ")}\``)
 				.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL() ?? undefined);
 
@@ -80,16 +80,16 @@ export default async function (Illustra: IllustraClient, message: Message): Prom
 
 	// Arg check
 	if(args.length < cmd.reqArgs){
-		message.channel.send(`The command \`\`${cmd.name}\`\` requires at least ${cmd.reqArgs} arguments to run!`);
+		message.channel.send(`The command \`\`${cmd.name}\`\` requires at least ${cmd.reqArgs} argument${cmd.reqArgs > 1 ? "s" : ""} to run, silly.`);
 		return;
 	}
 
 	// Dev check
 	if(cmd.devOnly && !Illustra.config.devs.includes(ctx.user.id)){
-		message.channel.send("I know, I wish I was a developer too sometimes.");
+		message.channel.send("I know! I wish I was a developer too sometimes.");
 		return;
 	}
 
-	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.name}`);
+	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.name}.`);
 	cmd.execute(ctx, Illustra);
 }

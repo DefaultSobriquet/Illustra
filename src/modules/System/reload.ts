@@ -24,7 +24,7 @@ class Reload extends Command{
 		const commandName = ctx.args[0];
 		
 		if (!Illustra.commands.has(commandName)){
-			ctx.channel.send("That command does not exist!");
+			ctx.channel.send("That command does not exist (in this universe)!");
 			return;
 		}
 	
@@ -39,7 +39,7 @@ class Reload extends Command{
 		const props = new cmd();
 		Illustra.commands.set(commandName, props);
 		
-		ctx.channel.send(`The command ${commandName} has been reloaded!`);
+		ctx.channel.send(`The command ${commandName} has been reloaded! Back to work.`);
 	}
 }
 

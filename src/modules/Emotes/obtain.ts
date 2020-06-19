@@ -28,13 +28,13 @@ class Obtain extends Command{
 	
 		if(ctx.args.some(arg => validate(arg))) target = ctx.message;
 	
-		if (!target && ctx.args[0] && /^\d{17,19}$/.test(ctx.args[0])) target = await ctx.message.channel.messages.fetch(ctx.args[0], true)
+		if (!target && /^\d{17,19}$/.test(ctx.args[0])) target = await ctx.message.channel.messages.fetch(ctx.args[0], true)
 			.catch(() => {
-				ctx.channel.send("I could not get that message. Are you in the same channel?");
+				ctx.channel.send("I looked for it, but I couldn't get that message. Are you in the same channel?");
 			});
 	
 		if (!target){
-			ctx.channel.send("Please provide either a message ID or emotes as arguments!");
+			ctx.channel.send("Hmm? Make sure you're giving me emotes or a message ID.");
 			return;
 		}
 	
@@ -42,7 +42,7 @@ class Obtain extends Command{
 		const [a, s] = partition(emotes, "animated");
 	
 		if(!emotes.length){
-			ctx.channel.send("I couldn't find any new emotes!");
+			ctx.channel.send("I looked, but I couldn't find any new emotes.");
 			return;
 		}
 
@@ -74,19 +74,18 @@ class Obtain extends Command{
 	
 		for (const emote of emotes) {
 			if(emote)
-			await ctx.guild!.emojis.create(emote.url!, emote.name, {reason: `Obtained by ${ctx.user.tag}!`})
-				.then((e) => success.push(e))
-				.catch(() => {
-					failed.push(emote);
-					status.edit(`There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
-				});
+				await ctx.guild!.emojis.create(emote.url!, emote.name, {reason: `Obtained by ${ctx.user.tag}`})
+					.then((e) => success.push(e))
+					.catch(() => {
+						failed.push(emote);
+						status.edit(`There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
+					});
 		}
 	
 		embed.setDescription(success.join(" | "));
 		if(failed.length) embed.addField("Failed to Add", failed.map(e => `\`${e.name}\``).join(" | "), true);
 	
 		status.edit(`Completed! I've added ${success.length}/${emotes.length} of your requested emotes.`, embed).finally(() => ctx.channel.stopTyping(true));
-	
 	}
 }
 

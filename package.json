@@ -8,6 +8,7 @@
     "@types/mongoose": "^5.7.21",
     "@types/ms": "^0.7.31",
     "@types/node": "^13.11.1",
+    "@types/signale": "^1.4.1",
     "@types/ws": "^7.2.4",
     "axios": "^0.19.2",
     "discord.js": "^12.0.1",

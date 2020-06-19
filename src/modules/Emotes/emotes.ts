@@ -29,7 +29,7 @@ class Emotes extends Command{
 		if(flags.includes("static")) emotes = emotes.filter(e => !e.animated);
 		*/
 		if(!emotes.length){
-			ctx.channel.send("I could not find any emotes.");
+			ctx.channel.send("I tried, but I couldn't find any emotes.");
 			return;
 		}
 

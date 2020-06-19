@@ -23,12 +23,7 @@ class Execute extends Command{
 	}
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
-
-		if (!ctx.args[0]){
-			ctx.channel.send("Please enter an input.");
-			return;
-		}
-
+		
 		try {
 			let output = "No output.";
 			

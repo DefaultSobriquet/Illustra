@@ -38,7 +38,7 @@ export class Command{
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
-        new Error("You didn't make me something!");
+        new Error("You didn't make me do something!");
     }
     
 }

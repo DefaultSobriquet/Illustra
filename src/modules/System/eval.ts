@@ -25,7 +25,7 @@ class Eval extends Command{
 		const code = ctx.args.join(" "); // Generate string input.
 
 		if (code.includes("client.token")){
-			ctx.channel.send("No thanks."); // Prevent attempts to get the token.
+			ctx.channel.send("But we just met!"); // Prevent attempts to get the token.
 			return;
 		}
 		
@@ -37,7 +37,7 @@ class Eval extends Command{
 				ctx.channel.send(`\`\`\`js\n${messages}\`\`\``);
 				return;
 			}
-			messages.forEach((value) => ctx.channel.send(`\`\`\`js\n${value || "No output."}\`\`\``));
+			messages.forEach((value) => ctx.channel.send(`\`\`\`js\n${value ?? "No output."}\`\`\``));
 		} catch (err) {
 			ctx.channel.send(`\`ERROR\` \`\`\`xl\n${Illustra.clean(err)}\n\`\`\``);
 		}

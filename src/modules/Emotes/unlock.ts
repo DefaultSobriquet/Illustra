@@ -22,8 +22,9 @@ class Unlock extends Command{
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 		const {resolve} = Illustra.utils.emote;
 		const emote = resolve(ctx.args[0], ctx.guild!);
+		
 		if (!emote){
-			ctx.channel.send("I could not find the emote provided.");
+			ctx.channel.send("I looked, but I couldn't find the emote provided.");
 			return;
 		}
 
@@ -41,7 +42,7 @@ class Unlock extends Command{
 			.then((emote: GuildEmoji) => ctx.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err: Error) => {
 				console.error(err);
-				ctx.channel.send("There was a unexpected error.");
+				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
 			});
 	}
 }
