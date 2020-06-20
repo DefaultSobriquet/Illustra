@@ -41,7 +41,7 @@ class Unlock extends Command{
 		emote.roles.set([])
 			.then((emote: GuildEmoji) => ctx.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err: Error) => {
-				console.error(err);
+				Illustra.logger.error(err);
 				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
 			});
 	}

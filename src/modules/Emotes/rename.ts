@@ -36,7 +36,7 @@ class Run extends Command{
 			.then((emote: Emoji) => {
 				ctx.channel.send(embed(emote, ctx.message));
 			}).catch((err: Error) => {
-				console.error(err);
+				Illustra.logger.error(err);
 				ctx.channel.send("There was an unexpected error (as opposed to the expected ones).");
 			});
 	}

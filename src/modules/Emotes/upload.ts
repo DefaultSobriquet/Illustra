@@ -65,7 +65,7 @@ class Upload extends Command{
 		ctx.guild!.emojis.create(link, name, {reason: `Added by ${ctx.user.tag}`})
 			.then(emote => ctx.channel.send(embed(emote, ctx.message)))
 			.catch(err => {
-				console.error(err);
+				Illustra.logger.error(err);
 				ctx.channel.send("There was an error! Your link might have been an invalid image.");
 			});
 	}

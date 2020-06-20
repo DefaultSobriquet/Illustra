@@ -28,7 +28,8 @@
     "eslint": "^7.2.0"
   },
   "scripts": {
-    "pretest": "eslint . --ignore-path .gitignore"
+    "lint": "eslint . --ignore-path .gitignore",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

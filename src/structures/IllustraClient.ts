@@ -30,7 +30,7 @@ class IllustraClient{
 	}
 	async loadCommand(commandName: string, commandFolder: string): Promise<boolean|string>{
 		try {
-			console.log(`Loading command: ${commandName} from ${commandFolder}`);
+			this.logger.info(`Loading command: ${commandName} from ${commandFolder}`);
 			const cmd = require(`../modules/${commandFolder}/${commandName}`).default;
 			const props = new cmd();
 			if (props.init) {
@@ -62,21 +62,21 @@ class IllustraClient{
 		const cmdFolders = await areaddir("./modules/");
 		for (const folder of cmdFolders) {
 			const cmdFiles = await areaddir(`./modules/${folder}/`);
-			console.log(`Loading ${folder} Module (${cmdFiles.length} commands)`);
+			this.logger.info(`Loading ${folder} Module (${cmdFiles.length} commands)`);
 			for(const file of cmdFiles){
 				if (!file.endsWith(".js")) return;
 				const response = await this.loadCommand(file, folder);
-				if (response) console.log(response);
+				if (response) this.logger.error(response);
 			}
 		}
 	}
 	
 	async loadEvents(): Promise<void>{
 		const evtFiles = await areaddir("./events/");
-		console.log(`Loading Events (Total ${evtFiles.length})`);
+		this.logger.info(`Loading Events (Total ${evtFiles.length})`);
 		evtFiles.forEach((file: string) => {
 			const eventName = file.split(".")[0];
-			console.log(`Loading Event: ${eventName}`);
+			this.logger.info(`Loading Event: ${eventName}`);
 			const event = require(`../events/${file}`).default;
 			this.client.on(eventName, event.bind(null, this));
 		});
@@ -92,11 +92,11 @@ class IllustraClient{
 				useUnifiedTopology: true,
 				useCreateIndex: true
 			}, (err) => {
-				if (err) console.error(err);
+				if (err) this.logger.error(err);
 			});
 			this.client.login(this.config.token);
 		}catch(e){
-			console.error(e);
+			this.logger.error(e);
 		}
 	}
 }

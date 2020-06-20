@@ -21,6 +21,6 @@ export default async function (Illustra: IllustraClient, guild: Guild): Promise<
 		logs.send(embed);
 
 	}catch (err){
-		console.error(err);
+		Illustra.logger.error(err);
 	}
 }

@@ -33,7 +33,7 @@ class Remove extends Command{
 		emote.delete(`Removed by ${ctx.user.tag}`)
 			.then((emote: Emoji) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err: Error) => {
-				console.error(err);
+				Illustra.logger.error(err);
 				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
 			});
 	}

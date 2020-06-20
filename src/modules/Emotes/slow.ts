@@ -59,18 +59,16 @@ class Emote extends Command{
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const data: any = await image.identifyPromise();
 
-		if(data.Delay) console.log(data.Delay, data.Delay[0].split("x"));
-
 		const delay = data.Delay ? data.Delay[0].split("x") : [0, 100];
 
 		image.delay(parseInt(`${parseInt(delay[0]) * 2}x${delay[1]}`)).toBuffer("gif", async (err, buffer) => {
-			if(err) return console.error(err);
+			if(err) return Illustra.logger.error(err);
 			ctx.guild!.emojis.create(buffer, `SLOW${emote.name.slice(0,28)}`)
 				.then(e => {
 					ctx.channel.send(embed(e, ctx.message));
 				}).catch(err => {
 					ctx.channel.send("Oh. Err, something went wrong — sorry about that. I'll look into it.");
-					console.log(err);
+					Illustra.logger.error(err);
 				});
 			
 		});

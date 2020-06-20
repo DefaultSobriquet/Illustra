@@ -70,7 +70,7 @@ export default async function (Illustra: IllustraClient, message: Message): Prom
 				.addField("Missing Permissions", `\`${missingPerms.map((p: string) => startCase(toLower(p))).join(", ")}\``)
 				.setFooter(`${message.guild.name} | Missing Permissions`, message.guild.iconURL() ?? undefined);
 
-			message.author.send(embed).catch((err) => console.error(err));
+			message.author.send(embed).catch();
 			return;
 		}
 
@@ -90,6 +90,6 @@ export default async function (Illustra: IllustraClient, message: Message): Prom
 		return;
 	}
 
-	console.log(`${message.author.username} [${message.author.id}] ran command ${cmd.name}.`);
+	Illustra.logger.info(`${message.author.username} [${message.author.id}] ran command ${cmd.name}.`);
 	cmd.execute(ctx, Illustra);
 }
