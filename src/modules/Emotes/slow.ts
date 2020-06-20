@@ -21,7 +21,7 @@ const options: Partial<Command> = {
 	usage: "[emote]",
 	examples: ["toothless"],
 	aliases: ["emoji"],
-	userPerms: [],
+	userPerms: ["MANAGE_EMOJIS"],
 	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"],
 	reqArgs: 1
 };
