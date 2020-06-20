@@ -19,6 +19,7 @@ class Fox extends Command{
 	constructor(){
 		super(options);
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
 
 		const request = (await axios.get("https://randomfox.ca/floof/")).data;

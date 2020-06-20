@@ -63,11 +63,11 @@ class IllustraClient{
 		for (const folder of cmdFolders) {
 			const cmdFiles = await areaddir(`./modules/${folder}/`);
 			console.log(`Loading ${folder} Module (${cmdFiles.length} commands)`);
-			cmdFiles.forEach((file: string) => {
+			for(const file of cmdFiles){
 				if (!file.endsWith(".js")) return;
-				const response = this.loadCommand(file, folder);
+				const response = await this.loadCommand(file, folder);
 				if (response) console.log(response);
-			});
+			}
 		}
 	}
 	

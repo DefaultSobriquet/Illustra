@@ -50,7 +50,7 @@ class EmoteUtils{
 			.setTitle(`${props.animated ? "Animated" : "Still"} Emote - ${props.name}`)
 			.setTimestamp(((props instanceof GuildEmoji) ? props.createdAt : message.createdAt) ?? undefined)
 			.setColor(message!.guild!.me!.displayColor || 0x2f3136)
-			.setDescription(`**ID**: ${props.id}\n**Text:** \`${props}\`\n**Link**: [Image URL](${props.url} 'Click me for the image!')\n**Roles:** ${(props instanceof GuildEmoji) ? props.roles.cache.map((r:Role) => r.toString()).join(", ") || "None.": "Unknown."}`)
+			.setDescription(`**ID**: ${props.id}\n**Link**: [Image URL](${props.url} 'Click me for the image!')\n**Roles:** ${(props instanceof GuildEmoji) ? props.roles.cache.map((r:Role) => r.toString()).join(", ") || "None.": "Unknown."}`)
 			.setImage(props.url!)
 			.setFooter((props instanceof GuildEmoji) ? `${props.guild.name} • Created` : message.author.tag, ((props instanceof GuildEmoji) ? props.guild.iconURL() : message.author.displayAvatarURL()) ?? undefined);
 

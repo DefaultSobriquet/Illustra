@@ -4,6 +4,7 @@
   "description": "A simple Discord bot for managing emotes",
   "main": "index.js",
   "dependencies": {
+    "@types/gm": "^1.18.8",
     "@types/lodash": "^4.14.155",
     "@types/mongoose": "^5.7.21",
     "@types/ms": "^0.7.31",
@@ -12,12 +13,14 @@
     "@types/ws": "^7.2.4",
     "axios": "^0.19.2",
     "discord.js": "^12.0.1",
+    "gm": "^1.23.1",
     "jimp": "^0.10.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.7",
     "ms": "^2.1.2",
     "pm2": "^4.2.3",
-    "signale": "^1.4.0"
+    "signale": "^1.4.0",
+    "tmp-promise": "^3.0.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.3.0",
