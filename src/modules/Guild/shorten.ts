@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "shorten",
@@ -20,11 +21,7 @@ class Shorten extends Command{
 		super(options);
 	}
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
-		if(!ctx.args[0]){
-			ctx.channel.send("Please enter a URL.");
-			return;
-		}
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 	
 		axios.get(`https://zws.im/api/shortenURL?url=${ctx.args[0]}`)
 			.then((response: AxiosResponse) => {
@@ -34,6 +31,8 @@ class Shorten extends Command{
 				if ([400, 413].includes(response!.status)) return ctx.channel.send(`Error: ${response!.data.error}.`);
 				return ctx.channel.send("There was an unexpected error.");
 			});
+		
+		return new CommandResponse();
 	}
 }
 

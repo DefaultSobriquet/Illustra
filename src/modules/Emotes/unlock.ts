@@ -2,6 +2,7 @@ import {MessageEmbed, Role, GuildEmoji} from "discord.js";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "unlock",
@@ -19,13 +20,18 @@ class Unlock extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {resolve} = Illustra.utils.emote;
 		const emote = resolve(ctx.args[0], ctx.guild!);
 		
 		if (!emote){
-			ctx.channel.send("I looked, but I couldn't find the emote provided.");
-			return;
+			ctx.channel.send("That's not a valid emote!");
+			return new CommandResponse("CUSTOM_ERROR", "User did not enter a valid emote.");
+		}
+
+		if(!emote.roles.cache.size){
+			ctx.channel.send("There are no roles to unlock.");
+			return new CommandResponse("CUSTOM_ERROR", "No roles to remove from emote.");
 		}
 
 		const embed = new MessageEmbed()
@@ -33,17 +39,19 @@ class Unlock extends Command{
 			.setTimestamp()
 			.setDescription(`**Current Roles**: ${emote.roles.cache.map((role: Role) => `${role}`).join(", ")}`)
 			.setImage(emote.url)
-			.setColor(ctx.guild!.me!.displayColor || 0x2f3136)
-			.setFooter(`${ctx.user.tag}`, ctx.user.displayAvatarURL());
+			.setColor(ctx.guild?.me?.displayColor || 0x2f3136)
+			.setFooter(`Requested by ${ctx.user.tag}`, ctx.user.displayAvatarURL());
 
 		await ctx.channel.send(embed);
 
 		emote.roles.set([])
-			.then((emote: GuildEmoji) => ctx.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
-			.catch((err: Error) => {
+			.then((emote) => ctx.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+			.catch((err) => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
+				ctx.channel.send("There was a unexpected error.");
 			});
+
+		return new CommandResponse();
 	}
 }
 

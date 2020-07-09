@@ -2,6 +2,7 @@ import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import GuildModel from "../../models/Guild.js";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "prefix",
@@ -19,27 +20,29 @@ class Prefix extends Command{
 		super(options);
 	}
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		let guild = await GuildModel.findOne({id: ctx.guild!.id});
 		
 		if(!guild){
-			ctx.channel.send("Database does not have a document reference! Please reinvite me and try again.");
-			return;
+			const mongoGuild = new GuildModel({id: ctx.guild!.id}); // Add the new guild model
+			guild = await mongoGuild.save();
 		}
 		
 		if(!ctx.args[0]){
-			ctx.channel.send(`Hmm? Oh, your guild's prefix is \`${guild.prefix}\`.`);
-			return;
-		}	
+			ctx.channel.send(`Your guild's prefix is \`${guild.prefix}\`.`);
+			return new CommandResponse();
+		}
 
 		if(ctx.args[0].length > 5){
-			ctx.channel.send("That prefix is a bit too large. Let's keep it at a max of five characters?");
-			return;
+			ctx.channel.send("Your prefix must not be more than five characters.");
+			return new CommandResponse();
 		}
 		
 		guild = await GuildModel.findOneAndUpdate({id: ctx.guild!.id}, {$set: {prefix: ctx.args[0]}}, {new: true});
 		
-		ctx.channel.send(`Magic! \`${ctx.args[0]}\` is now your prefix.`);
+		ctx.channel.send(`\`${ctx.args[0]}\` is now your prefix.`);
+
+		return new CommandResponse();
 	}
 }
 

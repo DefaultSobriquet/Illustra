@@ -1,6 +1,7 @@
 import { ICommandContext } from "../../types";
 import { Command } from "../../structures/Command";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "say",
@@ -19,10 +20,10 @@ class Say extends Command{
 		super(options);
 	}
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		ctx.message.delete().catch();
         ctx.channel.send(ctx.args.join(" ")).catch();
-        return;
+        return new CommandResponse();
 	}
 }
 

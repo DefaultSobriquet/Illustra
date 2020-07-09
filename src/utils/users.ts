@@ -6,6 +6,13 @@ class UserUtils{
 	constructor(options: IUtilsOptions){
 		this.client = options.client;
 	}
+	/**
+	 * Resolves a string input into a GuildMember
+	 * @param {string} input An input to resolve to a GuildMember 
+	 * @param {Message} message A message to reference for the guild (will also check mentions)
+	 * @returns {GuildMember|undefined} A GuildMember resolved from the input (or undefined, if not found)
+	 */
+
 	resolve = (input: string, message: Message): (GuildMember|undefined) => {
 			
 		if (!input) return message.member ?? undefined;

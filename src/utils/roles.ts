@@ -6,6 +6,12 @@ class RoleUtils{
 	constructor(options: IUtilsOptions){
 		this.client = options.client;
 	}
+	/**
+	 * Resolves a string into a role
+	 * @param {string} input An input to resolve to a role 
+	 * @param {Guild} guild A guild to reference for roles
+	 * @returns {Role|undefined} A Role resolved from the input (or undefined, if not found)
+	 */
 	resolve = (input: string, guild: Guild): (Role|undefined) => {
 		if (!input) return undefined;
 		let role = guild.roles.cache.find((role) => role.id === input);

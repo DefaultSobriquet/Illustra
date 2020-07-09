@@ -1,6 +1,7 @@
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
 	name: "reload",
@@ -19,15 +20,14 @@ class Reload extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		
 		const commandName = ctx.args[0];
 		
 		if (!Illustra.commands.has(commandName)){
-			ctx.channel.send("That command does not exist (in this universe)!");
-			return;
+			ctx.channel.send("That command does not exist!");
+			return new CommandResponse();
 		}
-	
 		
 		const commandModule = Illustra.commands.get(commandName)!.module;
 		
@@ -39,7 +39,8 @@ class Reload extends Command{
 		const props = new cmd();
 		Illustra.commands.set(commandName, props);
 		
-		ctx.channel.send(`The command ${commandName} has been reloaded! Back to work.`);
+		ctx.channel.send(`The command ${commandName} has been reloaded!.`);
+		return new CommandResponse();
 	}
 }
 

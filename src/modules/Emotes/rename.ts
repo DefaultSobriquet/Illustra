@@ -2,6 +2,7 @@ import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
 import { Emoji } from "discord.js";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "rename",
@@ -16,30 +17,33 @@ const options: Partial<Command> = {
 };
 
 
-class Run extends Command{
+class Rename extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {embed, resolve} = Illustra.utils.emote;
 		const emote = resolve(ctx.args[0], ctx.guild!);
+
 		if (!emote){
-			ctx.channel.send("Are you sure that emote exists? I couldn't find it.");
-			return;
+			ctx.channel.send("That's not a vaild emote.");
+			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote.");
 		}
 		if (!/^[_a-z0-9]{2,32}$/i.test(ctx.args[1])){
-			ctx.channel.send("Hmm — that doesn't seem to be a valid emote name.");
-			return;
+			ctx.channel.send("That's not a valid emote name.");
+			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote name.");
 		}
 		
 		emote.setName(ctx.args[1], `Renamed by ${ctx.user.tag}`)
-			.then((emote: Emoji) => {
+			.then((emote) => {
 				ctx.channel.send(embed(emote, ctx.message));
-			}).catch((err: Error) => {
+			}).catch((err) => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was an unexpected error (as opposed to the expected ones).");
+				ctx.channel.send("There was an unexpected error.");
 			});
+
+		return new CommandResponse();
 	}
 }
 
-export default Run;
+export default Rename;

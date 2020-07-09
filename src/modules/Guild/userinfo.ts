@@ -3,6 +3,7 @@ import {startCase, toLower} from "lodash";
 import { ICommandContext } from "../../types";
 import { Command } from "../../structures/Command";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 
 const options: Partial<Command> = {
@@ -20,13 +21,18 @@ class Userinfo extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
-		const keyPerms: PermissionString[] = ["ADMINISTRATOR", "CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "MANAGE_GUILD", "VIEW_AUDIT_LOG", "MANAGE_MESSAGES", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
+		const keyPerms: PermissionString[] = 
+			["ADMINISTRATOR", "CREATE_INSTANT_INVITE", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS",
+			 "MANAGE_GUILD", "VIEW_AUDIT_LOG", "MANAGE_MESSAGES", "MENTION_EVERYONE", "USE_EXTERNAL_EMOJIS", "MUTE_MEMBERS",
+			 "DEAFEN_MEMBERS", "MOVE_MEMBERS", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
+			
+		
 		const target = Illustra.utils.user.resolve(ctx.args[0], ctx.message);
 		
 		if (!target){
 			ctx.channel.send("I could not find a member matching that.");
-			return;
+			return new CommandResponse();
 		}
 		
 		const userPerms = keyPerms.filter((perm) => target.permissions.toArray().includes(perm)); // Filter by key permissions
@@ -34,7 +40,7 @@ class Userinfo extends Command{
 		
 		const members = [...ctx.guild!.members.cache.filter((member) => !member.user.bot).sort((a: GuildMember, b:GuildMember) => a.joinedTimestamp! - b.joinedTimestamp!)]; // Sort by join date 
 		const position = members.findIndex((user) => user[0] === target.id)+1;
-		const status = {"online": "Online", "idle": "Idle", "offline": "Offline", "dnd": "Do Not Disturb"};
+		const status = {"online": "Online", "idle": "Idle", "offline": "Offline", "dnd": "Do Not Disturb", "invisible": "Invisible"};
 
 		const embed = new MessageEmbed()
 			.setTimestamp()
@@ -45,7 +51,7 @@ class Userinfo extends Command{
 			.addField("Joined", target.joinedAt!.toLocaleString(), true)
 			.addField("Position", position || "None", true)
 			.addField("Registered", target.user.createdAt.toLocaleString(), true)
-			.addField("Presence", target.presence.activities[0] ? target.presence.activities[0].name : "None", true)
+			.addField("Presence", target.presence.activities[0]?.name ?? "None", true)
 			.addField("Status", status[target.user.presence.status], true)
 			.addField("Client", target.presence.clientStatus ? startCase(Object.keys(target.presence.clientStatus).join(", ")) : "None", true)
 			.addField(`Roles [${roles.length}]`, roles.length ? (roles.join(", ").length <= 1024 ? roles.join(", ") : "Too Many to Display.") : "None.")
@@ -53,6 +59,8 @@ class Userinfo extends Command{
 			.setFooter(`Requested by ${ctx.user.tag} • User ID: ${target.user.id}`);
 		
 		ctx.channel.send(embed);
+
+		return new CommandResponse();
 	}
 }
 

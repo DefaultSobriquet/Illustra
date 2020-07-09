@@ -1,84 +1,86 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { Client, Collection } from "discord.js";
+import { Client, Collection, ClientEvents} from "discord.js";
 import { IClientOptions, IConfig, ISigns} from "../types";
 import { Command } from "./Command";
 import Utils from "../utils/utils";
 import { promisify } from "util";
 import { connect } from "mongoose";
-import { Signs } from "../utils/IllustraEnums";
 import { readdir } from "fs";
 import { Signale } from "signale";
-
+import CommandHandler from "./CommandHandler";
+import { Flag } from "./Flag";
 
 const areaddir = promisify(readdir);
 
-
 class IllustraClient{
+
 	client: Client;
 	config: IConfig;
 	commands: Collection<string, Command>;
+	handler: CommandHandler;
 	utils: Utils;
-	signs: ISigns;
 	logger: Signale;
+	cooldowns: Collection<string, (Collection<string, number>)>;
+	static signs: ISigns;
+
+
 	constructor(options: IClientOptions){
 		this.client = new Client();
 		this.config = options.config;
 		this.commands = new Collection();
+		this.handler = new CommandHandler(this);
 		this.utils = new Utils({client: this.client});
-		this.signs = Signs;
 		this.logger = new Signale();
+		this.cooldowns = new Collection();
 	}
-	async loadCommand(commandName: string, commandFolder: string): Promise<boolean|string>{
+
+	async loadCommand(commandName: string, commandFolder: string): Promise<void>{
 		try {
-			this.logger.info(`Loading command: ${commandName} from ${commandFolder}`);
-			const cmd = require(`../modules/${commandFolder}/${commandName}`).default;
-			const props = new cmd();
-			if (props.init) {
-				props.init(this.client);
-			}
+			this.logger.await(`Loading command: ${commandName} from ${commandFolder}`);
+			const cmd = require(`../modules/${commandFolder}/${commandName}`);
+			const props = new cmd.default();
+			if(!props.enabled) return;
+			if(cmd.subcommands) cmd.subcommands.forEach((c: Command) => props.subcommands.set(c.name, c));
+			if(cmd.flags) cmd.flags.forEach((f: Flag) => props.flags.set(f.name, f));
 			this.commands.set(props.name, props);
-			return false;
 		} catch (e) {
-			return `Unable to load command ${commandName}: ${e}`;
+			this.logger.error(`Unable to load command ${commandName}: ${e}`);
 		}
-	}
-	
-	clean(text: string): string{
-		if (typeof (text) !== "string") {
-			text = require("util").inspect(text, {
-				depth: 0
-			});
-		}
-		if (typeof (text) === "string") {
-			text = text
-				.replace(/`/g, "`" + String.fromCharCode(8203))
-				.replace(/@/g, "@" + String.fromCharCode(8203))
-				.replace(this.client.token!, "TOKEN");
-		}
-		return text;
 	}
 	
 	async loadModules(): Promise<void>{
 		const cmdFolders = await areaddir("./modules/");
 		for (const folder of cmdFolders) {
 			const cmdFiles = await areaddir(`./modules/${folder}/`);
-			this.logger.info(`Loading ${folder} Module (${cmdFiles.length} commands)`);
+			this.logger.await(`Loading ${folder} Module: (${cmdFiles.length} commands)`);
 			for(const file of cmdFiles){
 				if (!file.endsWith(".js")) return;
-				const response = await this.loadCommand(file, folder);
-				if (response) this.logger.error(response);
+				await this.loadCommand(file, folder);
 			}
 		}
 	}
 	
 	async loadEvents(): Promise<void>{
 		const evtFiles = await areaddir("./events/");
-		this.logger.info(`Loading Events (Total ${evtFiles.length})`);
-		evtFiles.forEach((file: string) => {
+		this.logger.await(`Loading Events (Total ${evtFiles.length})`);
+		evtFiles.forEach((file) => {
 			const eventName = file.split(".")[0];
-			this.logger.info(`Loading Event: ${eventName}`);
-			const event = require(`../events/${file}`).default;
-			this.client.on(eventName, event.bind(null, this));
+			this.logger.await(`Loading Event: ${eventName}`);
+			try{
+				const event = require(`../events/${file}`).default;
+			
+				function isEvent(input: string): input is keyof ClientEvents {
+					return true;
+				};
+				
+				if(!isEvent(eventName)){
+					this.logger.error(`${eventName} is not an event!`);
+					return;
+				}
+
+				this.client.on(eventName, event.bind(null, this));
+			}catch(e){
+				this.logger.error(e);
+			}
 		});
 	}
 	
@@ -99,6 +101,7 @@ class IllustraClient{
 			this.logger.error(e);
 		}
 	}
+	
 }
 
 export default IllustraClient;

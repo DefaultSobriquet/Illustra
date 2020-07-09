@@ -2,6 +2,7 @@ import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
 import { Emoji } from "discord.js";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "remove",
@@ -19,23 +20,25 @@ class Remove extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {embed, resolve} = Illustra.utils.emote;
 		const emote = resolve(ctx.args[0], ctx.guild!);
 		
 		if (!emote){
-			ctx.channel.send("Hmm — are you sure that's a valid emote?");
-			return;
+			ctx.channel.send("That's not a valid emote.");
+			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote.");
 		}
 		
 		await ctx.channel.send(embed(emote, ctx.message));
 		
 		emote.delete(`Removed by ${ctx.user.tag}`)
-			.then((emote: Emoji) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
+			.then((emote: Emoji) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`${emote.name}\``))
 			.catch((err: Error) => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was a unexpected error (as opposed to the expected ones).");
+				ctx.channel.send("There was a unexpected error.");
 			});
+
+		return new CommandResponse();
 	}
 }
 

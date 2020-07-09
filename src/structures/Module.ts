@@ -3,11 +3,15 @@ class Module{
 	description: string;
 	enabled: boolean;
 	dirname: string;
+	icon: string;
+	internal: boolean;
 	constructor(options: Partial<Module>){
-		this.name = "System" ?? options.name;
-		this.description = "This is developer module." ?? options.description;
-		this.enabled = false ?? options.enabled;
-		this.dirname = __dirname;
+		this.name = options.name ?? "Sample";
+		this.description = options.description ?? "This is a sample module." ;
+		this.enabled = options.enabled ?? false;
+		this.dirname = options.dirname ?? __dirname;
+		this.icon = options.dirname ?? "";
+		this.internal = options.internal ?? false;
 	}
 }
 

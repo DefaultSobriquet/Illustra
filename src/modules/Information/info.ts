@@ -2,6 +2,7 @@ import {MessageEmbed} from "discord.js";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
 	name: "info",
@@ -18,12 +19,12 @@ class Info extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const embed = new MessageEmbed()
 		.setTitle(Illustra.config.name)
 		.setTimestamp()
 		.setDescription(Illustra.config.description)
-		.setColor(ctx.guild!.me!.displayColor || 0x2f3136)
+		.setColor(ctx.guild?.me?.displayColor || 0x2f3136)
 		.setThumbnail(Illustra.client.user!.displayAvatarURL())
 		.addField("Users", Illustra.client.users.cache.size, true)
 		.addField("Servers", Illustra.client.guilds.cache.size, true)
@@ -37,6 +38,7 @@ class Info extends Command{
 
 		ctx.channel.send(embed);
 		
+		return new CommandResponse();
 	}
 }
 

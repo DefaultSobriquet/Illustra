@@ -1,6 +1,7 @@
 import {Command} from "../../structures/Command";
 import {ICommandContext} from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
+import {CommandResponse} from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
 	name: "emote",
@@ -15,18 +16,25 @@ const options: Partial<Command> = {
 };
 
 class Emote extends Command{
+	
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {props, embed, resolve, validate} = Illustra.utils.emote;
 		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
-		if (!emote){
-			ctx.channel.send("I really don't think that's a valid emote.");
-			return;
+
+		if(!emote){
+			ctx.channel.send("You didn't specify a valid emote!");
+			return new CommandResponse("CUSTOM_ERROR", "User didn't specify a valid emote.");
 		}
+		
 		ctx.channel.send(embed(emote, ctx.message));
+		
+		return new CommandResponse();
 	}
+	
 }
 
 export default Emote;

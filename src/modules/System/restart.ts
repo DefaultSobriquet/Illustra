@@ -2,6 +2,7 @@ import ms from "ms";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
 	name: "restart",
@@ -19,7 +20,7 @@ class Restart extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		
 		const end = () => {
 			Illustra.client.destroy();
@@ -27,13 +28,15 @@ class Restart extends Command{
 		};
 
 		if (ctx.args[0] && !isNaN(ms(ctx.args[0]))) {
-			await ctx.channel.send(`I'll be restarting at ${new Date(Date.now()+ms(ctx.args[0])).toLocaleString()} (if that's alright with you).`);
+			await ctx.channel.send(`I'll restart at ${new Date(Date.now()+ms(ctx.args[0])).toLocaleString()}.`);
 			Illustra.client.setTimeout(end, ms(ctx.args[0]), Illustra);
-			return;
+			return new CommandResponse();
 		}
 		
-		await ctx.channel.send("I'll be restarting now — if that's alright with you.");
+		await ctx.channel.send("I'll restart now.");
 		end();
+
+		return new CommandResponse();
 	}
 }
 

@@ -3,6 +3,7 @@ import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import { exec } from "child_process";
 import IllustraClient from "../../structures/IllustraClient";
+import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
 	name: "execute",
@@ -22,7 +23,7 @@ class Execute extends Command{
 		super(options);
 	}
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<void>{
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		
 		try {
 			let output = "No output.";
@@ -38,6 +39,8 @@ class Execute extends Command{
 		} catch (err) {
 			ctx.channel.send(`\`\`\`bash\n${err}\`\`\``);
 		}
+
+		return new CommandResponse();
 	}
 }
 
