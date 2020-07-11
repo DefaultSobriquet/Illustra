@@ -42,8 +42,15 @@ class Help extends Command{
 	
 		}else{
 
-			const command = Illustra.handler.findCommand(ctx.args[0]);
+			let command = Illustra.handler.findCommand(ctx.args[0]);
 			
+			if(command && command.subcommands.size > 0 && ctx.args[1]){
+				const subcmd = Illustra.handler.findSubcommand(ctx.args[1], command);
+				if(subcmd){
+					command = subcmd;
+				}
+			}
+
 			if (!command){
 				ctx.channel.send("That command doesn't exist."); // If commmand doesn't exist, notify.
 				return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid command.");
