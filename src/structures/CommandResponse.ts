@@ -13,7 +13,7 @@ export class CommandResponse{
 	status: keyof typeof Status;
 	response: string;
 	constructor(status?: keyof typeof Status, response?: string){
-		this.status = status ?? "SUCCESS"
-		this.response =  response ?? "Command ran successfully."
+		this.status = status ?? "SUCCESS";
+		this.response =  response ?? "Command ran successfully.";
 	}
 }

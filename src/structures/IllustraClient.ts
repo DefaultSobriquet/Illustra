@@ -1,4 +1,4 @@
-import { Client, Collection, ClientEvents} from "discord.js";
+import { Client, Collection, ClientEvents, Constants} from "discord.js";
 import { IClientOptions, IConfig, ISigns} from "../types";
 import { Command } from "./Command";
 import Utils from "../utils/utils";
@@ -36,6 +36,7 @@ class IllustraClient{
 	async loadCommand(commandName: string, commandFolder: string): Promise<void>{
 		try {
 			this.logger.await(`Loading command: ${commandName} from ${commandFolder}`);
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
 			const cmd = require(`../modules/${commandFolder}/${commandName}`);
 			const props = new cmd.default();
 			if(!props.enabled){
@@ -72,11 +73,14 @@ class IllustraClient{
 			const eventName = file.split(".")[0];
 			this.logger.await(`Loading Event: ${eventName}`);
 			try{
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				const event = require(`../events/${file}`).default;
 			
+				// eslint-disable-next-line no-inner-declarations
 				function isEvent(input: string): input is keyof ClientEvents {
+					Object.keys(Constants.Events).includes(input);
 					return true;
-				};
+				}
 				
 				if(!isEvent(eventName)){
 					this.logger.error(`${eventName} is not an event!`);

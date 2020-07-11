@@ -24,7 +24,7 @@ class Upload extends Command{
 		const { a, s } = space(ctx.guild!);
 		const regName = /^[_a-z0-9]{2,32}$/i;
 		const regLink = /^https?:\/\//;
-		const regExtension = /\.(gif|png|jpg|jpeg|webp)$/
+		const regExtension = /\.(gif|png|jpg|jpeg|webp)$/;
 	
 		const file = ctx.message.attachments.first();
 		

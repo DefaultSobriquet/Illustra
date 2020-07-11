@@ -1,5 +1,5 @@
 import {MessageEmbed, Message, Role, Emoji, GuildEmoji, Client, Guild, Collection} from "discord.js";
-import {uniq, partition} from "lodash";
+import {uniq} from "lodash";
 import {IUtilsOptions} from "../types";
 
 class EmoteUtils{

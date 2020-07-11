@@ -1,10 +1,9 @@
-import {Command} from "../../structures/Command";
+import { Command } from "../../structures/Command";
 import jimp from "jimp";
-import {ICommandContext} from "../../types";
+import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
-import {CommandResponse} from "../../structures/CommandResponse";
-import message from "../../events/message";
-import { GuildEmoji, MessageEmbed } from "discord.js";
+import { CommandResponse } from "../../structures/CommandResponse";
+import { GuildEmoji } from "discord.js";
 import { Flag } from "../../structures/Flag";
 
 const options: Partial<Command> = {
@@ -48,13 +47,12 @@ class Process extends Command{
 			if("blur" in ctx.flags) image.blur(parseInt(ctx.flags["blur"],10) ?? 1);
 			if("invert" in ctx.flags) image.invert();
 			if("pixelate" in ctx.flags) image.pixelate(parseInt(ctx.flags["pixelate"],10) ?? 1);
-			//@ts-expect-error jimp.AUTO is fine
-			const processedURI = await image.getBase64Async(jimp.AUTO);
+			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `P${emote.name.slice(0,31)}`, {
 				reason: `${emote.name} processed by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
-			})
+			});
 
 			ctx.channel.send(embed(processedEmote, ctx.message));
 

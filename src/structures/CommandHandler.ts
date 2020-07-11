@@ -15,17 +15,17 @@ class CommandHandler{
 		this.Illustra = Illustra;
 	}
 
-	findCommand(input: string){
+	findCommand(input: string): (Command|undefined){
 		const search = input.toLowerCase();
 		return this.Illustra.commands.get(search) ?? this.Illustra.commands.find((c: Command) => c.aliases.includes(search));
 	}
 
-	findSubcommand(input: string, command: Command){
+	findSubcommand(input: string, command: Command): (Command|undefined){
 		const search = input.toLowerCase();
 		return command.subcommands.get(search) ?? command.subcommands.find((c: Command) => c.aliases.includes(search));
 	}
 
-	sendHelp(ctx: ICommandContext, command: Command){
+	sendHelp(ctx: ICommandContext, command: Command): void{
 		const embed = new MessageEmbed()
 			.setTitle(`Command: ${command.name}`)
 			.setColor(ctx.guild?.me?.displayColor || 0x2f3136)
@@ -39,6 +39,7 @@ class CommandHandler{
 			.setFooter(`${startCase(command.module)} Module`);
 
 		ctx.channel.send(embed);
+		return;
 	}
 
 	async fetchPrefix(message: Message): Promise<string|undefined>{
@@ -63,7 +64,7 @@ class CommandHandler{
 		return prefix;
 	}
 
-	async handle(message: Message){
+	async handle(message: Message): Promise<void>{
 		const prefix = await this.fetchPrefix(message);
 		
 		if(!prefix) return;
@@ -107,7 +108,7 @@ class CommandHandler{
 		this.execute(cmd, ctx);
 	}
 
-	checkBotPerms(cmd: Command, ctx: ICommandContext){
+	checkBotPerms(cmd: Command, ctx: ICommandContext): boolean{
 		if(ctx.channel instanceof DMChannel) return true;
 		const missingPerms = ctx.channel.permissionsFor(this.Illustra.client.user!)!.missing(cmd.botPerms);
 		if(missingPerms.length){
@@ -125,9 +126,9 @@ class CommandHandler{
 		return true;
 	}
 
-	async execute(cmd: Command, ctx: ICommandContext){
+	async execute(cmd: Command, ctx: ICommandContext): Promise<void>{
 		if(cmd.guildOnly && !ctx.guild){
-			ctx.channel.send(`The command \`${cmd.name}\` must be used in a guild!`)
+			ctx.channel.send(`The command \`${cmd.name}\` must be used in a guild!`);
 			return;
 		}
 
@@ -153,8 +154,10 @@ class CommandHandler{
 
 		response.catch(err => {
 			this.Illustra.logger.error(err);
-			ctx.channel.send("There was an unexpected error!")
+			ctx.channel.send("There was an unexpected error!");
 		});
+
+		return;
 	}
 
 }

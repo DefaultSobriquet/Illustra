@@ -50,11 +50,11 @@ export class Command{
         throw new Error("You didn't make me do something!");
     }
 
-    setCooldown(ctx: ICommandContext, Illustra: IllustraClient): void {
+    setCooldown(ctx: ICommandContext): void {
         this._cooldowns.set(ctx.user.id, Date.now());
     }
     
-    checkCooldown(ctx: ICommandContext, Illustra: IllustraClient): boolean {
+    checkCooldown(ctx: ICommandContext): boolean {
         const cooldown = this._cooldowns.get(ctx.user.id);
         if(!cooldown || Date.now()-cooldown >= this.cooldownTime){
             this._cooldowns.delete(ctx.user.id);

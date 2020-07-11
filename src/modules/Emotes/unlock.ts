@@ -1,4 +1,4 @@
-import {MessageEmbed, Role, GuildEmoji} from "discord.js";
+import {MessageEmbed, Role } from "discord.js";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";

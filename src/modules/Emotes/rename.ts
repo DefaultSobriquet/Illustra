@@ -1,7 +1,6 @@
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
-import { Emoji } from "discord.js";
 import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {

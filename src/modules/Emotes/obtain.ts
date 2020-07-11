@@ -99,6 +99,6 @@ export const flags = [
 		description: "Checks for emotes without adding them.",
 		hasValue: false
 	})
-]
+];
 
 export default Obtain;

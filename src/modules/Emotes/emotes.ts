@@ -51,7 +51,7 @@ class Emotes extends Command{
 				const emoteField = emoteChunk.map(emote => `${emote.roles.cache.size ? `\`${emote.name}\`` : emote}`).join(" ");
 				const fieldTitle = `${emoteChunk[0].name} to ${emoteChunk[emoteChunk.length-1].name}`;
 				embed.addField(fieldTitle, emoteField, false);
-			})
+			});
 		};
 		
 		divider(s);
@@ -80,6 +80,6 @@ export const flags = [
 		description: "Filters for locked emotes.",
 		hasValue: false
 	})
-]
+];
 
 export default Emotes;

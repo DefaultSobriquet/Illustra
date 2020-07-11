@@ -3,6 +3,7 @@ import { IUtilsOptions } from "../types";
 import EmoteUtils from "./emotes";
 import RoleUtils from "./roles";
 import UserUtils from "./users";
+import { inspect } from "util";
 
 class Utils{
 	client: Client;
@@ -20,13 +21,16 @@ class Utils{
 	 * @param {any} input The result of an eval
 	 * @returns {string} A cleaned string representation of the result
 	 */
+
+
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 	clean(input: any): string{
 		if (typeof (input) !== "string") {
-			input = require("util").inspect(input, {
+			input = inspect(input, {
 				depth: 0
 			});
 		}
-
+		
 		input = input
 			.replace(/`/g, "`" + String.fromCharCode(8203))
 			.replace(/@/g, "@" + String.fromCharCode(8203))

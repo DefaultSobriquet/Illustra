@@ -34,8 +34,8 @@ class Spotify extends Command{
 					.setTimestamp()
 					.setAuthor(member.user.tag, member.user.displayAvatarURL())
 					.setColor(ctx.guild?.me?.displayColor || 0x2f3136)
-					//@ts-expect-error SyncID will exist as a property if the activity is Spotify.
-					.addField("Song", `[${activity.details}](https://open.spotify.com/track/${activity.syncID})`)
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					.addField("Song", `[${activity.details}](https://open.spotify.com/track/${(activity as any).syncID})`)
 					.addField("Artist", activity.state)
 					.addField("Album", activity.assets?.largeText)
 					.setThumbnail(activity.assets?.largeImageURL() ?? member.user.displayAvatarURL())
@@ -45,7 +45,7 @@ class Spotify extends Command{
 				return new CommandResponse();
 			}
 		}
-		ctx.channel.send("I could not find a Spotify activity on that user.")
+		ctx.channel.send("I could not find a Spotify activity on that user.");
 		return new CommandResponse("CUSTOM_ERROR", "No spotify activity found.");
 	}
 }

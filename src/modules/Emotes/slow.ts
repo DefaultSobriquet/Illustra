@@ -61,7 +61,7 @@ class Emote extends Command{
 		const data: any = await image.identifyPromise();
 
 		if(!data.Delay){
-			ctx.channel.send("I can't read this animated emote's data!")
+			ctx.channel.send("I can't read this animated emote's data!");
 			return new CommandResponse("CUSTOM_ERROR", "Animated emote data could not be read.");
 		}
 

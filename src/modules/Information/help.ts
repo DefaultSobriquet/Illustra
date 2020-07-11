@@ -1,5 +1,5 @@
 import {MessageEmbed} from "discord.js";
-import {groupBy, toLower, startCase} from "lodash";
+import {groupBy} from "lodash";
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
@@ -21,7 +21,7 @@ class Help extends Command{
 		super(options);
 	}
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
-		if (!ctx.args[0]) { // Check if there is no argument.
+		if (!ctx.args[0]) {
 			const commands = groupBy(Illustra.commands.array(), (cmd: Command) => cmd.module);
 			
 			const embed = new MessageEmbed()

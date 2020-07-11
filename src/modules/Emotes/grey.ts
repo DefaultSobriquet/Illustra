@@ -43,13 +43,12 @@ class Grey extends Command{
 
 			image.greyscale();
 
-			//@ts-expect-error jimp.AUTO is fine
-			const processedURI = await image.getBase64Async(jimp.AUTO);
+			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `GREY${emote.name.slice(0,28)}`, {
 				reason: `${emote.name} greyscaled by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
-			})
+			});
 
 			ctx.channel.send(embed(processedEmote, ctx.message));
 

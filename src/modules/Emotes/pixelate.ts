@@ -43,13 +43,12 @@ class Pixelate extends Command{
 
 			image.pixelate(parseInt(ctx.args[1],10) ?? 1);
 
-			//@ts-expect-error jimp.AUTO is fine
-			const processedURI = await image.getBase64Async(jimp.AUTO);
+			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `PIXEL${emote.name.slice(0,27)}`, {
 				reason: `${emote.name} blurred by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
-			})
+			});
 
 			ctx.channel.send(embed(processedEmote, ctx.message));
 
