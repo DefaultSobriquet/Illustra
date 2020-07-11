@@ -22,24 +22,22 @@ class Reload extends Command{
 	}
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		
-		const commandName = ctx.args[0];
+		const command = Illustra.handler.findCommand(ctx.args[0]);
 		
-		if (!Illustra.commands.has(commandName)){
+		if (!command){
 			ctx.channel.send("That command does not exist!");
 			return new CommandResponse();
 		}
 		
-		const commandModule = Illustra.commands.get(commandName)!.module;
+		delete require.cache[require.resolve(`../${command.module}/${command.name}.js`)];
 		
-		delete require.cache[require.resolve(`../${commandModule}/${commandName}.js`)];
-		
-		Illustra.commands.delete(commandName);
+		Illustra.commands.delete(command.name);
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const cmd = require(`../${commandModule}/${commandName}.js`).default;
+		const cmd = require(`../${command.module}/${command.name}.js`).default;
 		const props = new cmd();
-		Illustra.commands.set(commandName, props);
+		Illustra.commands.set(command.name, props);
 		
-		ctx.channel.send(`The command ${commandName} has been reloaded!.`);
+		ctx.channel.send(`The command ${command.name} has been reloaded!.`);
 		return new CommandResponse();
 	}
 }

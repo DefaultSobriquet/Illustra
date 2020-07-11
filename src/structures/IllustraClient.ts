@@ -38,8 +38,14 @@ class IllustraClient{
 			this.logger.await(`Loading command: ${commandName} from ${commandFolder}`);
 			const cmd = require(`../modules/${commandFolder}/${commandName}`);
 			const props = new cmd.default();
-			if(!props.enabled) return;
-			if(cmd.subcommands) cmd.subcommands.forEach((c: Command) => props.subcommands.set(c.name, c));
+			if(!props.enabled){
+				this.logger.info(`${props.name} disabled, bypassing load.`);
+				return;
+			}
+			if(cmd.subcommands) cmd.subcommands.forEach((c: Command) => {
+				props.subcommands.set(c.name, c);
+				c.parent = props;
+			});
 			if(cmd.flags) cmd.flags.forEach((f: Flag) => props.flags.set(f.name, f));
 			this.commands.set(props.name, props);
 		} catch (e) {

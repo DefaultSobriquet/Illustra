@@ -33,7 +33,7 @@ class CommandHandler{
 			.setTimestamp()
 			.addField("Aliases", command.aliases.map((a) => `\`${a}\``).join(", ") || "None.", true)
 			.addField("Subcommands", `${command.subcommands.map((sub) => `\`${sub.name}\``).join(", ") || "None."}`, true)
-			.addField("Usage", `\`\`\`${this.Illustra.config.name} ${command.name} ${command.usage}\`\`\``)
+			.addField("Usage", `\`\`\`${this.Illustra.config.name} ${command.parent ? command.parent.name+" "+command.name : command.name} ${command.usage}\`\`\``)
 			.addField("Flags", `\`\`\`\n${command.flags.map(f => `--${f.name.padEnd(8)} - ${f.description}`).join("\n") || "None."}\`\`\``)
 			.addField("User Permissions", `${command.userPerms.map((p) => startCase(toLower(p))).join(", ") || "None."}`)
 			.setFooter(`${startCase(command.module)} Module`);

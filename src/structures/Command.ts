@@ -7,6 +7,7 @@ import { Flag } from "./Flag";
 
 export class Command{
     
+    parent?: Command;
     name: string;
     aliases: string[];
     userPerms: PermissionString[];
@@ -25,6 +26,7 @@ export class Command{
     flags: Collection<string, Flag>;
 
     constructor(options: Partial<Command>){
+        this.parent = options.parent;
         this.aliases = options.aliases ?? [];
         this.userPerms = options.userPerms ?? [];
         this.botPerms = options.botPerms ?? [];
@@ -61,7 +63,4 @@ export class Command{
         return false;
     }
 
-    sendHelp(ctx: ICommandContext, Illustra: IllustraClient){
-        
-    }
 }

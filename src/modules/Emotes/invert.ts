@@ -3,23 +3,21 @@ import jimp from "jimp";
 import {ICommandContext} from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
 import {CommandResponse} from "../../structures/CommandResponse";
-import message from "../../events/message";
-import { GuildEmoji, MessageEmbed } from "discord.js";
-import { Flag } from "../../structures/Flag";
+import { GuildEmoji } from "discord.js";
 
 const options: Partial<Command> = {
-	name: "process",
-	description: "Apply image manipulation to a specified static emote using flags.",
+	name: "invert",
+	description: "Apply an inversion filter to an emote.",
 	module: "Emotes",
-	usage: "[emote] [...flags]",
-	examples: ["rooThink --invert --fliph"],
-	aliases: ["modify"],
+	usage: "[emote]",
+	examples: ["rooThink"],
+	aliases: [],
 	userPerms: ["MANAGE_EMOJIS"],
 	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"],
 	reqArgs: 1
 };
 
-class Process extends Command{
+class Invert extends Command{
 	
 	constructor(){
 		super(options);
@@ -42,17 +40,14 @@ class Process extends Command{
 		try{
 			ctx.channel.startTyping();
 			const image = await jimp.read(emote.url!);
-			
-			image.flip("fliph" in ctx.flags, "flipv" in ctx.flags);
-			if("grey" in ctx.flags) image.greyscale();
-			if("blur" in ctx.flags) image.blur(parseInt(ctx.flags["blur"],10) ?? 1);
-			if("invert" in ctx.flags) image.invert();
-			if("pixelate" in ctx.flags) image.pixelate(parseInt(ctx.flags["pixelate"],10) ?? 1);
+
+			image.invert();
+
 			//@ts-expect-error jimp.AUTO is fine
 			const processedURI = await image.getBase64Async(jimp.AUTO);
 
-			const processedEmote = await ctx.guild!.emojis.create(processedURI, `P${emote.name.slice(0,31)}`, {
-				reason: `${emote.name} processed by ${ctx.user.tag}`,
+			const processedEmote = await ctx.guild!.emojis.create(processedURI, `INVERT${emote.name.slice(0,26)}`, {
+				reason: `${emote.name} greyscaled by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
 			})
 
@@ -71,37 +66,4 @@ class Process extends Command{
 	
 }
 
-export const flags = [
-	new Flag({
-		name: "fliph",
-		description: "Flips the emote horizontally.",
-		hasValue: false
-	}),
-	new Flag({
-		name: "flipv",
-		description: "Flips the emote vertically.",
-		hasValue: false
-	}),
-	new Flag({
-		name: "grey", 
-		description: "Applies greyscale to the emote.",
-		hasValue: true
-	}),
-	new Flag({
-		name: "blur",
-		description: "Applies a blur to the emote.",
-		hasValue: true
-	}),
-	new Flag({
-		name: "invert",
-		description: "Inverts the color of the emote.",
-		hasValue: false
-	}),
-	new Flag({
-		name: "pixelate",
-		description: "Pixelates the emote.",
-		hasValue: true
-	})
-];
-
-export default Process;
+export default Invert;
