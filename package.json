@@ -24,12 +24,16 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.6.0",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
     "eslint": "^7.4.0",
+    "standard-version": "^8.0.1",
     "typescript": "^3.9.6"
   },
   "scripts": {
     "lint": "eslint . --ignore-path .gitignore",
-    "build": "tsc --build --clean"
+    "build": "tsc --build --clean",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -40,5 +44,10 @@
   "bugs": {
     "url": "https://github.com/DefaultSobriquet/Illustra/issues"
   },
-  "homepage": "https://github.com/DefaultSobriquet/Illustra#readme"
+  "homepage": "https://github.com/DefaultSobriquet/Illustra#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
