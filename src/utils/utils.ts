@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import { Client, DMChannel, Message, TextChannel } from "discord.js";
 import { IUtilsOptions } from "../types";
 import EmoteUtils from "./emotes";
 import RoleUtils from "./roles";
@@ -37,6 +37,25 @@ class Utils{
 			.replace(this.client.token!, "TOKEN");
 		
 		return input;
+	}
+
+	async parseMessage(input: string): Promise<Message|undefined>{
+		const discordRegex = /https:\/\/discord(?:app)?\.com\/channels\/(?:\d{17,19}|@me)\/(\d{17,19})\/(\d{17,19})/;
+		if(!discordRegex.test(input)) return undefined;
+		try{
+			const parsedMessage = discordRegex.exec(input)!;
+		
+			const channel = await this.client.channels.fetch(parsedMessage[1]);
+
+			if(!(channel instanceof TextChannel) && !(channel instanceof DMChannel)) return undefined;
+		
+			const message = await channel.messages.fetch(parsedMessage[2]);
+		
+			return message;
+		
+		}catch(err){
+			return undefined;
+		}
 	}
 }
 
