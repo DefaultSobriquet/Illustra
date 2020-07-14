@@ -11,7 +11,7 @@ const options: Partial<Command> = {
 	name: "obtain",
 	description: "Add custom emotes from a message to the server.",
 	module: "Emotes",
-	usage: "[message id | ...emotes]",
+	usage: "[message id | message link | ...emotes]",
 	examples: ["717601958126420029", ":rooThink:"],
 	aliases: ["steal"],
 	userPerms: ["MANAGE_EMOJIS"],
@@ -39,7 +39,7 @@ class Obtain extends Command{
 		}
 	
 		if (!target){
-			ctx.channel.send("Make sure you're giving me emotes or a message ID.");
+			ctx.channel.send("Make sure you're giving me emotes, a message link, or a message ID.");
 			return new CommandResponse("CUSTOM_ERROR", "Bot was unable to resolve emotes/message ID.");
 		}
 	
