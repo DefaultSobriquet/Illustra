@@ -41,7 +41,7 @@ class Grey extends Command{
 			ctx.channel.startTyping();
 			const image = await jimp.read(emote.url!);
 
-			image.blur(parseInt(ctx.args[1], 10) ?? 1);
+			image.blur(parseInt(ctx.args[1], 10) || 1);
 
 			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
