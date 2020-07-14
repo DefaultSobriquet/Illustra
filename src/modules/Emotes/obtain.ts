@@ -26,14 +26,17 @@ class Obtain extends Command{
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {extract, props, space, validate} = Illustra.utils.emote;
 
-		let target;
-	
-		if(ctx.args.some(arg => validate(arg))) target = ctx.message;
-	
-		if (!target && /^\d{17,19}$/.test(ctx.args[0])) target = await ctx.message.channel.messages.fetch(ctx.args[0], true)
-			.catch(() => {
-				ctx.channel.send("I couldn't get that message. Are you in the same channel?");
-			});
+		let target = await Illustra.utils.parseMessage(ctx.args[0]);
+
+		if(!target && ctx.args.some(arg => validate(arg))) target = ctx.message;
+
+		if(!target && /^\d{17,19}$/.test(ctx.args[0])){
+			const message = await ctx.channel.messages.fetch(ctx.args[0])
+				.catch(() => {
+					ctx.channel.send("I couldn't get that message. Are you in the same channel?");
+				});
+			if(message) target = message;
+		}
 	
 		if (!target){
 			ctx.channel.send("Make sure you're giving me emotes or a message ID.");
