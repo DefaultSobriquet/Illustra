@@ -1,14 +1,14 @@
 import { Command } from "../../structures/Command";
 import { ICommandContext } from "../../types";
 import IllustraClient from "../../structures/IllustraClient";
-import { Emoji } from "discord.js";
+import { Emoji, GuildEmoji } from "discord.js";
 import { CommandResponse } from "../../structures/CommandResponse";
 
 const options: Partial<Command> = {
     name: "remove",
-    description: "Remove an emote from the current guild.",
+    description: "Remove emotes (up to five) from the current guild.",
     module: "Emotes",
-    usage: "[emote]",
+    usage: "[...emote]",
     examples: ["rooThink"],
     aliases: ["delete", "del"],
     userPerms: ["MANAGE_EMOJIS"],
@@ -22,21 +22,33 @@ class Remove extends Command{
 	}
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {embed, resolve} = Illustra.utils.emote;
-		const emote = resolve(ctx.args[0], ctx.guild!);
+		const emotes: GuildEmoji[] = [];
 		
-		if (!emote){
-			ctx.channel.send("That's not a valid emote.");
+		ctx.args.forEach(arg => {
+			const emote = resolve(arg, ctx.guild!);
+			if(emote) emotes.push(emote);
+		});
+
+		if (!emotes.length){
+			ctx.channel.send("You didn't provide any valid emotes!");
 			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote.");
 		}
 		
-		await ctx.channel.send(embed(emote, ctx.message));
-		
-		emote.delete(`Removed by ${ctx.user.tag}`)
-			.then((emote: Emoji) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`${emote.name}\``))
-			.catch((err: Error) => {
-				Illustra.logger.error(err);
-				ctx.channel.send("There was a unexpected error.");
-			});
+		if(emotes.length > 5){
+			ctx.channel.send("You're removing too many emotes at once! Specify a maximum of five.");
+			return new CommandResponse("CUSTOM_ERROR", "User provided too many emotes.");
+		}
+
+		if(emotes.length === 1) await ctx.channel.send(embed(emotes[0], ctx.message));
+
+		emotes.forEach((emote) => {
+			emote.delete(`Removed by ${ctx.user.tag}`)
+				.then((emote: Emoji) => ctx.channel.send(`\`🗑️\` | [ID \`\`${emote.id}\`\`] — \`${emote.name}\``))
+				.catch((err: Error) => {
+					Illustra.logger.error(err);
+					ctx.channel.send(`There was a unexpected error removing ${emote}.`);
+				});
+		});
 
 		return new CommandResponse();
 	}
