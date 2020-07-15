@@ -6,6 +6,7 @@ import { startCase, toLower } from "lodash";
 import GuildModel from "../models/Guild";
 import { partition } from "lodash";
 import { Flag } from "./Flag";
+import ms from "ms";
 
 class CommandHandler{
 
@@ -35,7 +36,8 @@ class CommandHandler{
 			.addField("Subcommands", `${command.subcommands.map((sub) => `\`${sub.name}\``).join(", ") || "None."}`, true)
 			.addField("Usage", `\`\`\`${this.Illustra.config.name} ${command.parent ? command.parent.name+" "+command.name : command.name} ${command.usage}\`\`\``)
 			.addField("Flags", `\`\`\`\n${command.flags.map(f => `--${f.name.padEnd(8)} - ${f.description}`).join("\n") || "None."}\`\`\``)
-			.addField("User Permissions", `${command.userPerms.map((p) => startCase(toLower(p))).join(", ") || "None."}`)
+			.addField("User Permissions", `${command.userPerms.map((p) => startCase(toLower(p))).join(", ") || "None."}`, true)
+			.addField("Cooldown", ms(command.cooldownTime, {long: true}), true)
 			.setFooter(`${startCase(command.module)} Module`);
 
 		ctx.channel.send(embed);
@@ -138,6 +140,13 @@ class CommandHandler{
 		if(!this.checkBotPerms(cmd, ctx))
 			return;
 
+		const remaining = cmd.checkCooldown(ctx);
+
+		if(remaining && !this.Illustra.config.devs.includes(ctx.user.id)){
+			ctx.channel.send(`You need to wait ${ms(remaining)} until you can use this command again!`);
+			return;
+		}
+
 		if(ctx.args.length < cmd.reqArgs){
 			ctx.channel.send(`The command \`${cmd.name}\` requires at least ${cmd.reqArgs} argument${cmd.reqArgs > 1 ? "s" : ""} to run.`);
 			return;
@@ -156,6 +165,8 @@ class CommandHandler{
 			this.Illustra.logger.error(err);
 			ctx.channel.send("There was an unexpected error!");
 		});
+
+		cmd.setCooldown(ctx);
 
 		return;
 	}

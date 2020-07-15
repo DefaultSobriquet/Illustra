@@ -54,13 +54,13 @@ export class Command{
         this._cooldowns.set(ctx.user.id, Date.now());
     }
     
-    checkCooldown(ctx: ICommandContext): boolean {
+    checkCooldown(ctx: ICommandContext): number {
         const cooldown = this._cooldowns.get(ctx.user.id);
         if(!cooldown || Date.now()-cooldown >= this.cooldownTime){
             this._cooldowns.delete(ctx.user.id);
-            return true;
+            return 0;
         }
-        return false;
+        return Date.now()-cooldown;
     }
 
 }
