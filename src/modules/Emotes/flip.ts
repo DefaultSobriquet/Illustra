@@ -8,7 +8,7 @@ import jimp from "jimp";
 class Flip extends Command{
 	
 	constructor(options: Partial<Command>){
-		super({
+		super(options ?? {
 			name: "flip",
 			description: "Flips the specified emote vertically or horizontally.",
 			module: "Emotes",
@@ -17,7 +17,7 @@ class Flip extends Command{
 			aliases: [],
 			userPerms: ["MANAGE_EMOJIS"],
 			botPerms: ["SEND_MESSAGES", "EMBED_LINKS"]
-		} ?? options);
+		});
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
