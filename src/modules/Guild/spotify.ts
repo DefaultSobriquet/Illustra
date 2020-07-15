@@ -3,6 +3,7 @@ import { ICommandContext } from "../../types";
 import { Command } from "../../structures/Command";
 import IllustraClient from "../../structures/IllustraClient";
 import { CommandResponse } from "../../structures/CommandResponse";
+import { Flag } from "../../structures/Flag";
 
 const options: Partial<Command> = {
     name: "spotify",
@@ -28,20 +29,22 @@ class Spotify extends Command{
 		
 		for(const activity of member.presence.activities){
 			if(activity.name === "Spotify"){
+				
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const syncID = (activity as any).syncID;
 
 				const embed = new MessageEmbed()
 					.setDescription(`${member}`)
 					.setTimestamp()
 					.setAuthor(member.user.tag, member.user.displayAvatarURL())
 					.setColor(ctx.guild?.me?.displayColor || 0x2f3136)
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					.addField("Song", `[${activity.details}](https://open.spotify.com/track/${(activity as any).syncID})`)
+					.addField("Song", `[${activity.details}](https://open.spotify.com/track/${syncID})`)
 					.addField("Artist", activity.state)
 					.addField("Album", activity.assets?.largeText)
 					.setThumbnail(activity.assets?.largeImageURL() ?? member.user.displayAvatarURL())
 					.setFooter(`Requested by ${ctx.user.tag}`, "https://cdn.discordapp.com/emojis/729052264697823252.png?v=1");
 
-				ctx.channel.send(embed);
+				ctx.channel.send("uri" in ctx.flags ? `Open Song: <spotify://track/${syncID}>` : "", embed);
 				return new CommandResponse();
 			}
 		}
@@ -50,4 +53,12 @@ class Spotify extends Command{
 	}
 }
 
+
+export const flags = [
+	new Flag({
+		name: "uri",
+		description: "Provides a URI for the track.",
+		hasValue: false
+	})
+];
 export default Spotify;
