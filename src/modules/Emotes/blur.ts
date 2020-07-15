@@ -17,7 +17,7 @@ const options: Partial<Command> = {
 	reqArgs: 1
 };
 
-class Grey extends Command{
+class Blur extends Command{
 	
 	constructor(){
 		super(options);
@@ -65,4 +65,4 @@ class Grey extends Command{
 	
 }
 
-export default Grey;
+export default Blur;

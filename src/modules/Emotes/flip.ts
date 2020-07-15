@@ -65,7 +65,7 @@ class Vertical extends Flip{
 			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `FLIP${emote.name.slice(0,28)}`, {
-				reason: `${emote.name} blurred by ${ctx.user.tag}`,
+				reason: `${emote.name} flipped by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
 			});
 
@@ -120,7 +120,7 @@ class Horizontal extends Flip{
 			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `FLIP${emote.name.slice(0,28)}`, {
-				reason: `${emote.name} blurred by ${ctx.user.tag}`,
+				reason: `${emote.name} flipped by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
 			});
 

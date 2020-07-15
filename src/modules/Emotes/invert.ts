@@ -46,7 +46,7 @@ class Invert extends Command{
 			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `INVERT${emote.name.slice(0,26)}`, {
-				reason: `${emote.name} greyscaled by ${ctx.user.tag}`,
+				reason: `${emote.name} inverted by ${ctx.user.tag}`,
 				roles: (emote instanceof GuildEmoji) ? emote.roles.cache : []
 			});
 

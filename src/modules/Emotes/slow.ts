@@ -27,7 +27,7 @@ const options: Partial<Command> = {
 	reqArgs: 1
 };
 
-class Emote extends Command{
+class Slow extends Command{
 	constructor(){
 		super(options);
 	}
@@ -92,4 +92,4 @@ class Emote extends Command{
 	}
 }
 
-export default Emote;
+export default Slow;

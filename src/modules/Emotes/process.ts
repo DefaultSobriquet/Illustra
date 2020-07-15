@@ -44,9 +44,9 @@ class Process extends Command{
 			
 			image.flip("fliph" in ctx.flags, "flipv" in ctx.flags);
 			if("grey" in ctx.flags) image.greyscale();
-			if("blur" in ctx.flags) image.blur(parseInt(ctx.flags["blur"],10) ?? 1);
+			if("blur" in ctx.flags) image.blur(parseInt(ctx.flags["blur"],10) || 1);
 			if("invert" in ctx.flags) image.invert();
-			if("pixelate" in ctx.flags) image.pixelate(parseInt(ctx.flags["pixelate"],10) ?? 1);
+			if("pixelate" in ctx.flags) image.pixelate(parseInt(ctx.flags["pixelate"],10) || 1);
 			const processedURI = await image.getBase64Async(jimp.MIME_PNG);
 
 			const processedEmote = await ctx.guild!.emojis.create(processedURI, `P${emote.name.slice(0,31)}`, {
