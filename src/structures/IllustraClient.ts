@@ -21,7 +21,7 @@ class IllustraClient{
 	logger: Signale;
 	cooldowns: Collection<string, (Collection<string, number>)>;
 	static signs: ISigns;
-
+	version: string;
 
 	constructor(options: IClientOptions){
 		this.client = new Client();
@@ -31,6 +31,8 @@ class IllustraClient{
 		this.utils = new Utils({client: this.client});
 		this.logger = new Signale();
 		this.cooldowns = new Collection();
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		this.version = require("../../package.json").version;
 	}
 
 	async loadCommand(commandName: string, commandFolder: string): Promise<void>{

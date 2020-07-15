@@ -32,6 +32,7 @@ class Info extends Command{
 		.addField("Developer", Illustra.config.owner, true)
 		.addField("Language", "TypeScript", true)
 		.addField("Library", "Discord.js", true)
+		.addField("Version", Illustra.version, true)
 		.addField("Invite", `[Bot Invite](${Illustra.config.invite} 'Invite me!')`, true)
 		.addField("Support", `[Server Invite](${Illustra.config.support} 'To click or not to click.')`, true)
 		.setFooter(`Requested by ${ctx.user.tag}`, ctx.user.displayAvatarURL());
