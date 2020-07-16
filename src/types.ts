@@ -1,4 +1,5 @@
 import { Message, Guild, User, GuildMember, TextChannel, DMChannel, Client, NewsChannel } from "discord.js";
+import IllustraClient from "./structures/IllustraClient";
 
 export interface ISigns{
 	[key: string]: string
@@ -54,4 +55,8 @@ export interface IFlagOptions{
 	hasValue: boolean;
 	usage?: string;
 	example?: string;
+}
+
+export interface IManagerOptions{
+	Illustra: IllustraClient
 }
