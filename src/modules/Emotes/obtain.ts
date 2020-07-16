@@ -43,7 +43,7 @@ class Obtain extends Command{
 			return new CommandResponse("CUSTOM_ERROR", "Bot was unable to resolve emotes/message ID.");
 		}
 	
-		const emotes = extract(target).map((emote) => props(emote)!);
+		const emotes = extract(target, ctx.message === target).map((emote) => props(emote)!);
 		const [a, s] = partition(emotes, "animated");
 	
 		if(!emotes.length){

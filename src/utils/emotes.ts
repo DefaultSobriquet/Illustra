@@ -75,11 +75,11 @@ class EmoteUtils{
 	 * @returns {string[]} An array of Emoji strings
 	 */
 
-	extract = (message: Message): string[] => {
+	extract = (message: Message, noGuild = true): string[] => {
 		let emotes = message.content.match(/<(a*):(.*?)>/g);
 		if (!emotes) return [];
 		emotes = uniq(emotes);
-		emotes = emotes.filter((emote) => !message.guild!.emojis.cache.has(emote.split(":")[2].replace(">", "")));
+		if(noGuild) emotes = emotes.filter((emote) => !message.guild!.emojis.cache.has(emote.split(":")[2].replace(">", "")));
 		return emotes;
 	}
 
