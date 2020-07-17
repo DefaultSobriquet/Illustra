@@ -1,5 +1,5 @@
 import { MessageEmbed, GuildMember, Role, PermissionString } from "discord.js";
-import {startCase, toLower} from "lodash";
+import {isEmpty, startCase, toLower} from "lodash";
 import { ICommandContext } from "../../types";
 import { Command } from "../../structures/Command";
 import IllustraClient from "../../structures/IllustraClient";
@@ -34,7 +34,9 @@ class Userinfo extends Command{
 			ctx.channel.send("I could not find a member matching that.");
 			return new CommandResponse();
 		}
-		
+
+		const userDoc = await Illustra.managers.user.retrieve(target.id);
+
 		const userPerms = keyPerms.filter((perm) => target.permissions.toArray().includes(perm)); // Filter by key permissions
 		const roles = target.roles.cache.filter((role: Role) => !(role.id === role.guild.id)).map((role: Role) => role).sort((a: Role, b: Role) => b.position - a.position); // Sort by role position
 		
@@ -53,11 +55,13 @@ class Userinfo extends Command{
 			.addField("Registered", target.user.createdAt.toLocaleString(), true)
 			.addField("Presence", target.presence.activities[0]?.name ?? "None", true)
 			.addField("Status", status[target.user.presence.status], true)
-			.addField("Client", target.presence.clientStatus ? startCase(Object.keys(target.presence.clientStatus).join(", ")) : "None", true)
+			.addField("Client", !isEmpty(target.presence.clientStatus) ? startCase(Object.keys(target.presence.clientStatus!).join(", ")) : "None", true)
 			.addField(`Roles [${roles.length}]`, roles.length ? (roles.join(", ").length <= 1024 ? roles.join(", ") : "Too Many to Display.") : "None.")
 			.addField("Permissions", userPerms.length ? userPerms.map(f => startCase(toLower(f))).join(", ").replace(/_/g, " ") : "")
 			.setFooter(`Requested by ${ctx.user.tag} • User ID: ${target.user.id}`);
-		
+
+		if(userDoc.acks.custom?.length) embed.addField("Extra Acknowledgements", userDoc.acks.custom.join(", "));
+
 		ctx.channel.send(embed);
 
 		return new CommandResponse();

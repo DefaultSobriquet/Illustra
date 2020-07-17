@@ -10,14 +10,16 @@ const User = new Schema({
 		dev: {
 			type: Boolean
 		},
-		contrib: {
-			type: Boolean
-		},
-		friend: {
-			type: Boolean
-		},
 		custom: {
-			type: String
+			type: [String]
+		}
+	},
+	rep: {
+		lastGiven: {
+			type: Number
+		},
+		count: {
+			type: Number
 		}
 	}
 });
@@ -26,9 +28,7 @@ export interface IUser{
 	id: string;
 	acks: {
 		dev?: boolean,
-		contrib?: boolean,
-		friend?: boolean,
-		custom?: string
+		custom?: string[]
 	}
 }
 
