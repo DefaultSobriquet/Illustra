@@ -26,7 +26,7 @@ class Reload extends Command{
 		
 		if (!command){
 			ctx.channel.send("That command does not exist!");
-			return new CommandResponse();
+			return new CommandResponse("CUSTOM_ERROR", "An invalid command name was provided.");
 		}
 		
 		delete require.cache[require.resolve(`../${command.module}/${command.name}.js`)];
@@ -37,7 +37,7 @@ class Reload extends Command{
 		const props = new cmd();
 		Illustra.commands.set(command.name, props);
 		
-		ctx.channel.send(`The command ${command.name} has been reloaded!.`);
+		ctx.channel.send(`The command ${command.name} has been reloaded!`);
 		return new CommandResponse();
 	}
 }
