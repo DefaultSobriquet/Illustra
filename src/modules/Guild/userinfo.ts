@@ -60,7 +60,7 @@ class Userinfo extends Command{
 			.addField("Permissions", userPerms.length ? userPerms.map(f => startCase(toLower(f))).join(", ").replace(/_/g, " ") : "")
 			.setFooter(`Requested by ${ctx.user.tag} • User ID: ${target.user.id}`);
 
-		if(userDoc.acks.custom?.length) embed.addField("Extra Acknowledgements", userDoc.acks.custom.join(", "));
+		if(userDoc?.acks?.custom?.length) embed.addField("Extra Acknowledgements", userDoc.acks.custom.join(", "));
 
 		ctx.channel.send(embed);
 
