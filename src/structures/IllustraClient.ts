@@ -9,6 +9,7 @@ import { Signale } from "signale";
 import CommandHandler from "./CommandHandler";
 import { Flag } from "./Flag";
 import UserManager from "../manager/UserManager";
+import EmoteManager from "../manager/EmoteManager";
 
 const areaddir = promisify(readdir);
 
@@ -21,7 +22,8 @@ class IllustraClient{
 	utils: Utils;
 	logger: Signale;
 	managers: {
-		user: UserManager
+		user: UserManager,
+		emote: EmoteManager
 	}
 	cooldowns: Collection<string, (Collection<string, number>)>;
 	static signs: ISigns;
@@ -35,7 +37,8 @@ class IllustraClient{
 		this.utils = new Utils({client: this.client});
 		this.logger = new Signale();
 		this.managers = {
-			user: new UserManager({Illustra: this})
+			user: new UserManager({Illustra: this}),
+			emote: new EmoteManager({Illustra: this})
 		};
 		this.cooldowns = new Collection();
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
