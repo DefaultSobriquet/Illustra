@@ -1,11 +1,7 @@
 import { Message, Guild, User, GuildMember, TextChannel, DMChannel, Client, NewsChannel } from "discord.js";
 import IllustraClient from "./structures/IllustraClient";
 
-export interface ISigns{
-	[key: string]: string
-}
-
-export interface IFlagData{
+export interface IObject{
 	[key: string]: string
 }
 
@@ -16,7 +12,7 @@ export interface ICommandContext{
 	member?: GuildMember
 	guild?: Guild,
 	args: string[],
-	flags: IFlagData
+	flags: IObject
 }
 
 export interface IConfig{

@@ -1,5 +1,5 @@
 import { Client, Collection, ClientEvents, Constants} from "discord.js";
-import { IClientOptions, IConfig, ISigns} from "../types";
+import { IClientOptions, IConfig, IObject} from "../types";
 import { Command } from "./Command";
 import Utils from "../utils/utils";
 import { promisify } from "util";
@@ -26,7 +26,7 @@ class IllustraClient{
 		emote: EmoteManager
 	}
 	cooldowns: Collection<string, (Collection<string, number>)>;
-	static signs: ISigns;
+	static signs: IObject;
 	version: string;
 
 	constructor(options: IClientOptions){

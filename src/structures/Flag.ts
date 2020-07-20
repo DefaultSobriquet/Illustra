@@ -1,4 +1,4 @@
-import { IFlagOptions, IFlagData } from "../types";
+import { IFlagOptions, IObject } from "../types";
 import { Command } from "./Command";
 
 export class Flag{
@@ -14,8 +14,8 @@ export class Flag{
 		this.usage = options.usage ?? "";
 		this.example = options.example ?? "";
 	}
-	static parseFlags(flags: string[], cmd: Command): IFlagData{
-		const parsedFlags: IFlagData = {};
+	static parseFlags(flags: string[], cmd: Command): IObject{
+		const parsedFlags: IObject = {};
 
 		for(const flag of flags){
 			const [name, arg] = flag.replace("--", "").split("=");
