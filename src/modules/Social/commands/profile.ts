@@ -14,7 +14,7 @@ const options: Partial<Command> = {
     botPerms: ["SEND_MESSAGES"]
 };
 
-class Rep extends Command{
+class Profile extends Command{
 	constructor(){
 		super(options);
 	}
@@ -49,4 +49,4 @@ class Rep extends Command{
 	}
 }
 
-export default Rep;
+export default Profile;
