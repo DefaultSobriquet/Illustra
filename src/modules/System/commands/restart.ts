@@ -27,7 +27,7 @@ class Restart extends Command{
 
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 
-		const time = ms(ctx.args[0] ?? 0);
+		const time = ms(ctx.args[0] ?? "0");
 
 		if (time) {
 			await ctx.channel.send(`I'll restart at ${new Date(Date.now()+time).toLocaleString()}.`);
