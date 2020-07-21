@@ -19,21 +19,25 @@ class Restart extends Command{
 	constructor(){
 		super(options);
 	}
-	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
-		
-		const end = () => {
-			Illustra.client.destroy();
-			process.exit(0);
-		};
 
-		if (ctx.args[0] && !isNaN(ms(ctx.args[0]))) {
-			await ctx.channel.send(`I'll restart at ${new Date(Date.now()+ms(ctx.args[0])).toLocaleString()}.`);
-			Illustra.client.setTimeout(end, ms(ctx.args[0]), Illustra);
+	end(Illustra: IllustraClient): void{
+		Illustra.client.destroy();
+		process.exit(0);
+	}
+
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
+
+		const time = ms(ctx.args[0] ?? 0);
+
+		if (time) {
+			await ctx.channel.send(`I'll restart at ${new Date(Date.now()+time).toLocaleString()}.`);
+			Illustra.client.setTimeout(this.end, time, Illustra);
 			return new CommandResponse();
 		}
 		
 		await ctx.channel.send("I'll restart now.");
-		end();
+
+		this.end(Illustra);
 
 		return new CommandResponse();
 	}
