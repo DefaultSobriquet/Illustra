@@ -52,16 +52,24 @@ class IllustraClient{
 			// eslint-disable-next-line @typescript-eslint/no-var-requires
 			const cmd = require(`../modules/${commandFolder}/commands/${commandName}`);
 			const props = new cmd.default();
+		
 			if(!props.enabled){
 				this.logger.info(`${props.name} disabled, bypassing load.`);
 				return;
 			}
+		
 			if(cmd.subcommands) cmd.subcommands.forEach((c: Command) => {
-				props.subcommands.set(c.name, c);
+				
 				c.parent = props;
+				c.module = commandModule;
+
+				props.subcommands.set(c.name, c);
 			});
+
 			props.module = commandModule;
+			
 			if(cmd.flags) cmd.flags.forEach((f: Flag) => props.flags.set(f.name, f));
+		
 			this.commands.set(props.name, props);
 		} catch (e) {
 			this.logger.error(`Unable to load command ${commandName}: ${e}`);
