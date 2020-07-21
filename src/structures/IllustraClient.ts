@@ -10,6 +10,7 @@ import CommandHandler from "./CommandHandler";
 import { Flag } from "./Flag";
 import UserManager from "../manager/UserManager";
 import EmoteManager from "../manager/EmoteManager";
+import Module from "./Module";
 
 const areaddir = promisify(readdir);
 
@@ -45,11 +46,11 @@ class IllustraClient{
 		this.version = require("../../package.json").version;
 	}
 
-	async loadCommand(commandName: string, commandFolder: string): Promise<void>{
+	async loadCommand(commandName: string, commandFolder: string, commandModule: Module): Promise<void>{
 		try {
 			this.logger.await(`Loading command: ${commandName} from ${commandFolder}`);
 			// eslint-disable-next-line @typescript-eslint/no-var-requires
-			const cmd = require(`../modules/${commandFolder}/${commandName}`);
+			const cmd = require(`../modules/${commandFolder}/commands/${commandName}`);
 			const props = new cmd.default();
 			if(!props.enabled){
 				this.logger.info(`${props.name} disabled, bypassing load.`);
@@ -59,6 +60,7 @@ class IllustraClient{
 				props.subcommands.set(c.name, c);
 				c.parent = props;
 			});
+			props.module = commandModule;
 			if(cmd.flags) cmd.flags.forEach((f: Flag) => props.flags.set(f.name, f));
 			this.commands.set(props.name, props);
 		} catch (e) {
@@ -67,13 +69,16 @@ class IllustraClient{
 	}
 	
 	async loadModules(): Promise<void>{
-		const cmdFolders = await areaddir("./modules/");
-		for (const folder of cmdFolders) {
-			const cmdFiles = await areaddir(`./modules/${folder}/`);
-			this.logger.await(`Loading ${folder} Module: (${cmdFiles.length} commands)`);
-			for(const file of cmdFiles){
+		const modules = await areaddir("./modules/");
+		for (const moduleName of modules) {
+			const commands = await areaddir(`./modules/${moduleName}/commands`);
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			const cmdModule = require(`../modules/${moduleName}/${moduleName}`);
+			const moduleProps = new cmdModule.default();
+			this.logger.await(`Loading ${moduleName} Module: (${commands.length} commands)`);
+			for(const file of commands){
 				if (!file.endsWith(".js")) return;
-				await this.loadCommand(file, folder);
+				await this.loadCommand(file, moduleName, moduleProps);
 			}
 		}
 	}
@@ -88,10 +93,9 @@ class IllustraClient{
 				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				const event = require(`../events/${file}`).default;
 			
-				// eslint-disable-next-line no-inner-declarations
-				function isEvent(input: string): input is keyof ClientEvents {
-					Object.keys(Constants.Events).includes(input);
-					return true;
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any, no-inner-declarations
+				function isEvent(input: any): input is keyof ClientEvents {
+					return (Object.values(Constants.Events).includes(input));
 				}
 				
 				if(!isEvent(eventName)){

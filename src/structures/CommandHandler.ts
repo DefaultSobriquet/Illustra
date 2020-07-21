@@ -38,7 +38,7 @@ class CommandHandler{
 			.addField("Flags", `\`\`\`\n${command.flags.map(f => `--${f.name.padEnd(8)} - ${f.description}`).join("\n") || "None."}\`\`\``)
 			.addField("User Permissions", `${command.userPerms.map((p) => startCase(toLower(p))).join(", ") || "None."}`, true)
 			.addField("Cooldown", ms(command.cooldownTime, {long: true}), true)
-			.setFooter(`${startCase(command.module)} Module`);
+			.setFooter(`${startCase(command.module!.name)} Module`, command.module!.icon ?? "");
 
 		ctx.channel.send(embed);
 		return;

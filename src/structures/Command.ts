@@ -3,16 +3,17 @@ import { Collection, PermissionString } from "discord.js";
 import IllustraClient from "./IllustraClient";
 import { CommandResponse } from "./CommandResponse";
 import { Flag } from "./Flag";
+import Module from "./Module";
 // import Module from "./Module";
 
 export class Command{
     
     parent?: Command;
+    module?: Module;
     name: string;
     aliases: string[];
     userPerms: PermissionString[];
     botPerms: PermissionString[];
-    module: string /*Module goes here later.*/;
     description: string;
     usage: string; 
     examples: string[];
@@ -31,7 +32,6 @@ export class Command{
         this.userPerms = options.userPerms ?? [];
         this.botPerms = options.botPerms ?? [];
         this.name = options.name ?? "test";
-        this.module = options.module ?? "System" /* new Module() */;
         this.description = options.description ?? "What can this do?";
         this.usage = options.usage ?? "[user]";
         this.examples = options.examples ?? [];
