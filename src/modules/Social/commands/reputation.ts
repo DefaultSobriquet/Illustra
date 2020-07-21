@@ -4,6 +4,7 @@ import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
 import ms from "ms";
 import { MessageEmbed } from "discord.js";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "reputation",
@@ -40,19 +41,19 @@ class Rep extends Command{
 		const user = Illustra.utils.user.resolve(ctx.args[0], ctx.message);
 
 		if(!user){
-			ctx.channel.send("Please specify a valid user!");
+			ctx.channel.send(`${Signs.ERROR} Please specify a valid user!`);
 			return new CommandResponse("CUSTOM_ERROR", "Specified user was invalid.");
 		}
 
 		if(user.id === ctx.user.id){
-			ctx.channel.send("You can't give reputation to yourself! Good try, though.");
+			ctx.channel.send(`${Signs.ERROR} You can't give reputation to yourself! Good try, though.`);
 			return new CommandResponse("CUSTOM_ERROR", "Self-rep attempt.");
 		}
 
 		const emote = validate(ctx.args[1]) ? props(ctx.args[1]) : null;
 
 		if(!emote){
-			ctx.channel.send("Please specify a valid emote!");
+			ctx.channel.send(`${Signs.ERROR} Please specify a valid emote!`);
 			return new CommandResponse("CUSTOM_ERROR", "Invalid emote.");
 		}
 
@@ -61,7 +62,7 @@ class Rep extends Command{
 		const hasUser = await Illustra.managers.emote.hasUser(emote, userDoc._id);
 
 		if(hasUser){
-			ctx.channel.send("The user already has this emote!");
+			ctx.channel.send(`${Signs.ERROR} The user already has this emote!`);
 			return new CommandResponse("CUSTOM_ERROR", "User already has emote.");
 		}
 

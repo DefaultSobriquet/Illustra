@@ -3,6 +3,7 @@ import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { Emoji, GuildEmoji } from "discord.js";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "remove",
@@ -29,12 +30,12 @@ class Remove extends Command{
 		});
 
 		if (!emotes.length){
-			ctx.channel.send("You didn't provide any valid emotes!");
+			ctx.channel.send(`${Signs.ERROR} You didn't provide any valid emotes!`);
 			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote.");
 		}
 		
 		if(emotes.length > 5){
-			ctx.channel.send("You're removing too many emotes at once! Specify a maximum of five.");
+			ctx.channel.send(`${Signs.ERROR} You're removing too many emotes at once! Specify a maximum of five.`);
 			return new CommandResponse("CUSTOM_ERROR", "User provided too many emotes.");
 		}
 

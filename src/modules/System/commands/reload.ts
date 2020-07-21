@@ -2,6 +2,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
 	name: "reload",
@@ -24,7 +25,7 @@ class Reload extends Command{
 		const command = Illustra.handler.findCommand(ctx.args[0]);
 		
 		if (!command){
-			ctx.channel.send("That command does not exist!");
+			ctx.channel.send(`${Signs.ERROR} That command does not exist!`);
 			return new CommandResponse("CUSTOM_ERROR", "An invalid command name was provided.");
 		}
 		
@@ -36,7 +37,7 @@ class Reload extends Command{
 		const props = new cmd();
 		Illustra.commands.set(command.name, props);
 		
-		ctx.channel.send(`The command ${command.name} has been reloaded!`);
+		ctx.channel.send(`${Signs.SUCCESS} The command ${command.name} has been reloaded!`);
 		return new CommandResponse();
 	}
 }

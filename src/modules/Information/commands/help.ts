@@ -4,6 +4,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
 	name: "help",
@@ -52,7 +53,7 @@ class Help extends Command{
 			}
 
 			if (!command){
-				ctx.channel.send("That command doesn't exist."); // If commmand doesn't exist, notify.
+				ctx.channel.send(`${Signs.ERROR} That command doesn't exist.`); // If commmand doesn't exist, notify.
 				return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid command.");
 			}
 

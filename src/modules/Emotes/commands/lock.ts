@@ -3,6 +3,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
 	name: "lock",
@@ -25,7 +26,7 @@ class Lock extends Command{
 		const emote = resolve(ctx.args[0], ctx.guild!);
 	
 		if (!emote){
-			ctx.channel.send("I couldn't resolve that emote.");
+			ctx.channel.send(`${Signs.ERROR} I couldn't resolve that emote.`);
 			return new CommandResponse("CUSTOM_ERROR", "Bot was unable to resolve an emote.");
 		}
 
@@ -37,7 +38,7 @@ class Lock extends Command{
 		}
 	
 		if(!roles.length){
-			ctx.channel.send("I couldn't find any valid roles.");
+			ctx.channel.send(`${Signs.ERROR} I couldn't find any valid roles.`);
 			return new CommandResponse("CUSTOM_ERROR", "Bot was unable to resolve roles.");
 		}
 	
@@ -56,13 +57,13 @@ class Lock extends Command{
 			.setDescription(`**Roles**: ${roles.join(", ")}`)
 			.setFooter(`Requested by ${ctx.user.tag}`,ctx.user.displayAvatarURL());
 	
-		await ctx.channel.send(!integrated ? "Careful! I don't have an integrated role and will no longer be able to use this emote." : "", embed);
+		await ctx.channel.send(!integrated ? `${Signs.WARNING} Careful! I don't have an integrated role and will no longer be able to use this emote.` : "", embed);
 	
 		emote.roles.set(uniqRoles)
 			.then((emote: GuildEmoji) => ctx.channel.send(`\`🔒\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err: Error) => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was a unexpected error.");
+				ctx.channel.send(`${Signs.ERROR} There was a unexpected error.`);
 			});
 		
 		return new CommandResponse();

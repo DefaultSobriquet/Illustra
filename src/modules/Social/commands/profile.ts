@@ -3,6 +3,7 @@ import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
 import { MessageEmbed } from "discord.js";
+import { Signs } from "../../../utils/consts";
 
 class Profile extends Command{
 	constructor(options?: Partial<Command>){
@@ -22,7 +23,7 @@ class Profile extends Command{
 		const target = Illustra.utils.user.resolve(ctx.args[0], ctx.message);
 
 		if(!target){
-			ctx.channel.send("I couldn't find that user!");
+			ctx.channel.send(`${Signs.ERROR} I couldn't find that user!`);
 			return new CommandResponse("CUSTOM_ERROR", "User couldn't be found.");
 		}
 

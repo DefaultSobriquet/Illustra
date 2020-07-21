@@ -3,6 +3,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "unlock",
@@ -24,12 +25,12 @@ class Unlock extends Command{
 		const emote = resolve(ctx.args[0], ctx.guild!);
 		
 		if (!emote){
-			ctx.channel.send("That's not a valid emote!");
+			ctx.channel.send(`${Signs.ERROR} That's not a valid emote!`);
 			return new CommandResponse("CUSTOM_ERROR", "User did not enter a valid emote.");
 		}
 
 		if(!emote.roles.cache.size){
-			ctx.channel.send("There are no roles to unlock.");
+			ctx.channel.send(`${Signs.ERROR} There are no roles to unlock.`);
 			return new CommandResponse("CUSTOM_ERROR", "No roles to remove from emote.");
 		}
 
@@ -47,7 +48,7 @@ class Unlock extends Command{
 			.then((emote) => ctx.channel.send(`\`🔓\` | [ID \`\`${emote.id}\`\`] — \`\`${emote.name}\`\``))
 			.catch((err) => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was a unexpected error.");
+				ctx.channel.send(`${Signs.ERROR} There was a unexpected error.`);
 			});
 
 		return new CommandResponse();

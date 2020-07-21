@@ -5,6 +5,7 @@ import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
 import { Flag } from "../../../structures/Flag";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
 	name: "emotes",
@@ -30,7 +31,7 @@ class Emotes extends Command{
 		if("locked" in ctx.flags) emotes = emotes.filter(e => e.roles.cache.size > 0);
 
 		if(!emotes.size){
-			ctx.channel.send("I couldn't find any emotes!");
+			ctx.channel.send(`${Signs.ERROR} I couldn't find any emotes!`);
 			return new CommandResponse("CUSTOM_ERROR", "The bot couldn't find any emotes.");
 		}
 

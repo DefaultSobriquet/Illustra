@@ -3,6 +3,7 @@ import { ICommandContext } from "../../../types";
 import GuildModel from "../../../models/Guild.js";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "prefix",
@@ -28,18 +29,18 @@ class Prefix extends Command{
 		}
 		
 		if(!ctx.args[0]){
-			ctx.channel.send(`Your guild's prefix is \`${guild.prefix}\`.`);
+			ctx.channel.send(`${Signs.INFO} Your guild's prefix is \`${guild.prefix}\`.`);
 			return new CommandResponse();
 		}
 
 		if(ctx.args[0].length > 5){
-			ctx.channel.send("Your prefix must not be more than five characters.");
+			ctx.channel.send(`${Signs.ERROR} Your prefix must not be more than five characters.`);
 			return new CommandResponse();
 		}
 		
 		guild = await GuildModel.findOneAndUpdate({id: ctx.guild!.id}, {$set: {prefix: ctx.args[0]}}, {new: true});
 		
-		ctx.channel.send(`\`${ctx.args[0]}\` is now your prefix.`);
+		ctx.channel.send(`${Signs.SUCCESS} \`${ctx.args[0]}\` is now your prefix.`);
 
 		return new CommandResponse();
 	}

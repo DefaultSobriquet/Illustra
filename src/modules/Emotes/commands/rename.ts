@@ -2,6 +2,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "rename",
@@ -24,11 +25,11 @@ class Rename extends Command{
 		const emote = resolve(ctx.args[0], ctx.guild!);
 
 		if (!emote){
-			ctx.channel.send("That's not a vaild emote.");
+			ctx.channel.send(`${Signs.ERROR} That's not a vaild emote.`);
 			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote.");
 		}
 		if (!/^[_a-z0-9]{2,32}$/i.test(ctx.args[1])){
-			ctx.channel.send("That's not a valid emote name.");
+			ctx.channel.send(`${Signs.ERROR} That's not a valid emote name.`);
 			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote name.");
 		}
 		
@@ -37,7 +38,7 @@ class Rename extends Command{
 				ctx.channel.send(embed(emote, ctx.message));
 			}).catch((err) => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was an unexpected error.");
+				ctx.channel.send(`${Signs.ERROR} There was an unexpected error.`);
 			});
 
 		return new CommandResponse();

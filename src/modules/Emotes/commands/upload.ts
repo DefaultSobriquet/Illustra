@@ -2,6 +2,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "upload",
@@ -32,16 +33,16 @@ class Upload extends Command{
 	
 		if(file){ // Alright, let's start using the attachment.
 			if(file.size > 256000 || !regExtension.test(file.url)){
-				ctx.channel.send("That's an invalid attachment (over 256 KB or not a valid image).");
+				ctx.channel.send(`${Signs.ERROR} That's an invalid attachment (over 256 KB or not a valid image).`);
 				return new CommandResponse();
 			}
 			
 			if(!a && /\.gif$/.test(file.url)){
-				ctx.channel.send("You don't have space for an animated emote.");
+				ctx.channel.send(`${Signs.ERROR} You don't have space for an animated emote.`);
 				return new CommandResponse("CUSTOM_ERROR", "Server does not have enough space for an animated emote.");
 			}
 			if(!s && /\.(png|jpg|jpeg|webp)$/.test(file.url)){
-				ctx.channel.send("You don't have space for an static emote.");
+				ctx.channel.send(`${Signs.ERROR} You don't have space for an static emote.`);
 				return new CommandResponse("CUSTOM_ERROR", "Server does not have enough space for a static emote.");
 			}
 	
@@ -52,12 +53,12 @@ class Upload extends Command{
 		if(!link && validate(ctx.args[1])) link = props(ctx.args[1])!.url ?? undefined;
 	
 		if(!name){
-			ctx.channel.send("You didn't give me a valid emote name."); // Is the name valid?
+			ctx.channel.send(`${Signs.ERROR} You didn't give me a valid emote name.`); // Is the name valid?
 			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid emote name.");
 		}
 
 		if(!link){
-			ctx.channel.send("You didn't give me a valid link, emote, or attachment."); // Did we get a link?
+			ctx.channel.send(`${Signs.ERROR} You didn't give me a valid link, emote, or attachment.`); // Did we get a link?
 			return new CommandResponse("CUSTOM_ERROR", "User did not provide a valid link, emote, or attachment.");
 		}
 	
@@ -65,7 +66,7 @@ class Upload extends Command{
 			.then(emote => ctx.channel.send(embed(emote, ctx.message)))
 			.catch(err => {
 				Illustra.logger.error(err);
-				ctx.channel.send("There was an error! Your link might have been an invalid image, or there might not be enough space.");
+				ctx.channel.send(`${Signs.ERROR} There was an error! Your link might have been an invalid image, or there might not be enough space.`);
 			});
 		
 		return new CommandResponse();

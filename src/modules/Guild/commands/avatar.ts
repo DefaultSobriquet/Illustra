@@ -3,6 +3,7 @@ import { ICommandContext } from "../../../types";
 import { Command } from "../../../structures/Command";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "avatar",
@@ -22,7 +23,7 @@ class Avatar extends Command{
 		const member = Illustra.utils.user.resolve(ctx.args[0], ctx.message);
 
 		if (!member){
-			ctx.channel.send("I could not find a member matching that.");
+			ctx.channel.send(`${Signs.ERROR} I could not find a member matching that.`);
 			return new CommandResponse("CUSTOM_ERROR", "Member could not be resolved.");
 		}
 		

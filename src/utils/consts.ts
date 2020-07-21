@@ -1,6 +1,6 @@
 export const Signs = {
 	ERROR: "<:error:691142169565724672>",
-	WARNING: "",
+	WARNING: "<:warning:735257108811087994>",
 	SUCCESS: "<:success:691141985418870866>",
 	INFO: "<:info:730124045420462130>",
 	LOADING: "<a:loading:723297254949126225>",

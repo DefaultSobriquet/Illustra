@@ -3,6 +3,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
 	name: "restart",
@@ -30,12 +31,12 @@ class Restart extends Command{
 		const time = ms(ctx.args[0] ?? "0");
 
 		if (time) {
-			await ctx.channel.send(`I'll restart at ${new Date(Date.now()+time).toLocaleString()}.`);
+			await ctx.channel.send(`${Signs.INFO} I'll restart at ${new Date(Date.now()+time).toLocaleString()}.`);
 			Illustra.client.setTimeout(this.end, time, Illustra);
 			return new CommandResponse();
 		}
 		
-		await ctx.channel.send("I'll restart now.");
+		await ctx.channel.send(`${Signs.INFO} I'll restart now.`);
 
 		this.end(Illustra);
 

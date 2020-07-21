@@ -5,6 +5,7 @@ import axios from "axios";
 import gm from "gm";
 import {promisify} from "util";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 // Hack declaration for extending the prototype
 declare module "gm" {
@@ -35,12 +36,12 @@ class Slow extends Command{
 		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
 	
 		if (!emote){
-			ctx.channel.send("That emote doesn't exist.");
+			ctx.channel.send(`${Signs.ERROR} That emote doesn't exist.`);
 			return new CommandResponse("CUSTOM_ERROR", "No valid emote was provided.");
 		}
 
 		if(!emote.animated){
-			ctx.channel.send("Please give me an animated emote.");
+			ctx.channel.send(`${Signs.ERROR} Please give me an animated emote.`);
 			return new CommandResponse("CUSTOM_ERROR", "An animated emote was not provided.");
 		}
 
@@ -60,7 +61,7 @@ class Slow extends Command{
 		const data: any = await image.identifyPromise();
 
 		if(!data.Delay){
-			ctx.channel.send("I can't read this animated emote's data!");
+			ctx.channel.send(`${Signs.ERROR} I can't read this animated emote's data!`);
 			return new CommandResponse("CUSTOM_ERROR", "Animated emote data could not be read.");
 		}
 
@@ -72,14 +73,14 @@ class Slow extends Command{
 			.toBuffer("gif", async (err, buffer) => {
 				if(err){
 					Illustra.logger.error(err);
-					ctx.channel.send("There was an unexpected error!");
+					ctx.channel.send(`${Signs.ERROR} There was an unexpected error!`);
 					return;
 				}
 				ctx.guild!.emojis.create(buffer, `SLOW${emote.name.slice(0,28)}`)
 					.then(e => {
 						ctx.channel.send(embed(e, ctx.message));
 					}).catch(err => {
-						ctx.channel.send("There was an unexpected error!");
+						ctx.channel.send(`${Signs.ERROR} There was an unexpected error!`);
 						Illustra.logger.error(err);
 					});
 			});

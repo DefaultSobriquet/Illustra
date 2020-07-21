@@ -6,6 +6,7 @@ import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
 import { Flag } from "../../../structures/Flag";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
 	name: "obtain",
@@ -32,13 +33,13 @@ class Obtain extends Command{
 		if(!target && /^\d{17,19}$/.test(ctx.args[0])){
 			const message = await ctx.channel.messages.fetch(ctx.args[0])
 				.catch(() => {
-					ctx.channel.send("I couldn't get that message. Are you in the same channel?");
+					ctx.channel.send(`${Signs.ERROR} I couldn't get that message. Are you in the same channel?`);
 				});
 			if(message) target = message;
 		}
 	
 		if (!target){
-			ctx.channel.send("Make sure you're giving me emotes, a message link, or a message ID.");
+			ctx.channel.send(`${Signs.ERROR} Make sure you're giving me emotes, a message link, or a message ID.`);
 			return new CommandResponse("CUSTOM_ERROR", "Bot was unable to resolve emotes/message ID.");
 		}
 	
@@ -46,14 +47,14 @@ class Obtain extends Command{
 		const [a, s] = partition(emotes, "animated");
 	
 		if(!emotes.length){
-			ctx.channel.send("I couldn't find any new emotes.");
+			ctx.channel.send(`${Signs.ERROR} I couldn't find any new emotes.`);
 			return new CommandResponse("CUSTOM_ERROR", "Bot was unable to find any new emotes.");
 		}
 
 		const server = space(ctx.guild!);
 	
 		if(server.a - a.length < 0 || server.s - s.length < 0){
-			ctx.channel.send(`I can't add that many emotes! Currently, there are ${server.s}/${server.limit} static and ${server.a}/${server.limit} animated spaces for emotes.`);
+			ctx.channel.send(`${Signs.ERROR} I can't add that many emotes! Currently, there are ${server.s}/${server.limit} static and ${server.a}/${server.limit} animated spaces for emotes.`);
 			return new CommandResponse("CUSTOM_ERROR", "Too many emotes to add to server.");
 		}
 	
@@ -66,7 +67,7 @@ class Obtain extends Command{
 			.addField("Message", `[Jump!](${target.url} 'Emotes were obtained from this message.')`, true)
 			.setFooter(`Requested by ${ctx.user.tag}`, ctx.user.displayAvatarURL());
 	
-		const status = await ctx.channel.send(embed);
+		const status = await ctx.channel.send(`${Signs.LOADING} Now obtaining!`, embed);
 		
 		if("dry" in ctx.flags) return new CommandResponse();
 	
@@ -81,7 +82,7 @@ class Obtain extends Command{
 					.then((e) => success.push(e))
 					.catch(() => {
 						failed.push(emote);
-						status.edit(`There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
+						status.edit(`${Signs.ERROR} There was a unexpected error for ${emote.name}! The emote may have been a legacy emote above 256KB.`);
 					});
 			}
 		}
@@ -89,7 +90,7 @@ class Obtain extends Command{
 		embed.setDescription(success.join(" | "));
 		if(failed.length) embed.addField("Failed to Add", failed.map(e => `\`${e.name}\``).join(" | "), true);
 	
-		status.edit(`Completed! I've added ${success.length}/${emotes.length} of your requested emotes.`, embed).finally(() => ctx.channel.stopTyping(true));
+		status.edit(`${Signs.SUCCESS} Completed! I've added ${success.length}/${emotes.length} of your requested emotes.`, embed).finally(() => ctx.channel.stopTyping(true));
 
 		return new CommandResponse();
 	}

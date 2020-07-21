@@ -3,6 +3,7 @@ import { Command } from "../../../structures/Command";
 import { ICommandContext } from "../../../types";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "shorten",
@@ -24,11 +25,11 @@ class Shorten extends Command{
 	
 		axios.get(`https://zws.im/api/shortenURL?url=${ctx.args[0]}`)
 			.then((response: AxiosResponse) => {
-				ctx.channel.send(`**Here's your ZWS URL for <${ctx.args[0]}>.**\n\`\`\`https://zws.im/${response.data.short}/\`\`\``);
+				ctx.channel.send(`${Signs.SUCCESS} **Here's your ZWS URL for <${ctx.args[0]}>.**\n\`\`\`https://zws.im/${response.data.short}/\`\`\``);
 			}).catch((error: AxiosError) => {
 				const response = error.response;
-				if ([400, 413].includes(response!.status)) return ctx.channel.send(`Error: ${response!.data.error}.`);
-				return ctx.channel.send("There was an unexpected error.");
+				if ([400, 413].includes(response!.status)) return ctx.channel.send(`${Signs.ERROR} Error: ${response!.data.error}.`);
+				return ctx.channel.send(`${Signs.ERROR} There was an unexpected error.`);
 			});
 		
 		return new CommandResponse();

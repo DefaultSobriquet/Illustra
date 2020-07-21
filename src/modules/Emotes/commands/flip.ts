@@ -4,6 +4,7 @@ import IllustraClient from "../../../structures/IllustraClient";
 import {CommandResponse} from "../../../structures/CommandResponse";
 import { GuildEmoji } from "discord.js";
 import jimp from "jimp";
+import { Signs } from "../../../utils/consts";
 
 class Flip extends Command{
 	
@@ -99,12 +100,12 @@ class Horizontal extends Flip{
 		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
 
 		if(!emote){
-			ctx.channel.send("You didn't specify a valid emote!");
+			ctx.channel.send(`${Signs.ERROR} You didn't specify a valid emote!`);
 			return new CommandResponse("CUSTOM_ERROR", "User didn't specify a valid emote.");
 		}
 		
 		if(emote.animated){
-			ctx.channel.send("I can't perform image manipulation on animated emotes!");
+			ctx.channel.send(`${Signs.ERROR} I can't perform image manipulation on animated emotes!`);
 			return new CommandResponse("CUSTOM_ERROR", "User did not specify a static emote.");
 		}
 
@@ -124,7 +125,7 @@ class Horizontal extends Flip{
 			ctx.channel.send(embed(processedEmote, ctx.message));
 
 		}catch(err){
-			ctx.channel.send("There was an unexpected error while processing!");
+			ctx.channel.send(`${Signs.ERROR} There was an unexpected error while processing!`);
 			Illustra.logger.error(err);
 			return new CommandResponse("UNEXPECTED_ERROR");
 		}

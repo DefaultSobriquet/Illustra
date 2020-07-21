@@ -4,6 +4,7 @@ import { Command } from "../../../structures/Command";
 import IllustraClient from "../../../structures/IllustraClient";
 import { CommandResponse } from "../../../structures/CommandResponse";
 import { Flag } from "../../../structures/Flag";
+import { Signs } from "../../../utils/consts";
 
 const options: Partial<Command> = {
     name: "spotify",
@@ -22,7 +23,7 @@ class Spotify extends Command{
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const member = Illustra.utils.user.resolve(ctx.args[0], ctx.message);
 		if (!member){
-			ctx.channel.send("I could not find a member matching that.");
+			ctx.channel.send(`${Signs.ERROR} I could not find a member matching that.`);
 			return new CommandResponse("CUSTOM_ERROR", "Member could not be resolved.");
 		}
 		
@@ -47,7 +48,7 @@ class Spotify extends Command{
 				return new CommandResponse();
 			}
 		}
-		ctx.channel.send("I could not find a Spotify activity on that user.");
+		ctx.channel.send(`${Signs.ERROR} I could not find a Spotify activity on that user.`);
 		return new CommandResponse("CUSTOM_ERROR", "No spotify activity found.");
 	}
 }

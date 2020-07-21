@@ -1,5 +1,5 @@
 import { Client, Collection, ClientEvents, Constants} from "discord.js";
-import { IClientOptions, IConfig, IObject} from "../types";
+import { IClientOptions, IConfig } from "../types";
 import { Command } from "./Command";
 import Utils from "../utils/utils";
 import { promisify } from "util";
@@ -17,7 +17,7 @@ const areaddir = promisify(readdir);
 class IllustraClient{
 
 	client: Client;
-	config: IConfig;
+	readonly config: IConfig;
 	commands: Collection<string, Command>;
 	handler: CommandHandler;
 	utils: Utils;
@@ -27,8 +27,7 @@ class IllustraClient{
 		emote: EmoteManager
 	}
 	cooldowns: Collection<string, (Collection<string, number>)>;
-	static signs: IObject;
-	version: string;
+	readonly version: string;
 
 	constructor(options: IClientOptions){
 		this.client = new Client();
