@@ -33,12 +33,19 @@ class UserManager{
 		userDoc.rep!.cooldown = time ?? Date.now();
 		return await userDoc.save();
 	}
+
+	async setBio(id: string, bio: string): Promise<IUser & Document>{
+		const userDoc = (await this.retrieve(id, true))!;
+		userDoc.profile.bio = bio.length < 200 ? bio : bio.slice(0, 200).trim()+"...";
+		return await userDoc.save();
+	}
+
 	async getProfile(id: string): Promise<IProfile>{
 		const userDoc = await this.retrieve(id);
 		const profile = {
 			nickname: userDoc?.profile?.nickname,
 			colour: userDoc?.profile?.colour,
-			bio: userDoc?.profile?.bio ?? "I'm just your average, uninteresting person.",
+			bio: userDoc?.profile?.bio ?? "Be different and you'll always stand out.",
 			partner: userDoc?.profile?.partner
 		};
 		return profile;
