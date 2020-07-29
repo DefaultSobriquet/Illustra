@@ -148,7 +148,7 @@ class CommandHandler{
 		}
 
 		if(ctx.args.length < cmd.reqArgs){
-			ctx.channel.send(`The command \`${cmd.name}\` requires at least ${cmd.reqArgs} argument${cmd.reqArgs > 1 ? "s" : ""} to run.`);
+			ctx.channel.send(`The ${cmd.parent ? "sub" : ""}command \`${cmd.name}\` requires at least ${cmd.reqArgs} argument${cmd.reqArgs > 1 ? "s" : ""} to run.`);
 			return;
 		}
 		

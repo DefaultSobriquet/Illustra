@@ -26,7 +26,7 @@ class IllustraClient{
 		user: UserManager,
 		emote: EmoteManager
 	}
-	cooldowns: Collection<string, (Collection<string, number>)>;
+	cooldowns: Collection<string, Collection<string, number>>;
 	readonly version: string;
 
 	constructor(options: IClientOptions){

@@ -4,17 +4,20 @@ import EmoteUtils from "./emotes";
 import RoleUtils from "./roles";
 import UserUtils from "./users";
 import { inspect } from "util";
+import ImageUtils from "./image";
 
 class Utils{
 	client: Client;
 	emote: EmoteUtils;
 	role: RoleUtils;
 	user: UserUtils;
+	image: ImageUtils;
 	constructor(options: IUtilsOptions){
 		this.client = options.client;
 		this.emote = new EmoteUtils(options);
 		this.role = new RoleUtils(options);
 		this.user = new UserUtils(options);
+		this.image = new ImageUtils(options);
 	}
 	/**
 	 * Processes the result of an eval and removes any tokens or breaking markdown

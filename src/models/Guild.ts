@@ -13,10 +13,6 @@ const Guild = new Schema({
 	prefix: {
 		default: "=",
 		type: String
-	},
-	listing: {
-		enabled: {type: Boolean, default: false},
-		description: {type: String, default: "I'm a lovely emote server!"}
 	}
 });
 

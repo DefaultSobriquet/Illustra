@@ -48,16 +48,17 @@ class Profile extends Command{
 	}
 }
 
-class Set extends Profile{
+class Bio extends Profile{
 	constructor(){
 		super({
-			name: "set",
+			name: "bio",
 			description: "Sets your profile bio, with a max of 200 characters.",
 			usage: "[bio]",
 			examples: ["Hello. My name is Inigo Montoya."],
 			aliases: [],
 			userPerms: [],
-			botPerms: ["SEND_MESSAGES"]
+			botPerms: ["SEND_MESSAGES"],
+			reqArgs: 1
 		});
 	}
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
@@ -71,7 +72,43 @@ class Set extends Profile{
 	}
 }
 
+class Colour extends Profile{
+	constructor(){
+		super({
+			name: "colour",
+			description: "Sets your profile colour.",
+			usage: "[hex code]",
+			examples: [""],
+			aliases: [],
+			userPerms: [],
+			botPerms: ["SEND_MESSAGES"],
+			reqArgs: 1
+		});
+	}
+	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
+		
+		const hexRegex = /^#([A-Fa-f0-9]{6})$/;
+
+		if(!hexRegex.test(ctx.args[0])){
+			ctx.channel.send(`${Signs.ERROR} Please enter a valid hex code!`);
+			return new CommandResponse();
+		}
+		
+		const colour = parseInt(ctx.args[0].replace("#", "0x"), 16);
+
+		if(!colour){
+			ctx.channel.send(`${Signs.ERROR} There was an unexpected error.`);
+			return new CommandResponse();
+		}
+
+		await Illustra.managers.user.setColour(ctx.user.id, colour);
+		ctx.channel.send(`${Signs.SUCCESS} Your profile colour was set!`);
+
+		return new CommandResponse();
+	}
+}
+
 export const subcommands = [
-	new Set()
+	new Bio(), new Colour()
 ];
 export default Profile;

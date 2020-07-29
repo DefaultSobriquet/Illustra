@@ -48,12 +48,14 @@ const User = new Schema({
 
 export interface IUser{
 	id: string;
-	acks?: {
-		dev?: boolean,
-		custom?: string[]
-	},
+	acks?: IAcks,
 	rep?: IRep,
 	profile: IProfile
+}
+
+export interface IAcks{
+	dev?: boolean,
+	custom?: string[]
 }
 
 export interface IProfile{

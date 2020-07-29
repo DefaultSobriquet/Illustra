@@ -1,15 +1,27 @@
-import User, { IProfile, IRep, IUser } from "../models/User";
+import User, { IAcks, IProfile, IRep, IUser } from "../models/User";
 import IllustraClient from "../structures/IllustraClient";
 import { IManagerOptions } from "../types";
 import {Document} from "mongoose";
 
+// Hack declaration for extending the prototype
+declare module "discord.js" {
+	interface User{
+		acks: IAcks;
+		rep: IRep;
+		profile: IProfile;
+	}
+}
+
 class UserManager{
+	
 	Illustra: IllustraClient;
 	model: typeof User;
+	
 	constructor(options: IManagerOptions){
 		this.Illustra = options.Illustra;
 		this.model = User;
 	}
+	
 	async retrieve(id: string, required = false): Promise<(IUser & Document)|null>{
 		let user = await User.findOne({id: id});
 		if(!user && required){
@@ -18,16 +30,19 @@ class UserManager{
 		}
 		return user;
 	}
+	
 	async setAcks(id: string, data: string[], merge = true): Promise<IUser & Document>{
 		const userDoc = (await this.retrieve(id, true))!;
 		userDoc.acks!.custom = (userDoc.acks?.custom && merge) ? userDoc.acks!.custom.concat(data) : data;
 		return await userDoc.save();
 	}
+
 	async addRep(id: string): Promise<IUser & Document>{
 		const userDoc = (await this.retrieve(id, true))!;
 		userDoc.rep!.count = userDoc.rep?.count ? userDoc.rep.count+1 : 1;
 		return await userDoc.save();
 	}
+	
 	async setRepCooldown(id: string, time?: number): Promise<IUser & Document>{
 		const userDoc = (await this.retrieve(id, true))!;
 		userDoc.rep!.cooldown = time ?? Date.now();
@@ -37,6 +52,12 @@ class UserManager{
 	async setBio(id: string, bio: string): Promise<IUser & Document>{
 		const userDoc = (await this.retrieve(id, true))!;
 		userDoc.profile.bio = bio.length < 200 ? bio : bio.slice(0, 200).trim()+"...";
+		return await userDoc.save();
+	}
+
+	async setColour(id: string, colour: number): Promise<IUser & Document>{
+		const userDoc = (await this.retrieve(id, true))!;
+		userDoc.profile.colour = colour;
 		return await userDoc.save();
 	}
 
@@ -55,6 +76,7 @@ class UserManager{
 		const userDoc = await this.retrieve(id);
 		return userDoc?.rep?.cooldown ?? 0;
 	}
+
 	async getRep(id: string): Promise<IRep>{
 		const userDoc = await this.retrieve(id);
 		return {
@@ -66,6 +88,7 @@ class UserManager{
 			}
 		};
 	}
+	
 }
 
 export default UserManager;

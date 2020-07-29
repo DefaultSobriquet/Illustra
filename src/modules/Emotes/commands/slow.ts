@@ -47,13 +47,13 @@ class Slow extends Command{
 
 		ctx.channel.startTyping();
 
-		const response = (await axios({
+		const response = await axios({
 			method: "get",
 			url: `${emote.url!}?v=1`,
 			responseType: "arraybuffer"
-		})).data;
+		});
 		
-		const dataBuffer = Buffer.from(response); // Ensure that gm only gets a Buffer argument
+		const dataBuffer = Buffer.from(response.data); // Ensure that gm only gets a Buffer argument
 		
 		const image = gm(dataBuffer);
 
