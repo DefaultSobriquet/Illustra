@@ -25,7 +25,7 @@ class Pixelate extends Command{
 
 	async execute(ctx: ICommandContext, Illustra: IllustraClient): Promise<CommandResponse>{
 		const {props, resolve, validate, embed} = Illustra.utils.emote;
-		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args.join("_"), ctx.guild!);
+		const emote = validate(ctx.args[0]) ? props(ctx.args[0]) : resolve(ctx.args[0], ctx.guild!);
 
 		if(!emote){
 			ctx.channel.send(`${Signs.ERROR} You didn't specify a valid emote!`);
