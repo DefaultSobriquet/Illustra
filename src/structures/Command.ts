@@ -4,7 +4,6 @@ import IllustraClient from "./IllustraClient";
 import { CommandResponse } from "./CommandResponse";
 import { Flag } from "./Flag";
 import Module from "./Module";
-// import Module from "./Module";
 
 export class Command{
     
@@ -41,7 +40,7 @@ export class Command{
         this.reqArgs = options.reqArgs ?? 0;
         this.cooldownTime = options.cooldownTime ?? 2000;
         this._cooldowns = new Collection();
-        this.subcommands = options.subcommands ?? new Collection();
+        this.subcommands = new Collection();
         this.flags = new Collection();
     }
 
@@ -61,6 +60,14 @@ export class Command{
             return 0;
         }
         return Date.now()-cooldown;
+    }
+
+    disable(): void {
+        this.enabled = false;
+    }
+
+    enable(): void {
+        this.enabled = true;
     }
 
 }

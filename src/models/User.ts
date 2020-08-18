@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
 const User = new Schema({
 	id: {
@@ -23,7 +23,7 @@ const User = new Schema({
 		},
 		lastRecieved:{
 			emote: {
-				type: Types.ObjectId
+				type: String
 			},
 			timestamp:{
 				type: Number
@@ -41,7 +41,7 @@ const User = new Schema({
 			type: Number
 		},
 		partner:{
-			type: Types.ObjectId
+			type: String
 		}
 	}
 });
@@ -62,14 +62,14 @@ export interface IProfile{
 	nickname?: string,
 	bio?: string,
 	colour?: number,
-	partner?: Types.ObjectId
+	partner?: string
 }
 
 export interface IRep{
 	cooldown?: number,
 	count?: number,
 	lastRecieved?:{
-		emote?: Types.ObjectId,
+		emote?: string,
 		timestamp?: number
 	}
 }

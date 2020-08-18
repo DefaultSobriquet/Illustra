@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types} from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
 const Emote = new Schema({
 	id: {
@@ -13,8 +13,8 @@ const Emote = new Schema({
 		type: Boolean,
 		required: true
 	},
-	userRefs:{
-		type: [Types.ObjectId],
+	users:{
+		type: [String],
 		required: true
 	},
 	nsfw:{
@@ -26,7 +26,7 @@ export interface IEmote{
 	id: string,
 	name: string,
 	animated: boolean,
-	userRefs: Types.ObjectId[],
+	users: string[],
 	nsfw?: boolean
 }
 

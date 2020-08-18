@@ -43,15 +43,15 @@ class UserManager{
 		return await userDoc.save();
 	}
 	
-	async setRepCooldown(id: string, time?: number): Promise<IUser & Document>{
+	async setRepCooldown(id: string, time = Date.now()): Promise<IUser & Document>{
 		const userDoc = (await this.retrieve(id, true))!;
-		userDoc.rep!.cooldown = time ?? Date.now();
+		userDoc.rep!.cooldown = time;
 		return await userDoc.save();
 	}
 
 	async setBio(id: string, bio: string): Promise<IUser & Document>{
 		const userDoc = (await this.retrieve(id, true))!;
-		userDoc.profile.bio = bio.length < 200 ? bio : bio.slice(0, 200).trim()+"...";
+		userDoc.profile.bio = bio.length < 500 ? bio : bio.slice(0, 500).trim()+"...";
 		return await userDoc.save();
 	}
 

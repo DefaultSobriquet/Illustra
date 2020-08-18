@@ -1,7 +1,7 @@
 import Emote, { IEmote } from "../models/Emote";
 import IllustraClient from "../structures/IllustraClient";
 import { IManagerOptions } from "../types";
-import {Document, Types} from "mongoose";
+import {Document} from "mongoose";
 import { Emoji } from "discord.js";
 
 class EmoteManager{
@@ -12,21 +12,21 @@ class EmoteManager{
 		this.Illustra = options.Illustra;
 		this.model = Emote;
 	}
-	async addEmote(emote: Emoji, user?: Types.ObjectId): Promise<IEmote & Document>{
+	async addEmote(emote: Emoji, user?: string): Promise<IEmote & Document>{
 		const emoteDoc = await Emote.create({
 			id: emote.id,
 			name: emote.name,
 			animated: emote.animated,
-			userRefs: user ? [user] : []
+			users: user ? [user] : []
 		});
 		return await emoteDoc.save();
 	}
-	async addUser(emote: Emoji, user: Types.ObjectId): Promise<IEmote & Document>{
+	async addUser(emote: Emoji, user: string): Promise<IEmote & Document>{
 		const emoteDoc = (await this.retrieve(emote, true))!;
-		emoteDoc.userRefs.push(user);
+		emoteDoc.users.push(user);
 		await this.Illustra.managers.user.model.findByIdAndUpdate(user, {
 			"rep.lastRecieved":{
-				emote: emoteDoc._id,
+				emote: emoteDoc.id,
 				timestamp: Date.now()
 			}
 		});
@@ -39,10 +39,10 @@ class EmoteManager{
 		}
 		return emoteDoc;
 	}
-	async hasUser(emote: Emoji, user: Types.ObjectId): Promise<boolean>{
+	async hasUser(emote: Emoji, user: string): Promise<boolean>{
 		const emoteDoc = await this.retrieve(emote);
 		if(!emoteDoc) return false;
-		return emoteDoc.userRefs.includes(user);
+		return emoteDoc.users.includes(user);
 	}
 }
 
