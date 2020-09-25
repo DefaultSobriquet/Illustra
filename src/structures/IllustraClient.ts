@@ -11,6 +11,7 @@ import { Flag } from "./Flag";
 import UserManager from "../manager/UserManager";
 import EmoteManager from "../manager/EmoteManager";
 import Module from "./Module";
+import GuildManager from "../manager/GuildManager";
 
 const areaddir = promisify(readdir);
 
@@ -24,7 +25,8 @@ class IllustraClient{
 	logger: Signale;
 	managers: {
 		user: UserManager,
-		emote: EmoteManager
+		emote: EmoteManager,
+		guild: GuildManager
 	}
 	cooldowns: Collection<string, Collection<string, number>>;
 	readonly version: string;
@@ -38,7 +40,8 @@ class IllustraClient{
 		this.logger = new Signale();
 		this.managers = {
 			user: new UserManager({Illustra: this}),
-			emote: new EmoteManager({Illustra: this})
+			emote: new EmoteManager({Illustra: this}),
+			guild: new GuildManager({Illustra: this})
 		};
 		this.cooldowns = new Collection();
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -109,7 +112,7 @@ class IllustraClient{
 					this.logger.error(`${eventName} is not an event!`);
 					return;
 				}
-
+				
 				this.client.on(eventName, event.bind(null, this));
 			}catch(e){
 				this.logger.error(e);

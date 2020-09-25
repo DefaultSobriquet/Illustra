@@ -13,13 +13,17 @@ const Guild = new Schema({
 	prefix: {
 		default: "=",
 		type: String
+	},
+	logChannel:{
+		type: String
 	}
 });
 
 export interface IGuild{
 	id: string;
 	premium?: boolean;
-	prefix?: string
+	prefix?: string;
+	logChannel?: string;
 }
 
 export default model<IGuild & Document>("Guild", Guild);
