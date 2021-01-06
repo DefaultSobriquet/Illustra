@@ -10,7 +10,7 @@ const options: Partial<Command> = {
     description: "Floof? Find a fox!",
     usage: "",
     examples: [""],
-    aliases: ["meow"],
+    aliases: [],
     userPerms: [],
 	botPerms: ["SEND_MESSAGES", "EMBED_LINKS"],
 	guildOnly: false
