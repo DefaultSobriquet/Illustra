@@ -21,17 +21,6 @@ class EmoteManager{
 		});
 		return await emoteDoc.save();
 	}
-	async addUser(emote: Emoji, user: string): Promise<IEmote & Document>{
-		const emoteDoc = (await this.retrieve(emote, true))!;
-		emoteDoc.users.push(user);
-		await this.Illustra.managers.user.model.findByIdAndUpdate(user, {
-			"rep.lastRecieved":{
-				emote: emoteDoc.id,
-				timestamp: Date.now()
-			}
-		});
-		return await emoteDoc.save();
-	}
 	async retrieve(emote: Emoji, required = false): Promise<(IEmote & Document)|null>{
 		let emoteDoc = await Emote.findOne({id: emote.id});
 		if(required && !emoteDoc){

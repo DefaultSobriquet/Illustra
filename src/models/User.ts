@@ -13,36 +13,6 @@ const User = new Schema({
 		custom: {
 			type: [String]
 		}
-	},
-	rep: {
-		cooldown: {
-			type: Number
-		},
-		count: {
-			type: Number
-		},
-		lastRecieved:{
-			emote: {
-				type: String
-			},
-			timestamp:{
-				type: Number
-			}
-		}
-	},
-	profile:{
-		nickname:{
-			type: String
-		},
-		bio:{
-			type: String
-		},
-		colour:{
-			type: Number
-		},
-		partner:{
-			type: String
-		}
 	}
 });
 

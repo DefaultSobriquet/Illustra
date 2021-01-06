@@ -6,4 +6,7 @@ class PermissionManagers{
 	constructor(options: IManagerOptions){
 		this.Illustra = options.Illustra;
 	}
+		
 }
+
+export default PermissionManagers;
