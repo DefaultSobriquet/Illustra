@@ -3,6 +3,7 @@ import IllustraClient from "../structures/IllustraClient";
 
 export default async function(Illustra: IllustraClient, emote: GuildEmoji): Promise<void>{
 
+	console.log("This just ran.");
 	// Retrieve logging channel property on Guild or asynchronously via MongoDB
 	const logChannelID = await Illustra.managers.guild.getLogChannel(emote.guild.id);
 	if(!logChannelID) return;

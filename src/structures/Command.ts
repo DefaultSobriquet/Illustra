@@ -30,7 +30,7 @@ export class Command{
         this.aliases = options.aliases ?? [];
         this.userPerms = options.userPerms ?? [];
         this.botPerms = options.botPerms ?? [];
-        this.name = options.name ?? "test";
+        this.name = options.name ?? "sample";
         this.description = options.description ?? "What can this do?";
         this.usage = options.usage ?? "[user]";
         this.examples = options.examples ?? [];

@@ -28,7 +28,7 @@ class Upload extends Command{
 	
 		const file = ctx.message.attachments.first();
 		
-		let name = (ctx.args[0] && regName.test(ctx.args[0])) ? ctx.args[0] : undefined;
+		let name = (ctx.args[0] && regName.test(ctx.args[0])) ? ctx.args[0] : null;
 		let link = (name && ctx.args[1] && regLink.test(ctx.args[1])) ? ctx.args[1] : undefined;
 	
 		if(file){ // Alright, let's start using the attachment.

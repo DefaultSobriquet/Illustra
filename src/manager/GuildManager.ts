@@ -2,6 +2,7 @@ import { Document } from "mongoose";
 import Guild, { IGuild } from "../models/Guild";
 import IllustraClient from "../structures/IllustraClient";
 import { IManagerOptions } from "../types";
+import GuildModel from "../models/Guild";
 
 // Hack to extend the Discord.js module
 
@@ -18,8 +19,13 @@ class GuildManager{
 		this.Illustra = options.Illustra;
 		this.model = Guild;
 	}
-	async retrieve(guildID: string): Promise<IGuild & Document | null>{
+	async retrieve(guildID: string, required = false): Promise<IGuild & Document | null>{
 		const guildDoc = await Guild.findOne({id: guildID});
+		if(!guildDoc && required){
+			const mongoGuild = new GuildModel({ id: guildID }); // Add the new guild model, ensuring existence.
+			await mongoGuild.save();
+			return mongoGuild;
+		}
 		return guildDoc;
 	}
 	async setLogChannel(guildID: string, channelID: string): Promise<IGuild & Document | null>{
