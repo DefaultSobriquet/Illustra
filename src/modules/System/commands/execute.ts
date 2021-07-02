@@ -31,7 +31,7 @@ class Execute extends Command{
 				if (err) output = err.stack ?? "Error did not have a stack.";
 				if (stdout && stdout.length !== 0) output = stdout;
 				if (stderr && stderr.length !== 0) output = stderr;
-				const messages = Util.splitMessage(output);
+				const messages = Util.splitMessage(output, {maxLength: 1990});
 				if (typeof (messages) === "string") return ctx.channel.send(`\`\`\`bash\n${messages}\`\`\``);
 				messages.forEach((value) => ctx.channel.send(`\`\`\`bash\n${value}\`\`\``));
 			});
