@@ -1,4 +1,4 @@
-import User, { IAcks, IProfile, IRep, IUser } from "../models/User";
+import User, { IAcks, IUser } from "../models/User";
 import IllustraClient from "../structures/IllustraClient";
 import { IManagerOptions } from "../types";
 import {Document} from "mongoose";
@@ -6,9 +6,7 @@ import {Document} from "mongoose";
 // Hack declaration for extending the prototype
 declare module "discord.js" {
 	interface User{
-		acks: IAcks;
-		rep: IRep;
-		profile: IProfile;
+		acks: IAcks
 	}
 }
 

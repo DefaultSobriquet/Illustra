@@ -9,7 +9,6 @@ import { Signale } from "signale";
 import CommandHandler from "./CommandHandler";
 import { Flag } from "./Flag";
 import UserManager from "../manager/UserManager";
-import EmoteManager from "../manager/EmoteManager";
 import Module from "./Module";
 import GuildManager from "../manager/GuildManager";
 
@@ -25,7 +24,6 @@ class IllustraClient{
 	logger: Signale;
 	managers: {
 		user: UserManager,
-		emote: EmoteManager,
 		guild: GuildManager
 	}
 	cooldowns: Collection<string, Collection<string, number>>;
@@ -40,7 +38,6 @@ class IllustraClient{
 		this.logger = new Signale();
 		this.managers = {
 			user: new UserManager({Illustra: this}),
-			emote: new EmoteManager({Illustra: this}),
 			guild: new GuildManager({Illustra: this})
 		};
 		this.cooldowns = new Collection();

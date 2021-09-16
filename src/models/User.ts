@@ -17,31 +17,13 @@ const User = new Schema({
 });
 
 export interface IUser{
-	id: string;
-	acks?: IAcks,
-	rep?: IRep,
-	profile: IProfile
+	id: string
+	acks?: IAcks
 }
 
 export interface IAcks{
-	dev?: boolean,
+	isDev?: boolean,
 	custom?: string[]
-}
-
-export interface IProfile{
-	nickname?: string,
-	bio?: string,
-	colour?: number,
-	partner?: string
-}
-
-export interface IRep{
-	cooldown?: number,
-	count?: number,
-	lastRecieved?:{
-		emote?: string,
-		timestamp?: number
-	}
 }
 
 export default model<IUser & Document>("User", User);
