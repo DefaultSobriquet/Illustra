@@ -12,7 +12,7 @@
     "@types/node": "^13.11.1",
     "@types/signale": "^1.4.1",
     "@types/ws": "^7.2.4",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "discord.js": "^12.5.3",
     "gm": "^1.23.1",
     "lodash": "^4.17.21",
